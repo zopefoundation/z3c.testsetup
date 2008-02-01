@@ -21,14 +21,6 @@ checker = renormalizing.RENormalizing([
 
 def suiteFromFile(filename):
     suite = unittest.TestSuite()
-
-    if not filename.endswith('.py'):
-        continue
-    if filename.endswith('_fixture.py'):
-        continue
-    if filename == '__init__.py':
-        continue
-
     dottedname = 'z3c.testsetup.tests.%s' % (filename[:-3],)
     test = doctest.DocTestSuite(dottedname,
                                 setUp=setUpZope,

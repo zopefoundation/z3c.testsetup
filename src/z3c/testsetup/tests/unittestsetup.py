@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007 Zope Corporation and Contributors.
+# Copyright (c) 2008 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -42,14 +42,14 @@ We want to register the tests contained in the local ``cave``
 package. This has to be imported first, because we need the package as
 a parameter for the testseupt constructor::
 
-   >>> from grok.tests.testsetup import cave
+   >>> from z3c.testsetup.tests import cave
 
 Using the ``UnitTestSetup`` then is easy::
 
-   >>> from grok.testing import UnitTestSetup
+   >>> from z3c.testsetup import UnitTestSetup
    >>> setup = UnitTestSetup(cave)
    >>> setup
-   <grok.testing.UnitTestSetup object at 0x...>   
+   <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -124,7 +124,7 @@ the default set of options, the following values are set::
   
      >>> setup.setUp
      <bound method UnitTestSetup.setUp of
-      <grok.testing.UnitTestSetup object at 0x...>>
+      <z3c.testsetup.testing.UnitTestSetup object at 0x...>>
 
 * The setup-instance's `optionsflags` attribute is passed. It
   includes by default the following doctest constants:

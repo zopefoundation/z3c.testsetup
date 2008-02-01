@@ -35,6 +35,7 @@ setup(
     include_package_data = True,
     zip_safe=False,
     install_requires=['setuptools',
+                      'zope.component',
                       'zope.testing',
                       'zope.app.testing',
                       ],

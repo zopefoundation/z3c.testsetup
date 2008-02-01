@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007 Zope Corporation and Contributors.
+# Copyright (c) 2008 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -16,33 +16,30 @@
 Basic Test Setup
 ================
 
-``BasicTestSetup`` is a class to support easier setup of tests in grok
-projects. It acts merely as a container for shared functions, methods
-and attributes needed by 'real' test setups which are derived from
-it. Itself provides *no* ``getTestSuite()`` method, which is needed to
-setup real tests.
+``BasicTestSetup`` is a class to support easier setup of tests in Zope
+3 projects. It acts merely as a container for shared functions,
+methods and attributes needed by 'real' test setups which are derived
+from it. Itself provides *no* ``getTestSuite()`` method, which is
+needed to setup real tests.
 
 A ``BasicTestSetup`` tries to find all doctest files defined in a given
 package. See `functionalsetup.py` for setting up real functional tests
 and `unittestsetup.py` for 'real' setup of unittests.
 
-For a general introduction into testing with grok see the appropriate
-howto on the grok homepage.
-
 The TestSetup classes all search and handle doctest files.
 
 All we need to setup a testsuite, is the package to search::
 
-   >>> from grok.tests.testsetup import cave
-   >>> from grok.testing import BasicTestSetup
+   >>> from z3c.testsetup.tests import cave
+   >>> from z3c.testsetup import BasicTestSetup
    >>> basic_setup = BasicTestSetup(cave)
    >>> basic_setup
-   <grok.testing.BasicTestSetup object at 0x...>
+   <z3c.testsetup.testing.BasicTestSetup object at 0x...>
 
 The package is stored as an instance-attribute::
 
    >>> basic_setup.package
-   <module 'grok.tests.testsetup.cave' from ...>
+   <module 'z3c.testsetup.tests.cave' from ...>
 
 The ``BasicTestSetup`` serves merely as a container for attributes and
 methods needed by derived classes, that provide proper test setup.

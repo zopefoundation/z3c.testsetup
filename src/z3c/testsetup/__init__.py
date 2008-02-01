@@ -1,1 +1,3 @@
-# Make this a package
+from z3c.testsetup.testing import (BasicTestSetup, UnitTestSetup,
+                                   FunctionalTestSetup)
+
