@@ -10,7 +10,7 @@ Short setups
 ------------
 
     >>> import os
-    >>> cavepath = os.path.join(os.path.dirname(__file__), 'cave')
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests', 'cave')
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short2.py')
     >>> print open(setupfile).read()
     import z3c.testsetup

@@ -6,8 +6,8 @@ import unittest
 from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
 
-TESTFILES = ['basicsetup.py', 'functionalsetup.py', 'unittestsetup.py',
-             'utils.py']
+TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
+             'unitdoctestsetup.txt', 'util.txt']
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
@@ -41,7 +41,7 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        'testrunner.txt',
+        os.path.join('..', 'testrunner.txt'),
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
         checker=checker),
@@ -53,8 +53,8 @@ def testrunner_suite():
 
 def suiteFromFile(filename):
     suite = unittest.TestSuite()
-    dottedname = 'z3c.testsetup.tests.%s' % (filename[:-3],)
-    test = doctest.DocTestSuite(dottedname,
+    dottedname = os.path.join('..', filename) #'../%s' % (filename[:],)
+    test = doctest.DocFileSuite(dottedname,
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
                                 checker=checker,

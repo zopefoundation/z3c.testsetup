@@ -171,7 +171,7 @@ This is determined by a list of regular expressions, which is also
 available as an object attribute::
 
     >>> setup.regexp_list
-    ['^\\\\s*:(T|t)est-(L|l)ayer:\\\\s*(unit)\\\\s*']
+    ['^\\s*:(T|t)est-(L|l)ayer:\\s*(unit)\\s*']
 
 This is the default value of unit test setups.
 

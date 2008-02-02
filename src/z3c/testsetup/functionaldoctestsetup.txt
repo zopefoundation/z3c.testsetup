@@ -198,7 +198,7 @@ This is determined by a list of regular expressions, which is also
 available as an object attribute::
 
     >>> setup.regexp_list
-    ['^\\\\s*:(T|t)est-(L|l)ayer:\\\\s*(functional)\\\\s*']
+    ['^\\s*:(T|t)est-(L|l)ayer:\\s*(functional)\\s*']
 
 This is the default value of functional test setups.
 
