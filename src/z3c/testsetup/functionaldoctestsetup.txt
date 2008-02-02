@@ -49,7 +49,7 @@ Using the ``FunctionalDocTestSetup`` then is easy::
    >>> from z3c.testsetup import FunctionalDocTestSetup
    >>> setup = FunctionalDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup.testing.FunctionalDocTestSetup object at 0x...>   
+   <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -61,10 +61,10 @@ To sum it up, writing a test setup for a grok project now can be that
 short::
 
    import unittest
-   import grok
+   import z3c.testsetup
    import cave
    def test_suite():
-       setup = grok.testing.FunctionalDocTestSetup(cave)
+       setup = z3c.testsetup.FunctionalDocTestSetup(cave)
        return setup.getTestSuite()
 
 This will find all .rst and .txt files in the package that provide a
@@ -132,7 +132,7 @@ using the default set of options, the following values are set::
   
      >>> setup.setUp
      <bound method FunctionalDocTestSetup.setUp of
-      <z3c.testsetup.testing.FunctionalDocTestSetup object at 0x...>>
+      <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>>
 
 * The setup-instance's `globs` attribute is passed as the `globs`
   parameter. By default `globs` is a dictionary of functions, that

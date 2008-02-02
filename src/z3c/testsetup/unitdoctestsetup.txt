@@ -49,7 +49,7 @@ Using the ``UnitTestSetup`` then is easy::
    >>> from z3c.testsetup import UnitDocTestSetup
    >>> setup = UnitDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup.testing.UnitDocTestSetup object at 0x...>   
+   <z3c.testsetup.doctesting.UnitDocTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -133,7 +133,7 @@ the default set of options, the following values are set::
   
      >>> setup.setUp
      <bound method UnitDocTestSetup.setUp of
-      <z3c.testsetup.testing.UnitDocTestSetup object at 0x...>>
+      <z3c.testsetup.doctesting.UnitDocTestSetup object at 0x...>>
 
 * The setup-instance's `optionsflags` attribute is passed. It
   includes by default the following doctest constants:

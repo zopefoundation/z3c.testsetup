@@ -32,11 +32,11 @@ testrunner with this setup::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.testing.FunctionalLayer tests:
-      Set up z3c.testsetup.testing.FunctionalLayer in ... seconds.
+    Running z3c.testsetup.doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.testing.FunctionalLayer ... not supported
+      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
     Total: 3 tests, 0 failures, 0 errors in ... seconds.
     False
 
@@ -81,11 +81,11 @@ to return a testsuite::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.testing.FunctionalLayer tests:
-      Set up z3c.testsetup.testing.FunctionalLayer in ... seconds.
+    Running z3c.testsetup.doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.testing.FunctionalLayer ... not supported
+      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
     Total: 3 tests, 0 failures, 0 errors in ... seconds.
     False
 
