@@ -1,0 +1,60 @@
+=============================
+z3c.testsetup and testrunners
+=============================
+
+Here we discuss complete test setups for the `cave` package contained
+in this directory. We will run the `zope.testing.testrunner` and
+examine their output.
+
+Let's have a look at the test setup module `samplesetup1` in the
+`cave` package::
+
+    >>> import os
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 'cave')
+    >>> setupfile = os.path.join(cavepath, 'samplesetup1.py')
+    >>> print open(setupfile).read()
+    import unittest
+    import z3c.testsetup
+    from z3c.testsetup.tests import cave # The package that contains
+                                         # the doctest files
+    def test_suite():
+        suite = unittest.TestSuite()
+        suite.addTest( # Add all unittests from `cave`
+            z3c.testsetup.UnitTestSetup(cave).getTestSuite())
+        suite.addTest( # Add all functional tests from `cave`
+            z3c.testsetup.FunctionalTestSetup(cave).getTestSuite())
+        return suite
+    <BLANKLINE>
+    if __name__ == '__main__':
+        unittest.main(default='test_suite')
+    <BLANKLINE>
+
+As we see, there is a unittest setup and a functional test setup
+initialized. Both collect one kind of tests and feed their collection
+in the same testsuite (where each kind of tests is setup differently,
+of course). 
+
+Now let's run a testrunner and see the result. The testrunner will be
+configured such, that all files named 'samplesetup1.py' will be asked
+to return a testsuite::
+
+    >>> import os.path, sys
+    >>> directory_with_tests = os.path.join(this_directory, 'cave')
+    >>> defaults = [
+    ...     '--path', directory_with_tests,
+    ...     '--tests-pattern', '^samplesetup1$',
+    ...     ]
+    >>> sys.argv = 'test '.split()
+    >>> from zope.testing import testrunner
+    >>> testrunner.run(defaults)
+    Running unit tests:
+      Ran 1 tests with 0 failures and 0 errors in ... seconds.
+    Running z3c.testsetup.testing.FunctionalLayer tests:
+      Set up z3c.testsetup.testing.FunctionalLayer in ... seconds.
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.testing.FunctionalLayer ... not supported
+    Total: 3 tests, 0 failures, 0 errors in ... seconds.
+    False
+
+We ran one unittest and two functional tests.
