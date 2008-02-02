@@ -38,5 +38,6 @@ setup(
                       'zope.component',
                       'zope.testing',
                       'zope.app.testing',
+                      'martian',
                       ],
 )
