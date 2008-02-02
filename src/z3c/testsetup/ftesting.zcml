@@ -1,35 +1,14 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:grok="http://namespaces.zope.org/grok"
-   i18n_domain="grok"
-   package="grok"
+   i18n_domain="zope"
    >
 
-  <include package="grok" />
-  <grok:grok package="grok.ftests" />
+  <!--
+      This is only a dummy layer to enable local tests and avoid
+      dependencies from packages we do not need badly.
 
-  <securityPolicy
-      component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy"
-      />
-
-  <unauthenticatedPrincipal
-      id="zope.anybody"
-      title="Unauthenticated User"
-      />
-  <grant
-      permission="zope.View"
-      principal="zope.anybody"
-      />
-
-  <principal
-      id="zope.mgr"
-      title="Manager"
-      login="mgr"
-      password="mgrpw"
-      />
-
-  <role id="zope.Manager" title="Site Manager" />
-  <grantAll role="zope.Manager" />
-  <grant role="zope.Manager" principal="zope.mgr" />
+      For tests that include testbrowser tests and similar, write your
+      own ftesting.zcml with registration of principals etc.
+  -->
 
 </configure>
