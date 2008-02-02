@@ -11,7 +11,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Grok test setup helpers
+"""Test setup helpers
 """
 import unittest
 from os import listdir
@@ -19,8 +19,11 @@ import os.path
 import re
 from zope.testing import doctest, cleanup
 from zope.app.testing.functional import (
-    HTTPCaller, getRootFolder, FunctionalTestSetup,
-    sync, ZCMLLayer, FunctionalDocFileSuite)
+    HTTPCaller, getRootFolder, sync, ZCMLLayer, FunctionalDocFileSuite,)
+
+from zope.app.testing.functional import (
+    FunctionalTestSetup as FunctionalTestSetup_)
+
 
 class BasicTestSetup(object):
     """A basic test setup for a package.
@@ -186,10 +189,10 @@ class FunctionalTestSetup(BasicTestSetup):
         ]
 
     def setUp(self, test):
-        FunctionalTestSetup().setUp()
+        FunctionalTestSetup_().setUp()
 
     def tearDown(self, test):
-        FunctionalTestSetup().tearDown()
+        FunctionalTestSetup_().tearDown()
 
     def suiteFromFile(self, name):
         suite = unittest.TestSuite()
