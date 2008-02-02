@@ -44,12 +44,12 @@ a parameter for the testseupt constructor::
 
    >>> from z3c.testsetup.tests import cave
 
-Using the ``FunctionalTestSetup`` then is easy::
+Using the ``FunctionalDocTestSetup`` then is easy::
 
-   >>> from z3c.testsetup import FunctionalTestSetup
-   >>> setup = FunctionalTestSetup(cave)
+   >>> from z3c.testsetup import FunctionalDocTestSetup
+   >>> setup = FunctionalDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup.testing.FunctionalTestSetup object at 0x...>   
+   <z3c.testsetup.testing.FunctionalDocTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -64,7 +64,7 @@ short::
    import grok
    import cave
    def test_suite():
-       setup = grok.testing.FunctionalTestSetup(cave)
+       setup = grok.testing.FunctionalDocTestSetup(cave)
        return setup.getTestSuite()
    if __name__ == '__main__':
        unittest.main(default='test_suite')
@@ -123,8 +123,8 @@ using the default set of options, the following values are set::
   function.
   
      >>> setup.setUp
-     <bound method FunctionalTestSetup.setUp of
-      <z3c.testsetup.testing.FunctionalTestSetup object at 0x...>>
+     <bound method FunctionalDocTestSetup.setUp of
+      <z3c.testsetup.testing.FunctionalDocTestSetup object at 0x...>>
 
 * The setup-instance's `globs` attribute is passed as the `globs`
   parameter. By default `globs` is a dictionary of functions, that
@@ -256,8 +256,8 @@ A convenient way to pass keyword parameters to the test setup, which
 do not appear in the attributes, is passing these keywords (and the
 values) to the constructor::
 
-    >>> encoded_setup = FunctionalTestSetup(cave,
-    ...                                     encoding='utf-8')
+    >>> encoded_setup = FunctionalDocTestSetup(cave,
+    ...                                        encoding='utf-8')
 
 This will read all doctests 'utf-8' encoded, which allow umlauts and
 similar chars in tests. Note, however, that you can archieve this very

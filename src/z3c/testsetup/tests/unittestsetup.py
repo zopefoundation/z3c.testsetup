@@ -46,10 +46,10 @@ a parameter for the testseupt constructor::
 
 Using the ``UnitTestSetup`` then is easy::
 
-   >>> from z3c.testsetup import UnitTestSetup
-   >>> setup = UnitTestSetup(cave)
+   >>> from z3c.testsetup import UnitDocTestSetup
+   >>> setup = UnitDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
+   <z3c.testsetup.testing.UnitDocTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -123,8 +123,8 @@ the default set of options, the following values are set::
   function.
   
      >>> setup.setUp
-     <bound method UnitTestSetup.setUp of
-      <z3c.testsetup.testing.UnitTestSetup object at 0x...>>
+     <bound method UnitDocTestSetup.setUp of
+      <z3c.testsetup.testing.UnitDocTestSetup object at 0x...>>
 
 * The setup-instance's `optionsflags` attribute is passed. It
   includes by default the following doctest constants:
@@ -228,8 +228,8 @@ A convenient way to pass keyword parameters to the test setup, which
 do not appear in the attributes, is passing these keywords (and the
 values) to the constructor::
 
-    >>> encoded_setup = UnitTestSetup(cave,
-    ...                               encoding='utf-8')
+    >>> encoded_setup = UnitDocTestSetup(cave,
+    ...                                  encoding='utf-8')
 
 This will read all doctests 'utf-8' encoded, which allow umlauts and
 similar chars in tests. Note, however, that you can archieve this very

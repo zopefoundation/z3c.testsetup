@@ -5,9 +5,9 @@ from z3c.testsetup.tests import cave # The package that contains
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest( # Add all unittests from `cave`
-        z3c.testsetup.UnitTestSetup(cave).getTestSuite())
+        z3c.testsetup.UnitDocTestSetup(cave).getTestSuite())
     suite.addTest( # Add all functional tests from `cave`
-        z3c.testsetup.FunctionalTestSetup(cave).getTestSuite())
+        z3c.testsetup.FunctionalDocTestSetup(cave).getTestSuite())
     return suite
 
 if __name__ == '__main__':
