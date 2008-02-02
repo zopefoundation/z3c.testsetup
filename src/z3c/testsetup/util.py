@@ -13,7 +13,7 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
-from martian.scan import module_info_from_dotted_name
+from martian.scan import resolve
 
 def get_package(pkg_or_dotted_name):
     """Get a package denoted by the given argument.
@@ -26,6 +26,5 @@ def get_package(pkg_or_dotted_name):
     """
     pkg = pkg_or_dotted_name
     if isinstance(pkg, basestring):
-        info = module_info_from_dotted_name(pkg)
-        pkg = info.getModule()
+        pkg = resolve(pkg)
     return pkg
