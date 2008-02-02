@@ -23,6 +23,7 @@ from zope.app.testing.functional import (
 
 from zope.app.testing.functional import (
     FunctionalTestSetup as FunctionalTestSetup_)
+from z3c.testsetup.util import get_package
 
 
 class BasicTestSetup(object):
@@ -218,3 +219,26 @@ class FunctionalTestSetup(BasicTestSetup):
             suite.addTest(self.suiteFromFile(name))
         return suite
 
+
+def register_doctests(pkg_or_dotted_name):
+    """Return a function that requires no argument and delivers a test
+    suite.
+
+    The resulting functions are suitable for use with unittest
+    testrunners, that look for an attribute `test_suite` on module
+    level. Such::
+
+       test_suite = register_doctests(pkg)
+
+    in a module should register all tests for the package `pkg`.
+    """
+    pkg = get_package(pkg_or_dotted_name)
+    def tmpfunc():
+        suite = unittest.TestSuite()
+        suite.addTest(
+            UnitTestSetup(pkg).getTestSuite())
+        suite.addTest(
+            FunctionalTestSetup(pkg).getTestSuite())
+        return suite
+    return tmpfunc
+    

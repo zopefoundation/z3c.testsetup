@@ -1,3 +1,3 @@
 from z3c.testsetup.testing import (BasicTestSetup, UnitTestSetup,
-                                   FunctionalTestSetup)
+                                   FunctionalTestSetup, register_doctests)
 
