@@ -66,13 +66,21 @@ short::
    def test_suite():
        setup = grok.testing.FunctionalDocTestSetup(cave)
        return setup.getTestSuite()
-   if __name__ == '__main__':
-       unittest.main(default='test_suite')
 
 This will find all .rst and .txt files in the package that provide a
 certain signature (see below), register the contained tests as
 functional tests and run them as part of a `unittest.TestSuite`.
 
+Note: in many test setups you will find a code fragment like the
+      following at the end of file::
+
+        if __name__ == '__main__':
+            unittest.main(default='test_suite')
+
+      This is not neccessary for usual testrunner setups. A testrunner
+      will look for appropriate filenames (modules) and if those
+      modules provide a callable ``test_suite`` (usually a function)
+      this callable will be called to deliver a test suite.
 
 FunctionalTestSetup default values
 ----------------------------------

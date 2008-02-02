@@ -9,6 +9,3 @@ def test_suite():
     suite.addTest( # Add all functional tests from `cave`
         z3c.testsetup.FunctionalDocTestSetup(cave).getTestSuite())
     return suite
-
-if __name__ == '__main__':
-    unittest.main(default='test_suite')

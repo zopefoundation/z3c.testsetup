@@ -3,8 +3,8 @@ z3c.testsetup and testrunners
 =============================
 
 Here we discuss complete test setups for the `cave` package contained
-in this directory. We will run the `zope.testing.testrunner` and
-examine their output.
+in thie `tests` directory. We will run the `zope.testing.testrunner`
+and examine their output.
 
 Short setups
 ------------
@@ -60,10 +60,7 @@ Let's have a look at the test setup module `samplesetup1` in the
         suite.addTest( # Add all functional tests from `cave`
             z3c.testsetup.FunctionalDocTestSetup(cave).getTestSuite())
         return suite
-    <BLANKLINE>
-    if __name__ == '__main__':
-        unittest.main(default='test_suite')
-    <BLANKLINE>
+
 
 As we see, there is a unittest setup and a functional test setup
 initialized. Both collect one kind of tests and feed their collection
