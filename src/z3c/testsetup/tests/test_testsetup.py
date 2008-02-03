@@ -6,7 +6,7 @@ import unittest
 from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
 
-TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
+TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt', 'README.txt',
              'unitdoctestsetup.txt', 'util.txt', 'unittestsetup.txt']
 
 def setUpZope(test):
