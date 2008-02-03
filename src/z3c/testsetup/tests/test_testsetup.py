@@ -9,6 +9,12 @@ import zope.component.eventtesting
 TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt', 'README.txt',
              'unitdoctestsetup.txt', 'util.txt', 'unittestsetup.txt']
 
+def pnorm(path):
+    """Normalization of paths to use forward slashes. This is needed
+    to make sure the tests work on windows.
+    """
+    return path.replace(os.sep, '/')
+
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
 
@@ -58,6 +64,7 @@ def suiteFromFile(filename):
                                 package = 'z3c.testsetup',
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
+                                globs={'pnorm':pnorm},
                                 checker=checker,
                                 optionflags=doctest.ELLIPSIS+
                                 doctest.NORMALIZE_WHITESPACE)
