@@ -1,0 +1,193 @@
+##############################################################################
+#
+# Copyright (c) 2008 Zope Corporation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+"""
+===============
+Unit Test Setup
+===============
+
+``UnitTestSetup`` helps to find and setup unit tests contained in a
+package. The most important method therefore might be
+``getTestSuite()``, which searches a given package for modules with
+unittests and returns all tests found as a suite of unit tests.
+
+This setup type does *not* look for doctests! Only 'real' python
+tests, i.e. python files with ``unittest.TestCase`` classes are found.
+
+The work is done mainly in two stages:
+
+1) The package is searched for appropriate modules, based on the
+   settings of instcance attributes.
+
+2) The tests contained in the found modules are setup as unit tests
+   and added to a ``unittest.TestSuite`` instance.
+
+There are some default values active, if you use instances of
+this class without further modifications. Therefore we will first
+discuss the default behaviour and afterwards show, how you can modify
+this behaviour to suit your special expectations on the tests.
+
+
+Setting up a simple test suite
+------------------------------
+
+We want to register the tests contained in the local ``cave``
+package. This has to be imported first, because we need the package as
+a parameter for the testseupt constructor::
+
+   >>> from z3c.testsetup.tests import cave
+
+Using the ``UnitTestSetup`` then is easy::
+
+   >>> from z3c.testsetup import UnitTestSetup
+   >>> setup = UnitTestSetup(cave)
+   >>> setup
+   <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
+
+This setup is ready for use::
+
+   >>> suite = setup.getTestSuite()
+   >>> suite
+   <unittest.TestSuite tests=[...]>
+
+To sum it up, writing a test setup for a zope 3 project now can be that
+short::
+
+   import unittest
+   import z3c.testsetup
+   import cave
+   def test_suite():
+       setup = z3c.testsetup.UnitTestSetup(cave)
+       return setup.getTestSuite()
+
+This will find all modules in the package that provide a
+certain signature (see below), register the contained tests as unit
+tests and run them as part of a `unittest.TestSuite`.
+
+Note: in many test setups you will find a code fragment like the
+      following at the end of file::
+
+        if __name__ == '__main__':
+            unittest.main(default='test_suite')
+
+      This is not neccessary for usual testrunner setups. A testrunner
+      will look for appropriate filenames (modules) and if those
+      modules provide a callable ``test_suite`` (usually a function)
+      this callable will be called to deliver a test suite.
+
+
+UnitTestSetup default values
+----------------------------
+
+Understanding the defaults is important, because the default values
+are driving the whole process of finding and registering the test.
+
+
+Which modules are found by default?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Basically, all modules are accepted that
+
+1) reside inside the package passed to the constructor. This includes
+   subpackages.
+
+2) contain a ReStructured Text meta-marker in their module docstring,
+   that defines the module as a testing module
+   explicitly::
+
+       :Test-Layer: python
+
+   This means: there *must* be a line like the above one in the
+   docstring of the module (not: docstring of a class or function
+   therein). The term might be preceeded or followed by whitspace
+   characters (spaces, tabs).
+
+   For example a module `example.py` would be found if it contains::
+
+      """
+      Tests to foo.
+
+      :Test-Layer: python
+      """
+      import unittest
+
+      class TestSomething(unittest.TestCase):
+          def testOne(self):
+              self.assertEqual(2, 1+1)
+
+   because the docstring of the *module* contains the required string.
+
+
+Only files, that meet both conditions are found and registered. You
+can modify this behaviour of course, which will be explained below in
+detail.
+
+Customizing unit test setup:
+----------------------------
+
+You can modify the behaviour of z3c.testsetup.UnitTestSetup such, that
+a different set of modules is registered.
+
+
+Customizing the test module search:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The unit test setup requires that files contain the above mentioned
+ReStructured Text meta-marker::
+
+    `:Test-Layer: unit`
+
+in their module docstring. This is determined by a list of regular
+expressions, which is also available as an object attribute::
+
+    >>> setup.regexp_list
+    ['^\\s*:(T|t)est-(L|l)ayer:\\s*(python)\\s*']
+
+This is the default value of unit test setups.
+
+There is one file in the `cave` subpackage, which includes that
+marker. We can get the list of test files using
+`getTestFiles()``::
+
+    >>> testfile_list = setup.getModules()
+    >>> testfile_list
+    [<module 'z3c.testsetup.tests.cave.file1' from ...>]
+
+    >>> len(testfile_list)
+    1
+
+The ``isTestModule()`` method of our setup object did the filtering
+here::
+
+    >>> setup.isTestModule(testfile_list[0])
+    True
+
+The `notatest2` module in `cave` does not contain a unit test marker::
+
+    >>> from z3c.testsetup.tests.cave import notatest2
+    >>> setup.isTestModule(notatest2)
+    False
+
+The `regexp_list` attribute of a ``UnitTestSetup`` contains a
+list of regular expressions, of which each one must at least match one
+line of a searched file to be accepted. If you want to include files
+with different marker-strings, just change this attribute. The value
+will influence behaviour of the `isTestModule()``, ``getDocTestFiles()``
+and ``getTestSuite()`` methods.
+
+If you need more complex checks here, you can derive your customized
+test setup class and overwrite ``isTestModule()``.
+
+
+
+"""
