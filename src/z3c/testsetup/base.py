@@ -34,12 +34,22 @@ class BasicTestSetup(object):
 
     additional_options = {}
 
-    def __init__(self, package, filter_func=None, extensions=None, **kw):
+    def __init__(self, package, filter_func=None, extensions=None,
+                 zcml_config = None, layer_name=None, **kw):
         self.package = get_package(package)
         self.filter_func = filter_func or self.isTestFile
         self.extensions = extensions or self.extensions
+        self.layer_name = layer_name
+        self.zcml_config = zcml_config
         self.additional_options = kw
+        self._init(package, filter_func, extensions, zcml_config, **kw)
         return
+
+    def _init(self, package, *args, **kw):
+        """Derived classes can overwrite this method for specialized
+        setups.
+        """
+        pass
 
     def setUp(self, test):
         pass

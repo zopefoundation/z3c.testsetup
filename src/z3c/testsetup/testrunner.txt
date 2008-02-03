@@ -59,7 +59,6 @@ This means, that we want to register all doctests from the ``cave``
 package, whose name we passed in dotted name notation as a
 string. This is enough information for a testrunner::
 
-    >>> import sys
     >>> defaults = [
     ...     '--path', cavepath,
     ...     '--tests-pattern', '^samplesetup_short1$',
@@ -92,7 +91,6 @@ it was loaded before. This results in a slight longer example::
 Here we register all doctests from the ``cave`` module. Let's start a
 testrunner with this setup::
 
-    >>> import sys
     >>> defaults = [
     ...     '--path', cavepath,
     ...     '--tests-pattern', '^samplesetup_short2$',
@@ -127,7 +125,6 @@ setup with the testrunner, one test should be found and executed. This
 time we pass the `-vv` option to the testrunner, to get some more
 information from the run::
 
-    >>> import sys
     >>> defaults = [
     ...     '--path', cavepath,
     ...     '--tests-pattern', '^samplesetup_short3$',
@@ -141,6 +138,58 @@ information from the run::
      testFoo (z3c.testsetup.tests.cave.file1.TestTest)
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
     False
+
+
+Modified short setups
+---------------------
+
+The default settings of test setups might serve for plain testing
+environments. Especially for functional tests, however, one often want
+to set some basic values not foreseeable by default. Here some hints,
+how default settings can be tweaked.
+
+Setting ZCML config file for functional tests
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Functional tests often require ZCML registration of components to make
+sense. For example one wants to register permissions etc. for use with
+a testbrowser. In other words: often one wants to register a custom
+ZCML layer when running functional doctests. This can be archieved as
+follows:
+
+We wrote a (more or less empty) ZCML config file in the ``cave``
+package, which we want to be registered with functional doctests. To
+do that, we use the now well-known ``register_all_tests`` function,
+but give a ZCML file path and a layer name as arguments::
+
+    >>> setupfile = os.path.join(cavepath, 'samplesetup_short4.py')
+    >>> print open(setupfile).read()
+    import z3c.testsetup
+    test_suite = z3c.testsetup.register_all_tests(
+        'z3c.testsetup.tests.cave',
+        zcml_config='sampleftesting.zcml',
+        layer_name = 'SampleLayer')
+
+This will result in::
+
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^samplesetup_short4$',
+    ...     ]
+    >>> sys.argv = 'test '.split()
+    >>> from zope.testing import testrunner
+    >>> testrunner.run(defaults)
+    Running unit tests:
+      Ran 2 tests with 0 failures and 0 errors in 0.001 seconds.
+    Running z3c.testsetup.tests.cave.SampleLayer tests:
+      Set up z3c.testsetup.tests.cave.SampleLayer in 0.005 seconds.
+      Ran 2 tests with 0 failures and 0 errors in 0.001 seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
+    Total: 4 tests, 0 failures, 0 errors in 0.055 seconds.
+    False
+
+Apparently now the custom ZCML file in the ``cave`` package was used.
 
 
 Extended setups
@@ -173,7 +222,6 @@ Now let's run a testrunner and see the result. The testrunner will be
 configured such, that all files named 'samplesetup1.py' will be asked
 to return a testsuite::
 
-    >>> import sys
     >>> defaults = [
     ...     '--path', cavepath,
     ...     '--tests-pattern', '^samplesetup1$',

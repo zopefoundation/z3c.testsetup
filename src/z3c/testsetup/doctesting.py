@@ -101,6 +101,22 @@ class FunctionalDocTestSetup(BasicTestSetup):
         '^\s*:(T|t)est-(L|l)ayer:\s*(functional)\s*',
         ]
 
+    def _init(self, package, *args, **kwargs):
+        """Setup a special ZCML layer if requested.
+        """
+        if self.zcml_config is not None:
+            zcml_file = self.zcml_config
+            if not os.path.isfile(zcml_file):
+                zcml_file = os.path.join(
+                    os.path.dirname(self.package.__file__),
+                    zcml_file)
+            layer_name = 'FunctionalLayer'
+            if self.layer_name is not None:
+                layer_name = self.layer_name
+            self.layer = ZCMLLayer(zcml_file, self.package.__name__,
+                                   layer_name)
+        return
+            
     def setUp(self, test):
         FunctionalTestSetup().setUp()
 
@@ -133,14 +149,13 @@ class FunctionalDocTestSetup(BasicTestSetup):
 
 def collect_doctests(package, *args, **kwargs):
     suite = unittest.TestSuite()
-    test = UnitDocTestSetup(package).getTestSuite()
     suite.addTests(
-        UnitDocTestSetup(package).getTestSuite())
+        UnitDocTestSetup(package, *args, **kwargs).getTestSuite())
     suite.addTest(
-        FunctionalDocTestSetup(package).getTestSuite())
+        FunctionalDocTestSetup(package, *args, **kwargs).getTestSuite())
     return suite
 
-def register_doctests(pkg_or_dotted_name):
+def register_doctests(pkg_or_dotted_name, *args, **kwargs):
     """Return a function that requires no argument and delivers a test
     suite.
 
@@ -154,6 +169,6 @@ def register_doctests(pkg_or_dotted_name):
     """
     pkg = get_package(pkg_or_dotted_name)
     def tmpfunc():
-        return collect_doctests(pkg)
+        return collect_doctests(pkg, *args, **kwargs)
     return tmpfunc
     
