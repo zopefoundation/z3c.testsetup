@@ -180,13 +180,13 @@ This will result in::
     >>> from zope.testing import testrunner
     >>> testrunner.run(defaults)
     Running unit tests:
-      Ran 2 tests with 0 failures and 0 errors in 0.001 seconds.
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Running z3c.testsetup.tests.cave.SampleLayer tests:
-      Set up z3c.testsetup.tests.cave.SampleLayer in 0.005 seconds.
-      Ran 2 tests with 0 failures and 0 errors in 0.001 seconds.
+      Set up z3c.testsetup.tests.cave.SampleLayer in ... seconds.
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
       Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
-    Total: 4 tests, 0 failures, 0 errors in 0.055 seconds.
+    Total: 4 tests, 0 failures, 0 errors in ... seconds.
     False
 
 Apparently now the custom ZCML file in the ``cave`` package was used.

@@ -164,8 +164,8 @@ using the default set of options, the following values are set::
 
 Because functional tests require a ZCML layer, that defines a ZCML
 setup for the tests, we provide a layer, that is driven by the file
-`ftesting.zcml`, which comes with grok. The layer is accessible as the
-setup instance attribute `layer`::
+`ftesting.zcml`, which comes with `z3c.testsetup`. The layer is
+accessible as the setup instance attribute `layer`::
 
    >>> setup.layer
    <zope.app.testing.functional.ZCMLLayer instance at 0x...>
@@ -173,7 +173,6 @@ setup instance attribute `layer`::
    >>> setup.layer.config_file
    '...ftesting.zcml'
 
-   
 
 No other options/parameters are set by default.
 
@@ -251,6 +250,26 @@ search, for example by choosing another set of accepted filename
 extensions.
 
 
+Customizing the functional doctest ZCML layer
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ZCML layer registered by default by ``z3c.testsetup`` is very
+poor. In fact it only exists, to satisfy dependencies. In most cases,
+you would like to write your own ZCML configuration to register
+principals etc. during functional doctests.
+
+For this purpose, ``FunctionalDocTestSetup`` supports the constructor
+parameters `zcml_config` and `layer_name`. If the first is set, then
+the ZCML file denoted by the path in this variable will be used
+instead of the dummy ZCML contained in ``z3c.testsetup``.
+
+   >>> setup_w_custom_layer = FunctionalDocTestSetup(
+   ...     cave,
+   ...     zcml_config = 'sampleftesting.zcml')
+   >>> pnorm(setup_w_custom_layer.layer.config_file)
+   '.../tests/cave/sampleftesting.zcml'
+   
+
 Customizing the functional test setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -282,7 +301,6 @@ of a ``FunctionalTestSetup`` object.
     {'encoding': 'utf-8'}
 
     >>> encoded_setup.additional_options['encoding'] = 'latin1'
-
 
 
 """
