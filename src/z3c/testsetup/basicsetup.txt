@@ -30,8 +30,15 @@ The TestSetup classes all search and handle doctest files.
 
 All we need to setup a testsuite, is the package to search::
 
-   >>> from z3c.testsetup.tests import cave
    >>> from z3c.testsetup.base import BasicTestSetup
+   >>> basic_setup = BasicTestSetup('z3c.testsetup.tests.cave')
+   >>> basic_setup
+   <z3c.testsetup.base.BasicTestSetup object at 0x...>
+
+Such we specified the package to search by a string in dotted name
+notation. We can, however, also pass the loaded package as argument::
+
+   >>> from z3c.testsetup.tests import cave
    >>> basic_setup = BasicTestSetup(cave)
    >>> basic_setup
    <z3c.testsetup.base.BasicTestSetup object at 0x...>

@@ -17,6 +17,7 @@
 from os import listdir
 import os.path
 import re
+from z3c.testsetup.util import get_package
 
 class BasicTestSetup(object):
     """A basic test setup for a package.
@@ -34,7 +35,7 @@ class BasicTestSetup(object):
     additional_options = {}
 
     def __init__(self, package, filter_func=None, extensions=None, **kw):
-        self.package = package
+        self.package = get_package(package)
         self.filter_func = filter_func or self.isTestFile
         self.extensions = extensions or self.extensions
         self.additional_options = kw
