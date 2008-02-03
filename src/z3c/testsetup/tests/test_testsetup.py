@@ -41,7 +41,8 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        os.path.join('..', 'testrunner.txt'),
+        os.path.join('testrunner.txt'),
+        package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
         checker=checker),
@@ -53,8 +54,8 @@ def testrunner_suite():
 
 def suiteFromFile(filename):
     suite = unittest.TestSuite()
-    dottedname = os.path.join('..', filename) #'../%s' % (filename[:],)
-    test = doctest.DocFileSuite(dottedname,
+    test = doctest.DocFileSuite(filename,
+                                package = 'z3c.testsetup',
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
                                 checker=checker,
