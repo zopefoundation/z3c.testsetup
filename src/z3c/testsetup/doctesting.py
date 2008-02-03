@@ -131,6 +131,14 @@ class FunctionalDocTestSetup(BasicTestSetup):
             suite.addTest(self.suiteFromFile(name))
         return suite
 
+def collect_doctests(package, *args, **kwargs):
+    suite = unittest.TestSuite()
+    test = UnitDocTestSetup(package).getTestSuite()
+    suite.addTests(
+        UnitDocTestSetup(package).getTestSuite())
+    suite.addTest(
+        FunctionalDocTestSetup(package).getTestSuite())
+    return suite
 
 def register_doctests(pkg_or_dotted_name):
     """Return a function that requires no argument and delivers a test
@@ -146,11 +154,6 @@ def register_doctests(pkg_or_dotted_name):
     """
     pkg = get_package(pkg_or_dotted_name)
     def tmpfunc():
-        suite = unittest.TestSuite()
-        suite.addTest(
-            UnitDocTestSetup(pkg).getTestSuite())
-        suite.addTest(
-            FunctionalDocTestSetup(pkg).getTestSuite())
-        return suite
+        return collect_doctests(pkg)
     return tmpfunc
     
