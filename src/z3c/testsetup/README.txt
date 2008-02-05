@@ -185,7 +185,9 @@ be found, the other paramters tell how to setup single tests.
 - `pfilter_func`:
 
     Does basically the same as the `filter_func`s above, but handles
-    Python modules instead of file paths.
+    Python modules instead of file paths. It therefore determines the
+    set of 'normal' Python tests accepted and does not touch the set
+    of doctests accepted.
 
     We define a simple custom filter::
 
@@ -203,7 +205,7 @@ be found, the other paramters tell how to setup single tests.
       >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.rst', 'file1.txt', 'notatest2.py', 'subdirfile.txt']
 
-    Because file1.py and notatest2.py in the cave package contains the
+    Because file1.py and notatest2.py in the cave package contain the
     required string, this is correct. Because the default function
     checks for the string `:Test-Layer: python`, the second module was
     omitted by default.
@@ -230,11 +232,56 @@ be found, the other paramters tell how to setup single tests.
     about test loaders.
 
 
-- `extensions`;  a list of filename extensions to be considered during
-                 test search. Default value is `['.txt',
-                 '.rst']`. Python tests are not touched by this (they
-                 have to be regular Python modules with '.py'
-                 extension). 
+- `extensions` (`uextensions`, `fextensions`):
+
+    a list of filename extensions to be considered during test
+    search. Default value is `['.txt', '.rst']`. Python tests are not
+    touched by this (they have to be regular Python modules with '.py'
+    extension).
+
+    If we want to register .foo files, we can do so::
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     extensions=['.foo'])
+      >>> suite = test_suite()
+      >>> get_basenames_from_suite(suite)
+      ['file1.py', 'notatest1.foo', 'notatest1.foo']
+
+    Note, that only files that contain an appropriate marker are
+    found, regardless of the filename extension. The new .foo file
+    contains a marker for unit doctests and functional doctests, such
+    it is included in the list.
+
+    As we can see, the new file appears twice. This is, because it is
+    registered as functional doctest and unitdoctest as well.
+
+    To collect only functional doctests with a certain set of filename
+    extensions you can use: `fextensions`::
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     fextensions=['.foo'])
+      >>> suite = test_suite()
+      >>> get_basenames_from_suite(suite)
+      ['file1.py', 'file1.rst', 'notatest1.foo']
+
+    Here the .rst file were registered as unit doctest, while the .foo
+    file was registered as functional doctest.
+
+    To collect only unit doctests with a different set of filename
+    extensions you can use `uextensions`::
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     uextensions=['.foo'])
+      >>> suite = test_suite()
+      >>> get_basenames_from_suite(suite)
+      ['file1.py', 'file1.txt', 'notatest1.foo', 'subdirfile.txt']
+
+    Here the .foo file was registered as unit doctest and the .txt
+    files as functional ones.
+
 
 - `encoding`:   the testfiles encoding. 'utf-8' by default. Setting
                 this to `None` means system default encoding (normally
