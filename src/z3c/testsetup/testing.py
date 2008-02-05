@@ -23,6 +23,7 @@ from zope.app.testing.functional import (
 from martian.scan import module_info_from_dotted_name
 from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import get_package
+from z3c.testsetup.doctesting import _collect_tests
 
 class UnitTestSetup(BasicTestSetup):
     """A unit test setup for packages.
@@ -43,6 +44,10 @@ class UnitTestSetup(BasicTestSetup):
     regexp_list = [
         '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
         ]
+
+    def __init__(self, package, filter_func=None):
+        BasicTestSetup.__init__(self, package)
+        self.filter_func = filter_func or self.isTestModule
 
     def docstrContains(self, docstr, regexp_list):
         """Does a docstring contain lines matching every of the regular
@@ -82,7 +87,7 @@ class UnitTestSetup(BasicTestSetup):
                 result.extend(self.getModules(submod_info.getModule()))
             else:
                 module = submod_info.getModule()
-                if self.isTestModule(module):
+                if self.filter_func(module):
                     result.append(module)
         return result
         
@@ -95,14 +100,14 @@ class UnitTestSetup(BasicTestSetup):
             suite.addTest(tests)
         return suite
 
-
 def get_pytests_suite(pkg_or_dotted_name, *args, **kwargs):
-    pkg = get_package(pkg_or_dotted_name)
-    suite = unittest.TestSuite()
-    suite.addTest(
-        UnitTestSetup(pkg).getTestSuite())
-    return suite
-    
+    kws = ['pfilter_func',]
+    options = kwargs.copy()
+    if 'filter_func' in kwargs.keys():
+        del(options['filter_func'])
+    return _collect_tests(pkg_or_dotted_name, UnitTestSetup,
+                          typespec_kws=kws, *args, **options)
+
 
 def register_pytests(pkg_or_dotted_name, *args, **kwargs):
     """Return a function that requires no argument and delivers a test
@@ -118,6 +123,6 @@ def register_pytests(pkg_or_dotted_name, *args, **kwargs):
     """
     pkg = get_package(pkg_or_dotted_name)
     def tmpfunc():
-        return get_pytests_suite(pkg)
+        return get_pytests_suite(pkg, *args, **kwargs)
     return tmpfunc
     
