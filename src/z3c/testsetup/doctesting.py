@@ -101,22 +101,36 @@ class FunctionalDocTestSetup(BasicTestSetup):
         '^\s*:(T|t)est-(L|l)ayer:\s*(functional)\s*',
         ]
 
-    def _init(self, package, *args, **kwargs):
-        """Setup a special ZCML layer if requested.
-        """
-        if self.zcml_config is not None:
-            zcml_file = self.zcml_config
-            if not os.path.isfile(zcml_file):
-                zcml_file = os.path.join(
+    checker = None
+
+    param_list = BasicTestSetup.param_list + ['globs', 'setup', 'teardown',
+                                              'optionflags', 'checker',
+                                              'zcml_config', 'layer_name',
+                                              'layer', 'encoding']
+
+    def __init__(self, package, filter_func=None, extensions=None,
+                 regexp_list=None, globs=None, setup=None, teardown=None,
+                 optionflags=None, checker=None, zcml_config = None,
+                 layer_name='FunctionalLayer', layer=None, encoding='utf-8',
+                 **kw):
+        BasicTestSetup.__init__(self, package, filter_func=filter_func,
+                       extensions=extensions)
+        self.checker = checker
+        self.encoding = encoding
+        # Setup a new layer if specified in params...
+        if zcml_config is not None and layer is None:
+            if not os.path.isfile(zcml_config):
+                zcml_config = os.path.join(
                     os.path.dirname(self.package.__file__),
-                    zcml_file)
-            layer_name = 'FunctionalLayer'
-            if self.layer_name is not None:
-                layer_name = self.layer_name
-            self.layer = ZCMLLayer(zcml_file, self.package.__name__,
+                    zcml_config)
+            self.layer = ZCMLLayer(zcml_config, self.package.__name__,
                                    layer_name)
+        # Passing a ready-for-use layer overrides layer specified by
+        # zcml_config...
+        if layer is not None:
+            self.layer = layer
         return
-            
+        
     def setUp(self, test):
         FunctionalTestSetup().setUp()
 
@@ -134,6 +148,7 @@ class FunctionalDocTestSetup(BasicTestSetup):
             setUp=self.setUp, tearDown=self.tearDown,
             globs=self.globs,
             optionflags=self.optionflags,
+            encoding=self.encoding,
             **self.additional_options
             )
         test.layer = self.layer
@@ -147,12 +162,37 @@ class FunctionalDocTestSetup(BasicTestSetup):
             suite.addTest(self.suiteFromFile(name))
         return suite
 
-def collect_doctests(package, *args, **kwargs):
+def _collect_tests(pkg_or_dotted_name, setup_type,
+                   typespec_kws=[], *args, **kwargs):
+    pkg = get_package(pkg_or_dotted_name)
+    options = kwargs.copy()
+    for kw in typespec_kws:
+        if kw in kwargs.keys():
+            options[kw[1:]] = kwargs[kw]
+            del options[kw]
+    for kw in options.copy().keys():
+        if kw not in setup_type.param_list:
+            del options[kw]
+    return setup_type(pkg, *args, **options).getTestSuite()
+    
+
+def get_unitdoctests_suite(pkg_or_dotted_name, *args, **kwargs):
+    kws = ['uglobs', 'uoptionflags', 'usetup', 'uteardown']
+    return _collect_tests(pkg_or_dotted_name, UnitDocTestSetup,
+                          typespec_kws=kws, *args, **kwargs)
+
+def get_functionaldoctests_suite(pkg_or_dotted_name, *args, **kwargs):
+    return _collect_tests(pkg_or_dotted_name, FunctionalDocTestSetup,
+                          ['fglobs', 'foptionflags', 'fsetup', 'fteardown'],
+                          *args, **kwargs)
+
+def get_doctests_suite(pkg_or_dotted_name, *args, **kwargs):
+    pkg = get_package(pkg_or_dotted_name)
     suite = unittest.TestSuite()
-    suite.addTests(
-        UnitDocTestSetup(package, *args, **kwargs).getTestSuite())
     suite.addTest(
-        FunctionalDocTestSetup(package, *args, **kwargs).getTestSuite())
+        get_unitdoctests_suite(pkg, *args, **kwargs))
+    suite.addTest(
+        get_functionaldoctests_suite(pkg, *args, **kwargs))
     return suite
 
 def register_doctests(pkg_or_dotted_name, *args, **kwargs):
@@ -169,6 +209,6 @@ def register_doctests(pkg_or_dotted_name, *args, **kwargs):
     """
     pkg = get_package(pkg_or_dotted_name)
     def tmpfunc():
-        return collect_doctests(pkg, *args, **kwargs)
+        return get_doctests_suite(pkg, *args, **kwargs)
     return tmpfunc
     
