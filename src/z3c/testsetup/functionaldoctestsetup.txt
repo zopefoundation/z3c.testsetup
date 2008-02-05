@@ -155,12 +155,32 @@ using the default set of options, the following values are set::
      ...                       doctest.REPORT_NDIFF)
      True
 
-* Furthermore, additional keyword parameters are passed, which were
-  set when calling the constructor. These keywords are stored in the
-  setup object as `additional_options`. Those are empty by default::
+* The setup-instances `encoding` attribute is passed. Setting it in
+  the constructor will expect doctest files to provide the appropriate
+  encoding. By default it is set to 'utf-8':
 
-     >>> setup.additional_options
-     {}
+     >>> setup.encoding
+     'utf-8'
+
+  You can set it to a another value for differently encoded doctests.
+  If no encoding is set (`encoding` is None), 7-bit ASCII will be
+  assumed.
+
+* The `checker` attribute helps to renormalize expected
+  output. A typical output checker can be created like this::
+
+     >>> import re
+     >>> from zope.testing import renormalizing
+     >>> mychecker = renormalizing.RENormalizing([
+     ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+     ...     '<SOME NUMBER OF> seconds'),
+     ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
+     ... ])
+
+  By default a `FunctionalDocTest` instance has no checker::
+
+     >>> setup.checker is None
+     True
 
 Because functional tests require a ZCML layer, that defines a ZCML
 setup for the tests, we provide a layer, that is driven by the file
@@ -172,6 +192,8 @@ accessible as the setup instance attribute `layer`::
 
    >>> setup.layer.config_file
    '...ftesting.zcml'
+
+You can define a custom layer. This is described below.
 
 
 No other options/parameters are set by default.
@@ -250,8 +272,44 @@ search, for example by choosing another set of accepted filename
 extensions.
 
 
-Customizing the functional doctest ZCML layer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Customizing the functional doctest setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To customize the setup of your tests, you have three options:
+
+- Pass appropriate parameters to the constructor.
+
+- Set attributes of an existing `FunctionalDocTestSetup` instance.
+
+- Create your own class derived from `FunctionalDocTestSetup`.
+
+The first two ways should suit most testing environments. All the
+attributes mentioned above are settable at creation time, namely:
+
+- `setup`
+
+- `teardown`
+
+- `optionflags`
+
+- `checker`
+
+- `encoding`
+
+To setup layers, there are the following constructor options
+available:
+
+- `zcml_config`
+
+- `layer_name`
+
+- `layer`
+
+Their usage is explained in the next section.
+
+
+Cutomizing the ZCML layer
++++++++++++++++++++++++++
 
 The ZCML layer registered by default by ``z3c.testsetup`` is very
 poor. In fact it only exists, to satisfy dependencies. In most cases,
@@ -268,39 +326,11 @@ instead of the dummy ZCML contained in ``z3c.testsetup``.
    ...     zcml_config = 'sampleftesting.zcml')
    >>> pnorm(setup_w_custom_layer.layer.config_file)
    '.../tests/cave/sampleftesting.zcml'
-   
 
-Customizing the functional test setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+You can also pass a keyword parameter `layer`, which should provide a
+value with a ready-to-use ZCML layer. If this happens, the
+`zcml_config` and `layer_name` parameter will have no effect.
 
-To customize the setup of your tests, just modify the appropriate
-attributes as explained before.
-
-To setup a different setUp or tearDown function, you can define a
-derived class, that overwrites these methods.
-
-A convenient way to pass keyword parameters to the test setup, which
-do not appear in the attributes, is passing these keywords (and the
-values) to the constructor::
-
-    >>> encoded_setup = FunctionalDocTestSetup(cave,
-    ...                                        encoding='utf-8')
-
-This will read all doctests 'utf-8' encoded, which allow umlauts and
-similar chars in tests. Note, however, that you can archieve this very
-special behaviour also by writing an appropriate encoding string in
-the head of the doctest file.
-
-All keywords passed to the constructor (except 'filter_func' and
-'extensions') are also given to each individual test setup 'as-is'.
-
-Alternatively you can also modify the `additional_options` dictionary
-of a ``FunctionalTestSetup`` object.
-
-    >>> encoded_setup.additional_options
-    {'encoding': 'utf-8'}
-
-    >>> encoded_setup.additional_options['encoding'] = 'latin1'
 
 
 """
