@@ -114,7 +114,7 @@ be found, the other paramters tell how to setup single tests.
 
       >>> def custom_file_filter(path):
       ...     """Accept all txt files."""
-      ...     return os.path.basename(path).endswith('.txt')
+      ...     return path.endswith('.txt')
 
    This one accepts all '.txt' files. We run `register_all_tests`
    again, but this time with a `filter_func` parameter::
