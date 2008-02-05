@@ -184,7 +184,50 @@ be found, the other paramters tell how to setup single tests.
 
 - `pfilter_func`:
 
-                 Does the same for python unit tests.
+    Does basically the same as the `filter_func`s above, but handles
+    Python modules instead of file paths.
+
+    We define a simple custom filter::
+
+      >>> def custom_module_filter(module):
+      ...     return 'Tests with real' in str(module.__doc__)
+
+    that checks for a certain string in modules' doc strings.
+
+    Now we start again with `pfilter_func` set::
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     pfilter_func=custom_module_filter)
+      >>> suite = test_suite()
+      >>> get_basenames_from_suite(suite)
+      ['file1.py', 'file1.rst', 'file1.txt', 'notatest2.py', 'subdirfile.txt']
+
+    Because file1.py and notatest2.py in the cave package contains the
+    required string, this is correct. Because the default function
+    checks for the string `:Test-Layer: python`, the second module was
+    omitted by default.
+
+    Now let's use a filter, that refuses all modules::
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     pfilter_func=lambda x: False)
+      >>> suite = test_suite()
+      >>> get_basenames_from_suite(suite)
+      ['file1.rst', 'file1.txt', 'subdirfile.txt']
+
+    All Python modules vanished from the list.
+   
+    In case you wonder, why not all the other Python files of the
+    `cave` package (`__init__.py`, for example) appear in one of the
+    lists: we get only the result list, which contains only such
+    modules, which provide `unittest.TestCase` definitions. Because
+    most modules of the `cave` package don't define test cases, they
+    do not appear in the list. This automatism is driven by a
+    `unittest.TestLoader`. See
+    http://docs.python.org/lib/testloader-objects.html to learn more
+    about test loaders.
 
 
 - `extensions`;  a list of filename extensions to be considered during
