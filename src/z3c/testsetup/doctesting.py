@@ -46,6 +46,7 @@ class UnitDocTestSetup(BasicTestSetup):
         '^\s*:(T|t)est-(L|l)ayer:\s*(unit)\s*',
         ]
 
+    globs = dict()
 
     def tearDown(self, test):
         cleanup.cleanUp()
@@ -65,6 +66,7 @@ class UnitDocTestSetup(BasicTestSetup):
                 package=self.package,
                 setUp=self.setUp,
                 tearDown=self.tearDown,
+                globs=self.globs,
                 optionflags=self.optionflags,
                 **self.additional_options
                 ))
@@ -177,14 +179,14 @@ def _collect_tests(pkg_or_dotted_name, setup_type,
     
 
 def get_unitdoctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['uglobs', 'uoptionflags', 'usetup', 'uteardown']
+    kws = ['ufilter_func', 'uglobs', 'uoptionflags', 'usetup', 'uteardown']
     return _collect_tests(pkg_or_dotted_name, UnitDocTestSetup,
                           typespec_kws=kws, *args, **kwargs)
 
 def get_functionaldoctests_suite(pkg_or_dotted_name, *args, **kwargs):
+    kws = ['ffilter_func', 'fglobs', 'foptionflags', 'fsetup', 'fteardown']
     return _collect_tests(pkg_or_dotted_name, FunctionalDocTestSetup,
-                          ['fglobs', 'foptionflags', 'fsetup', 'fteardown'],
-                          *args, **kwargs)
+                          typespec_kws=kws, *args, **kwargs)
 
 def get_doctests_suite(pkg_or_dotted_name, *args, **kwargs):
     pkg = get_package(pkg_or_dotted_name)
