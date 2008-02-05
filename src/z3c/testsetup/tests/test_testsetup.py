@@ -38,6 +38,12 @@ def get_filenames_from_suite(suite):
         result.append(filename)
     return result
 
+def get_basenames_from_suite(suite):
+    basenames = [os.path.basename(x) for x in get_filenames_from_suite(suite)]
+    basenames.sort()
+    return basenames
+    
+
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
 
@@ -62,7 +68,7 @@ def testrunner_suite():
             )
         test.globs['this_directory'] = os.path.split(__file__)[0]
         test.globs['testrunner_script'] = __file__
-        test.globs['get_filenames_from_suite'] = get_filenames_from_suite
+        test.globs['get_basenames_from_suite'] = get_basenames_from_suite
 
     def tearDown(test):
         sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]

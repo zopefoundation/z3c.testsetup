@@ -99,14 +99,11 @@ be found, the other paramters tell how to setup single tests.
   normally also the number of files involved, but let's check that
   correctly.
 
-  We did setup a function `get_filenames_from_suite` in this testing
-  environment (as a `globs` entry) which determines the paths of all
-  testcases contained in a `TestSuite`::
+  We did setup a function `get_basenames_from_suite` in this testing
+  environment (as a `globs` entry) which determines the basenames of
+  the paths of all testcases contained in a `TestSuite`::
 
-     >>> testfiles = [os.path.basename(x)
-     ...              for x in get_filenames_from_suite(suite)]
-     >>> testfiles.sort()
-     >>> testfiles
+     >>> get_basenames_from_suite(suite)
      ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
 
    Ah, okay. There are in fact four files, in which testcases were
@@ -127,10 +124,7 @@ be found, the other paramters tell how to setup single tests.
    callable:: 
 
       >>> suite = test_suite()
-      >>> testfiles = [os.path.basename(x) for x in 
-      ...              get_filenames_from_suite(suite)]
-      >>> testfiles.sort()
-      >>> testfiles
+      >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt',
       'subdirfile.txt']
 
@@ -159,10 +153,7 @@ be found, the other paramters tell how to setup single tests.
       ...     ufilter_func=lambda x: False)
 
       >>> suite = test_suite()
-      >>> testfiles = [os.path.basename(x) for x in 
-      ...              get_filenames_from_suite(suite)]
-      >>> testfiles.sort()
-      >>> testfiles
+      >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
     As expected, every .txt file was only registered once. The same
@@ -174,10 +165,7 @@ be found, the other paramters tell how to setup single tests.
       ...     ufilter_func=custom_file_filter)
 
       >>> suite = test_suite()
-      >>> testfiles = [os.path.basename(x) for x in 
-      ...              get_filenames_from_suite(suite)]
-      >>> testfiles.sort()
-      >>> testfiles
+      >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
     If you specify both, a `filter_func` and a more specialized
@@ -190,10 +178,7 @@ be found, the other paramters tell how to setup single tests.
       ...     filter_func=custom_file_filter)
 
       >>> suite = test_suite()
-      >>> testfiles = [os.path.basename(x) for x in 
-      ...              get_filenames_from_suite(suite)]
-      >>> testfiles.sort()
-      >>> testfiles
+      >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
 
