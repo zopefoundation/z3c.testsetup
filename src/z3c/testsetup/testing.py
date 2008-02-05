@@ -96,14 +96,15 @@ class UnitTestSetup(BasicTestSetup):
         return suite
 
 
-def collect_pytests(package, *args, **kwargs):
+def get_pytests_suite(pkg_or_dotted_name, *args, **kwargs):
+    pkg = get_package(pkg_or_dotted_name)
     suite = unittest.TestSuite()
     suite.addTest(
-        UnitTestSetup(package).getTestSuite())
+        UnitTestSetup(pkg).getTestSuite())
     return suite
     
 
-def register_pytests(pkg_or_dotted_name):
+def register_pytests(pkg_or_dotted_name, *args, **kwargs):
     """Return a function that requires no argument and delivers a test
     suite.
 
@@ -117,6 +118,6 @@ def register_pytests(pkg_or_dotted_name):
     """
     pkg = get_package(pkg_or_dotted_name)
     def tmpfunc():
-        return collect_pytests(pkg)
+        return get_pytests_suite(pkg)
     return tmpfunc
     
