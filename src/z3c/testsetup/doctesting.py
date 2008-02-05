@@ -179,12 +179,14 @@ def _collect_tests(pkg_or_dotted_name, setup_type,
     
 
 def get_unitdoctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['ufilter_func', 'uglobs', 'uoptionflags', 'usetup', 'uteardown']
+    kws = ['ufilter_func', 'uextensions',
+           'uglobs', 'uoptionflags', 'usetup', 'uteardown']
     return _collect_tests(pkg_or_dotted_name, UnitDocTestSetup,
                           typespec_kws=kws, *args, **kwargs)
 
 def get_functionaldoctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['ffilter_func', 'fglobs', 'foptionflags', 'fsetup', 'fteardown']
+    kws = ['ffilter_func', 'fextensions',
+           'fglobs', 'foptionflags', 'fsetup', 'fteardown']
     return _collect_tests(pkg_or_dotted_name, FunctionalDocTestSetup,
                           typespec_kws=kws, *args, **kwargs)
 

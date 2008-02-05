@@ -103,8 +103,9 @@ class UnitTestSetup(BasicTestSetup):
 def get_pytests_suite(pkg_or_dotted_name, *args, **kwargs):
     kws = ['pfilter_func',]
     options = kwargs.copy()
-    if 'filter_func' in kwargs.keys():
-        del(options['filter_func'])
+    for optname in ['filter_func', 'extensions']:
+        if optname in kwargs.keys():
+            del (options[optname])
     return _collect_tests(pkg_or_dotted_name, UnitTestSetup,
                           typespec_kws=kws, *args, **options)
 
