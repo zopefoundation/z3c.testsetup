@@ -239,6 +239,11 @@ be found, the other paramters tell how to setup single tests.
     touched by this (they have to be regular Python modules with '.py'
     extension).
 
+    Note, that the `extensions` attribute is used by the default
+    filter function. If you pass your own filter function using
+    `[u|f]filter_func`, then the extensions filtering won't work any
+    more. 
+
     If we want to register .foo files, we can do so::
 
       >>> test_suite = z3c.testsetup.register_all_tests(
@@ -251,7 +256,7 @@ be found, the other paramters tell how to setup single tests.
     Note, that only files that contain an appropriate marker are
     found, regardless of the filename extension. The new .foo file
     contains a marker for unit doctests and functional doctests, such
-    it is included in the list.
+    it is included twice in the list.
 
     As we can see, the new file appears twice. This is, because it is
     registered as functional doctest and unitdoctest as well.
