@@ -5,8 +5,9 @@ import re
 import unittest
 from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
+from z3c.testsetup.util import get_package
 
-TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt', 'README.txt',
+TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
              'unitdoctestsetup.txt', 'util.txt', 'unittestsetup.txt']
 
 def pnorm(path):
@@ -14,6 +15,28 @@ def pnorm(path):
     to make sure the tests work on windows.
     """
     return path.replace(os.sep, '/')
+
+def get_testcases_from_suite(suite):
+    result=[]
+    for elem in list(suite):
+        if isinstance(elem, unittest.TestCase):
+            result.append(elem)
+        if isinstance(elem, unittest.TestSuite):
+            result.extend(
+                get_testcases_from_suite(elem))
+    return result
+
+
+def get_filenames_from_suite(suite):
+    testcases = get_testcases_from_suite(suite)
+    result = []
+    for testcase in testcases:
+        filename = str(testcase)
+        if ' ' in filename:
+            filename = str(get_package(testcase.__module__).__file__)
+            filename = os.path.splitext(filename)[0] + '.py'
+        result.append(filename)
+    return result
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
@@ -39,6 +62,7 @@ def testrunner_suite():
             )
         test.globs['this_directory'] = os.path.split(__file__)[0]
         test.globs['testrunner_script'] = __file__
+        test.globs['get_filenames_from_suite'] = get_filenames_from_suite
 
     def tearDown(test):
         sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
@@ -47,7 +71,7 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        os.path.join('testrunner.txt'),
+        'testrunner.txt', 'README.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
