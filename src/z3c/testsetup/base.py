@@ -36,10 +36,12 @@ class BasicTestSetup(object):
 
     param_list = ['filter_func', 'extensions']
 
-    def __init__(self, package, filter_func=None, extensions=None, **kw):
+    def __init__(self, package, regexp_list=None, filter_func=None,
+                 extensions=None, **kw):
         self.package = get_package(package)
         self.filter_func = filter_func or self.isTestFile
         self.extensions = extensions or self.extensions
+        self.regexp_list = regexp_list or self.regexp_list
         self.additional_options = kw
         self._init(package, filter_func, extensions, **kw)
         return
