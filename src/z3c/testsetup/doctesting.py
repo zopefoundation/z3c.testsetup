@@ -22,7 +22,30 @@ from zope.app.testing.functional import (
 from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import get_package
 
-class UnitDocTestSetup(BasicTestSetup):
+class DocTestSetup(BasicTestSetup):
+    """A test setup for doctests."""
+
+    globs = {}
+
+    optionflags = (doctest.ELLIPSIS+
+                   doctest.NORMALIZE_WHITESPACE+
+                   doctest.REPORT_NDIFF)
+
+    encoding = 'utf-8'
+
+    def __init__(self, package, setup=None, teardown=None, globs=None,
+                 optionflags=None, encoding=None, **kw):
+        BasicTestSetup.__init__(self, package, **kw)
+        self.setUp = setup or self.setUp
+        self.tearDown = teardown or self.tearDown
+        self.encoding = encoding or self.encoding
+        if globs is not None:
+            self.globs = globs
+        if optionflags is not None:
+            self.optionflags = optionflags
+        
+
+class UnitDocTestSetup(DocTestSetup):
     """A unit test setup for packages.
 
     A collection of methods to search for appropriate doctest files in
@@ -47,6 +70,9 @@ class UnitDocTestSetup(BasicTestSetup):
         ]
 
     globs = dict()
+
+    def setUp(self, test):
+        pass
 
     def tearDown(self, test):
         cleanup.cleanUp()
@@ -73,7 +99,7 @@ class UnitDocTestSetup(BasicTestSetup):
         return suite
 
 
-class FunctionalDocTestSetup(BasicTestSetup):
+class FunctionalDocTestSetup(DocTestSetup):
     """A functional test setup for packages.
 
     A collection of methods to search for appropriate doctest files in
@@ -110,15 +136,10 @@ class FunctionalDocTestSetup(BasicTestSetup):
                                               'zcml_config', 'layer_name',
                                               'layer', 'encoding']
 
-    def __init__(self, package, filter_func=None, extensions=None,
-                 regexp_list=None, globs=None, setup=None, teardown=None,
-                 optionflags=None, checker=None, zcml_config = None,
-                 layer_name='FunctionalLayer', layer=None, encoding='utf-8',
-                 **kw):
-        BasicTestSetup.__init__(self, package, filter_func=filter_func,
-                       extensions=extensions)
+    def __init__(self, package, checker=None, zcml_config = None,
+                 layer_name='FunctionalLayer', layer=None, **kw):
+        DocTestSetup.__init__(self, package, **kw)
         self.checker = checker
-        self.encoding = encoding
         # Setup a new layer if specified in params...
         if zcml_config is not None and layer is None:
             if not os.path.isfile(zcml_config):
