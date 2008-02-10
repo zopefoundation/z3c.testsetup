@@ -29,6 +29,9 @@ doctests, that do not require a more or less complex framework setup
 to be done for each test, the setups described in
 'unitdoctestsetup.txt' might suit your needs better.
 
+There are also real 'oneliners' possible, that wrap around the classes
+described here. See 'README.txt' to learn more about that.
+
 The work is done mainly in two stages:
 
 1) The package is searched for appropriate docfiles, based on the
@@ -72,7 +75,6 @@ This setup is ready for use::
 To sum it up, writing a test setup for a project now can be that
 short::
 
-   import unittest
    import z3c.testsetup
    def test_suite():
        setup = z3c.testsetup.FunctionalDocTestSetup('z3c.testsetup.tests.cave')
@@ -93,8 +95,8 @@ Note: in many test setups you will find a code fragment like the
       modules provide a callable ``test_suite`` (usually a function)
       this callable will be called to deliver a test suite.
 
-FunctionalTestSetup default values
-----------------------------------
+FunctionalDocTestSetup default values
+-------------------------------------
 
 Understanding the defaults is important, because the default values
 are driving the whole process of finding and registering the test.
@@ -297,15 +299,95 @@ To customize the setup of your tests, you have three options:
 The first two ways should suit most testing environments. All the
 attributes mentioned above are settable at creation time, namely:
 
-- `setup`
+- `setup`::
 
-- `teardown`
+       >>> def myfunc(test):
+       ...     """A useless function."""
+       ...     print "Hello!"
+       >>> mysetup = FunctionalDocTestSetup(cave, setup=myfunc)
+       >>> mysetup.setUp(None)
+       Hello!
+
+- `teardown`::
+
+       >>> mysetup = FunctionalDocTestSetup(cave, teardown=myfunc)
+       >>> mysetup.tearDown(None)
+       Hello!
+
+- `globs`:
+
+   `globs` is a dictionary of things (objects, functions, vars) that
+   are available for every test immediately (without import or
+   similar)::
+
+       >>> mysetup = FunctionalDocTestSetup(
+       ...                cave, globs={'myfunc': myfunc})
+       >>> mysetup.globs
+       {'myfunc': <function myfunc at 0x...>}
 
 - `optionflags`
 
+    See the `zope.testing.doctest` module for all optionflags::
+
+       >>> from zope.testing import doctest
+       >>> mysetup = FunctionalDocTestSetup(
+       ...     cave, optionflags=(doctest.ELLIPSIS +
+       ...                        doctest.REPORT_UDIFF))
+       >>> mysetup.optionflags & doctest.REPORT_NDIFF == 0
+       True
+
+       >>> mysetup.optionflags & doctest.REPORT_UDIFF == doctest.REPORT_UDIFF
+       True
+
 - `checker`
 
+    An output checker for functional doctests. `None` by default. A
+    typical output checker can be created like this::
+
+       >>> import re
+       >>> from zope.testing import renormalizing
+       >>> mychecker = renormalizing.RENormalizing([
+       ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+       ...     '<SOME NUMBER OF> seconds'),
+       ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>') ])
+
+    Then, a setup with this checker can be created::
+
+       >>> mysetup = FunctionalDocTestSetup(cave, checker = mychecker) 
+       >>> mysetup.checker
+       <zope.testing.renormalizing.RENormalizing instance at 0x...>
+
+    Let's see, whether we got the wanted checker, by passing an
+    example string, which should match the first of the terms defined
+    in the checker::
+
+       >>> mysetup.checker.check_output(
+       ... '''\
+       ...    Test took 0.012 seconds
+       ... ''', '''\
+       ...    Test took <SOME NUMBER OF> seconds
+       ... ''', 0)
+       True
+
+     See the `zope.testing.renormalizing` module for more things, you
+     can do with checkers.
+
 - `encoding`
+
+    If your doctests contain non-ASCII characters, this might lead to
+    problems. You can circumvent this by setting an appropriate
+    encoding string in the header of your doctest files. Another
+    possibility is to pass the encoding keyword. By default
+    z3c.testsetup uses 'utf-8' as default encoding::
+
+       >>> setup.encoding
+       'utf-8'
+
+    But you can set it as you like::
+
+       >>> mysetup = FunctionalDocTestSetup(cave, encoding = 'ascii')
+       >>> mysetup.encoding
+       'ascii'
 
 To setup layers, there are the following constructor options
 available:
