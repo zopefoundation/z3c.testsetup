@@ -12,14 +12,26 @@
 #
 ##############################################################################
 """
-===============
-Unit Test Setup
-===============
+==================
+Unit Doctest Setup
+==================
 
-``UnitTestSetup`` helps to find and setup unit doctests contained in a
-package. The most important method therefore might be
+``UnitDocTestSetup`` helps to find and setup unit doctests contained
+in a package. The most important method therefore might be
 ``getTestSuite()``, which searches a given package for doctest files
 and returns all tests found as a suite of unit tests.
+
+Unit doctest setups find and register only doctests. Those tests can
+also be Python modules but if you defined real `unittest.TestCase`
+classes in your tests, then you most likely have 'normal' Python unit
+tests. Please see 'pythontestsetup.txt' in this case. For more complex
+doctests, that require a more or less complex framework setup, for
+example for browser tests, to be done for each test, the setups
+described in 'functionaldoctestsetup.txt' might suit your needs
+better.
+
+There are also real 'oneliners' possible, that wrap around the classes
+described here. See 'README.txt' to learn more about that.
 
 The work is done mainly in two stages:
 
@@ -38,15 +50,19 @@ this behaviour to suit your special expectations on the tests.
 Setting up a simple test suite
 ------------------------------
 
-We want to register the tests contained in the local ``cave``
-package. This has to be imported first, because we need the package as
-a parameter for the testseupt constructor::
-
-   >>> from z3c.testsetup.tests import cave
-
-Using the ``UnitTestSetup`` then is easy::
+We want to register the doctests contained in the local ``cave``
+package. This can be simply archieved by doing::
 
    >>> from z3c.testsetup import UnitDocTestSetup
+   >>> setup = UnitDocTestSetup('z3c.testsetup.tests.cave')
+   >>> setup
+   <z3c.testsetup.doctesting.UnitDocTestSetup object at 0x...>   
+
+Apparently the package to handle was passed as a string in 'dotted
+name' notation. We could also pass the package itself, if it was
+loaded before::
+
+   >>> from z3c.testsetup.tests import cave
    >>> setup = UnitDocTestSetup(cave)
    >>> setup
    <z3c.testsetup.doctesting.UnitDocTestSetup object at 0x...>   
@@ -57,14 +73,12 @@ This setup is ready for use::
    >>> suite
    <unittest.TestSuite tests=[...]>
 
-To sum it up, writing a test setup for a grok project now can be that
+To sum it up, writing a test setup for a project now can be that
 short::
 
-   import unittest
-   import grok
-   import cave
+   import z3c.testsetup
    def test_suite():
-       setup = grok.testing.UnitTestSetup(cave)
+       setup = z3c.testsetup.UnitTestSetup('z3c.testsetup.tests.cave')
        return setup.getTestSuite()
 
 This will find all .rst and .txt files in the package that provide a
@@ -83,8 +97,9 @@ Note: in many test setups you will find a code fragment like the
       this callable will be called to deliver a test suite.
 
 
-UnitTestSetup default values
-----------------------------
+
+UnitDocTestSetup default values
+-------------------------------
 
 Understanding the defaults is important, because the default values
 are driving the whole process of finding and registering the test.
@@ -209,7 +224,7 @@ The file file1.txt does not contain a unit test marker::
     >>> setup.isTestFile(path)
     False
 
-The `regexp_list` attribute of a ``UnitTestSetup`` contains a
+The `regexp_list` attribute of a ``UnitDocTestSetup`` contains a
 list of regular expressions, of which each one must at least match one
 line of a searched file to be accepted. If you want to include files
 with different marker-strings, just change this attribute. The value
@@ -247,14 +262,6 @@ the head of the doctest file.
 
 All keywords passed to the constructor (except 'filter_func' and
 'extensions') are also given to each individual test setup 'as-is'.
-
-Alternatively you can also modify the `additional_options` dictionary
-of a ``UnitTestSetup`` object.
-
-    >>> encoded_setup.additional_options
-    {'encoding': 'utf-8'}
-
-    >>> encoded_setup.additional_options['encoding'] = 'latin1'
 
 
 
