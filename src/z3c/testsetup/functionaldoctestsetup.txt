@@ -12,19 +12,27 @@
 #
 ##############################################################################
 """
-=====================
-Functional Test Setup
-=====================
+=========================
+Functional Doc Test Setup
+=========================
 
-``FunctionalTestSetup`` helps to find and setup functional doctests
+``FunctionalDocTestSetup`` helps to find and setup functional doctests
 contained in a package. The most important method therefore might be
 ``getTestSuite()``, which searches a given package for doctest files
-and returns all tests found as a suite of functional tests.
+and returns all tests found as a suite of functional doctests.
+
+Functional doctest setups find and register only doctests. Those tests
+can also be Python modules but if you defined real `unttest.TestCase`
+classes in your tests, then you most likely have 'normal' Python unit
+tests. Please see 'pythontestsetup.txt' in this case. For simple unit
+doctests, that do not require a more or less complex framework setup
+to be done for each test, the setups described in
+'unitdoctestsetup.txt' might suit your needs better.
 
 The work is done mainly in two stages:
 
 1) The package is searched for appropriate docfiles, based on the
-   settings of instcance attributes.
+   settings of instance attributes.
 
 2) The tests contained in the found docfiles are setup as functional
    tests and added to a ``unittest.TestSuite`` instance.
@@ -38,15 +46,19 @@ this behaviour to suit your special expectations on the tests.
 Setting up a simple test suite
 ------------------------------
 
-We want to register the tests contained in the local ``cave``
-package. This has to be imported first, because we need the package as
-a parameter for the testseupt constructor::
-
-   >>> from z3c.testsetup.tests import cave
-
-Using the ``FunctionalDocTestSetup`` then is easy::
+We want to register the doctests contained in the local ``cave``
+package. This can be simply archieved by doing::
 
    >>> from z3c.testsetup import FunctionalDocTestSetup
+   >>> setup = FunctionalDocTestSetup('z3c.testsetup.tests.cave')
+   >>> setup
+   <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>
+
+Apparently the package to handle was passed as a string in 'dotted
+name' notation. We could also pass the package itself, if it was
+loaded before::
+
+   >>> from z3c.testsetup.tests import cave
    >>> setup = FunctionalDocTestSetup(cave)
    >>> setup
    <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>   
@@ -57,14 +69,13 @@ This setup is ready for use::
    >>> suite
    <unittest.TestSuite tests=[...]>
 
-To sum it up, writing a test setup for a grok project now can be that
+To sum it up, writing a test setup for a project now can be that
 short::
 
    import unittest
    import z3c.testsetup
-   import cave
    def test_suite():
-       setup = z3c.testsetup.FunctionalDocTestSetup(cave)
+       setup = z3c.testsetup.FunctionalDocTestSetup('z3c.testsetup.tests.cave')
        return setup.getTestSuite()
 
 This will find all .rst and .txt files in the package that provide a
@@ -105,7 +116,7 @@ Basically, all files are accepted that
    directories are skipped.
 
 4) contain a ReStructured Text meta-marker somewhere, that defines the
-   file as a functional test explicitly::
+   file as a functional doctest explicitly::
 
        :Test-Layer: functional
 
@@ -214,7 +225,7 @@ Customizing the doctest file search:
 The searching of appropriate doctest files is basically done by the
 base class `BasicTestSetup`. Its purpose is to determine the set of
 files in a package, that contain functional tests. See the testfile
-`basicsetup.py` to learn more about the procedure.
+`basicsetup.txt` to learn more about the procedure.
 
 The functional test setup, however, provides a special
 `isDocTestFile()` method, which does additional checking. Namely it
@@ -229,7 +240,7 @@ available as an object attribute::
     >>> setup.regexp_list
     ['^\\s*:(T|t)est-(L|l)ayer:\\s*(functional)\\s*']
 
-This is the default value of functional test setups.
+This is the default value of functional doctest setups.
 
 There are two files in the `cave` subpackage, which include that
 marker. We can get the list of test files using
@@ -329,8 +340,27 @@ instead of the dummy ZCML contained in ``z3c.testsetup``.
 
 You can also pass a keyword parameter `layer`, which should provide a
 value with a ready-to-use ZCML layer. If this happens, the
-`zcml_config` and `layer_name` parameter will have no effect.
+`zcml_config` and `layer_name` parameter will have no effect. 
 
+To show this, we first create a custom layer::
+
+   >>> from zope.app.testing.functional import ZCMLLayer
+   >>> mylayer = ZCMLLayer(
+   ...     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+   ...     __name__,
+   ...     'MyFunctionalLayer')
+
+and create a functional doctest setup with it::
+
+   >>> setup_w_custom_layer = FunctionalDocTestSetup(
+   ...     cave,
+   ...     zcml_config = 'sampleftesting.zcml',
+   ...     layer = mylayer)
+   >>> pnorm(setup_w_custom_layer.layer.config_file)
+   '.../testsetup/ftesting.zcml'
+
+As we can see, the `mylayer` config file is registered and the
+`zcml_config` parameter was skipped.
 
 
 """
