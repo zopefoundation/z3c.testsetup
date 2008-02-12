@@ -48,4 +48,6 @@ def get_keyword_params(cls, method_name):
         args, varargs, varkw, defaults = getargspec(init)
         defaultlen = len(defaults)
         result.update(args[-defaultlen:])
+        if varkw is None:
+            break
     return list(result)

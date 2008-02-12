@@ -49,28 +49,59 @@ get_keyword_params(class, method_name)
 --------------------------------------
 
 The ``get_keyword_params()`` function tries to extract all keyword
-parameters of a given method of a class. If, for example, we want to
-know, which keyword parameters are supported by the constructor of the
-``DocTestSetup`` class, we can do this like so::
+parameters of a given method of a class. We want to know, which
+keyword parameters are supported by the constructor of the following
+class::
 
-   >>> from z3c.testsetup.doctesting import DocTestSetup
+   >>> class Club(object):
+   ...     def __init__(self, weight, num_of_spikes=0):
+   ...         pass
+
+This can be done by::
+
    >>> from z3c.testsetup.util import get_keyword_params
-   >>> kw_list = get_keyword_params(DocTestSetup, '__init__')
+   >>> kw_list = get_keyword_params(Club, '__init__')
    >>> kw_list.sort()
    >>> kw_list
-   ['encoding', 'extensions', 'filter_func', 'globs', 'optionflags',
-   'regexp_list', 'setup', 'teardown']
+   ['num_of_spikes']
 
-The FunctionalDocTestSetup class supports some more keywords in its
-constructor::
+Okay. Note, that we only get the keyword parameters, i.e. parameters,
+that have a default value.
 
-   >>> from z3c.testsetup.doctesting import FunctionalDocTestSetup
-   >>> kw_list2 = get_keyword_params(FunctionalDocTestSetup, '__init__')
-   >>> kw_list2.sort()
-   >>> kw_list2
-   ['checker', 'encoding', 'extensions', 'filter_func', 'globs',
-    'layer', 'layer_name', 'optionflags', 'regexp_list', 'setup',
-    'teardown', 'zcml_config']
+What now, if the class was derived and supports more parameters
+than actually shown in the class definition itself? First, let us
+create such a class::
+
+   >>> class ColouredClub(Club):
+   ...     def __init__(self, weight, color='pink', **kw):
+   ...         pass
+
+A coloured club can therefore have a number of spikes and a
+color. Will both be found by our helper function?::
+
+   >>> kw_list = get_keyword_params(ColouredClub, '__init__')
+   >>> kw_list.sort()
+   >>> kw_list
+   ['color', 'num_of_spikes']
+
+Fine.
+
+Now we check, wether only really accepted parameters are found. What,
+if a derived class does not accept various keywords using ``**kw`` or
+similar? We define such a class::
+
+   >>> class ClubSoda(Club):
+   ...    def __init__(self, temperature=12, sparkles=True, *args):
+   ...        pass
+
+This time, the ``num_of_spikes`` parameter should not appear. The
+``weight`` parameter, which is derived from the base class, should
+neighter appear::
+
+   >>> kw_list = get_keyword_params(ClubSoda, '__init__')
+   >>> kw_list.sort()
+   >>> kw_list
+   ['sparkles', 'temperature']
 
 
 """
