@@ -18,6 +18,9 @@ Utilities for z3c.testsetup
 
 The `util` module defines some helper functions of general use.
 
+get_package(pkg_or_dotted_name)
+-------------------------------
+
 For most classes in this package, that accept packages as arguments,
 these packages can be delivered as real packages or as strings
 containing dotted names. To get a package of something, that is either
@@ -40,6 +43,34 @@ We can indeed pass a package as argument::
    >>> from z3c.testsetup.tests import cave
    >>> get_package(cave)
    <module 'z3c.testsetup.tests.cave' from '...'>
+
+
+get_keyword_params(class, method_name)
+--------------------------------------
+
+The ``get_keyword_params()`` function tries to extract all keyword
+parameters of a given method of a class. If, for example, we want to
+know, which keyword parameters are supported by the constructor of the
+``DocTestSetup`` class, we can do this like so::
+
+   >>> from z3c.testsetup.doctesting import DocTestSetup
+   >>> from z3c.testsetup.util import get_keyword_params
+   >>> kw_list = get_keyword_params(DocTestSetup, '__init__')
+   >>> kw_list.sort()
+   >>> kw_list
+   ['encoding', 'extensions', 'filter_func', 'globs', 'optionflags',
+   'regexp_list', 'setup', 'teardown']
+
+The FunctionalDocTestSetup class supports some more keywords in its
+constructor::
+
+   >>> from z3c.testsetup.doctesting import FunctionalDocTestSetup
+   >>> kw_list2 = get_keyword_params(FunctionalDocTestSetup, '__init__')
+   >>> kw_list2.sort()
+   >>> kw_list2
+   ['checker', 'encoding', 'extensions', 'filter_func', 'globs',
+    'layer', 'layer_name', 'optionflags', 'regexp_list', 'setup',
+    'teardown', 'zcml_config']
 
 
 """

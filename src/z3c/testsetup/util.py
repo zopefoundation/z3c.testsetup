@@ -13,6 +13,7 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
+from inspect import getmro, ismethod, getargspec
 from martian.scan import resolve
 
 def get_package(pkg_or_dotted_name):
@@ -28,3 +29,23 @@ def get_package(pkg_or_dotted_name):
     if isinstance(pkg, basestring):
         pkg = resolve(pkg)
     return pkg
+
+def get_keyword_params(cls, method_name):
+    """Get a list of args of a method of a class.
+
+    Get a list containing all names of keyword parameters, that are
+    passable to a method. To get a complete list, also inherited
+    classes are visited.
+    """
+    result = set()
+    for cls in getmro(cls):
+        init = getattr(cls, method_name, None)
+        if not ismethod(init):
+            # skip 'object'...
+            continue
+        # Add all keywords, omitting parameters, for which no default
+        # exists.
+        args, varargs, varkw, defaults = getargspec(init)
+        defaultlen = len(defaults)
+        result.update(args[-defaultlen:])
+    return list(result)
