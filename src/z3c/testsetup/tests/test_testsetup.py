@@ -8,7 +8,8 @@ import zope.component.eventtesting
 from z3c.testsetup.util import get_package
 
 TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
-             'unitdoctestsetup.txt', 'util.txt', 'unittestsetup.txt']
+             'pythontestsetup.txt', 'unitdoctestsetup.txt', 'util.txt',
+             'unittestsetup.txt']
 
 def pnorm(path):
     """Normalization of paths to use forward slashes. This is needed
@@ -36,6 +37,7 @@ def get_filenames_from_suite(suite):
             filename = str(get_package(testcase.__module__).__file__)
             filename = os.path.splitext(filename)[0] + '.py'
         result.append(filename)
+    result.sort()
     return result
 
 def get_basenames_from_suite(suite):
@@ -77,7 +79,7 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        'testrunner.txt', 'README.txt',
+        'testrunner.txt', 'README.txt', 'testgetter.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
