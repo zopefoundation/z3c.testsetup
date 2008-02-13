@@ -96,7 +96,9 @@ def suiteFromFile(filename):
                                 package = 'z3c.testsetup',
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
-                                globs={'pnorm':pnorm},
+                                globs={'pnorm':pnorm,
+                                       'get_basenames_from_suite':
+                                       get_basenames_from_suite},
                                 checker=checker,
                                 optionflags=doctest.ELLIPSIS+
                                 doctest.NORMALIZE_WHITESPACE)
