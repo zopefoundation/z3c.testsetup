@@ -45,9 +45,9 @@ class UnitTestSetup(BasicTestSetup):
         '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
         ]
 
-    def __init__(self, package, filter_func=None):
+    def __init__(self, package, pfilter_func=None):
         BasicTestSetup.__init__(self, package)
-        self.filter_func = filter_func or self.isTestModule
+        self.pfilter_func = pfilter_func or self.isTestModule
 
     def docstrContains(self, docstr, regexp_list):
         """Does a docstring contain lines matching every of the regular
@@ -87,7 +87,7 @@ class UnitTestSetup(BasicTestSetup):
                 result.extend(self.getModules(submod_info.getModule()))
             else:
                 module = submod_info.getModule()
-                if self.filter_func(module):
+                if self.pfilter_func(module):
                     result.append(module)
         return result
         
