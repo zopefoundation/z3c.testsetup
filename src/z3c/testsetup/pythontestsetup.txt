@@ -149,6 +149,10 @@ test setup is not supported by now. This means, you can say **which**
 modules are registered, but not **how** they are registered. This is
 not the case for doctest setups.
 
+The customization can be done by setting the appropriate attributes or
+functions of a ``UnitTestSetup`` instance, or by passing appropriate
+values to the constructor. Both methods will be shown below.
+
 Customizing the module search:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -225,6 +229,17 @@ Note, that the terms in ``regexp_list`` must match **all**. Therefore,
 if you want to match one of several possible markers, then you need
 one regular expression that matches each of the possible terms but no
 others.
+
+The same effect can be archieved by passing the ``regexp_list``
+keyword parameter to the constructor::
+
+    >>> custom_setup = UnitTestSetup(cave,
+    ...  regexp_list= ['^\\s*:(T|t)est-(L|l)ayer:\\s*(F|false)\\s*'])
+    >>> suite = custom_setup.getTestSuite()
+    >>> get_basenames_from_suite(suite)
+    ['notatest2.py']
+
+
 
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isModule()``.
