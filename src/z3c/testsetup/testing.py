@@ -45,8 +45,8 @@ class UnitTestSetup(BasicTestSetup):
         '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
         ]
 
-    def __init__(self, package, pfilter_func=None):
-        BasicTestSetup.__init__(self, package)
+    def __init__(self, package, pfilter_func=None, regexp_list=None):
+        BasicTestSetup.__init__(self, package, regexp_list=regexp_list)
         self.pfilter_func = pfilter_func or self.isTestModule
 
     def docstrContains(self, docstr, regexp_list):
