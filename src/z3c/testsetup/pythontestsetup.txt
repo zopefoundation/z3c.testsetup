@@ -1,0 +1,108 @@
+====================
+Python UnitTestSetup
+====================
+
+Setups for 'normal' Python unit tests.
+
+While other kinds of test setups in this package are doctest setups,
+the setups handled here are setups of regular Python unit tests
+modules, i.e. modules, that contain definitions of regular
+`unittest.TestCase` classes.
+
+Because those setups do the main setup stuff themselves, there is not
+much to tell about them.
+
+There are also real 'oneliners' possible, that wrap around the classes
+described here and register different kinds of doctests and 'normal'
+Python tests all in a row. See 'README.txt' to learn more about that.
+
+The work is done mainly in two stages:
+
+1) A given package is searched for appropriate modules, based on the
+   settings of instance attributes.
+
+2) The tests contained in the found modules are added to one
+   `unittest.TestSuite`, which can be passed to a testrunner.
+
+
+Setting up a simple test suite
+------------------------------
+
+We want to register the tests contained in the local ``cave``
+package. This can be simply archieved by doing::
+
+   >>> from z3c.testsetup import UnitTestSetup
+   >>> setup = UnitTestSetup('z3c.testsetup.tests.cave')
+   >>> setup
+   <z3c.testsetup.testing.UnitTestSetup object at 0x...>
+
+Apparently the package to handle was passed as a string in 'dotted
+name' notation. We could also pass the package itself, if it was
+loaded before::
+
+   >>> from z3c.testsetup.tests import cave
+   >>> setup = UnitTestSetup(cave)
+   >>> setup
+   <z3c.testsetup.testing.UnitTestSetup object at 0x...>
+
+
+This setup is ready for use::
+
+   >>> suite = setup.getTestSuite()
+   >>> suite
+   <unittest.TestSuite tests=[...]>
+
+To sum it up, writing a test setup for a project now can be that
+short::
+
+   import z3c.testsetup
+   def test_suite():
+       setup = z3c.testsetup.UnitTestSetup('z3c.testsetup.tests.cave')
+       return setup.getTestSuite()
+
+This will find all modules in the given package that provide a certain
+signature (see below), register the contained tests cases and run them
+as part of a `unittest.TestSuite`.
+
+Note: in many test setups you will find a code fragment like the
+      following at the end of file::
+
+        if __name__ == '__main__':
+            unittest.main(default='test_suite')
+
+      This is not neccessary for usual testrunner setups. A testrunner
+      will look for appropriate filenames (modules) and if those
+      modules provide a callable ``test_suite`` (usually a function)
+      this callable will be called to deliver a test suite.
+
+
+UnitTestSetup default values
+----------------------------
+
+Understanding the defaults is important, because the default values
+are driving the whole process of finding and registering the test.
+
+Which files are found by default?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Basically, all modules are accepted that
+
+1) reside inside the package passed to the constructor. This includes
+   subpackages.
+
+2) are *not* located inside a 'hidden' directory (i.e. a directory
+   that contains no `__init__.py` file). Also subpackages of 'hidden'
+   directories are skipped.
+
+4) contain a ReStructured Text meta-marker in the module docstring,
+   that declares the module as a unittest module explicitly::
+
+       :Test-Layer: python
+
+   This means: there *must* be a line like the above one in the
+   doctest file. The term might be preceeded or followed by whitspace
+   characters (spaces, tabs).
+
+Only files, that meet all four conditions are searched for functional
+doctests. You can modify this behaviour of course, which will be
+explained below in detail.
