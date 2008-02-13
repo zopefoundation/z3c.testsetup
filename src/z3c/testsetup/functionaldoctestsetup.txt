@@ -215,7 +215,7 @@ No other options/parameters are set by default.
 Customizing functional test setup:
 ----------------------------------
 
-You can modify the behaviour of grok.testing.FunctionalTestSetup such,
+You can modify the behaviour of z3c.testsetup.FunctionalTestSetup such,
 that a different set of files is registered and/or the found tests are
 registered with a different set of parameters/options. We will first
 discuss modifying the set of files to be searched.
