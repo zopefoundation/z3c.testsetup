@@ -153,8 +153,9 @@ The customization can be done by setting the appropriate attributes or
 functions of a ``UnitTestSetup`` instance, or by passing appropriate
 values to the constructor. Both methods will be shown below.
 
-Customizing the module search:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``regexp_list``: customizing the module search:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The searching for appropriate test modules is basically done by the
 two methods ``getModules`` and ``isTestModule``. The latter does
@@ -240,6 +241,36 @@ keyword parameter to the constructor::
     ['notatest2.py']
 
 
+``pfilter_func``: Modifying the filter function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another method to change the set of found modules is to pass another
+filter function. By default all modules are taken into account, that
+provide a matching docstring. But you might look for other things in a
+module. That's what the ``pfilter_func`` parameter is for::
+
+    >>> setup.pfilter_func
+    <bound method UnitTestSetup.isTestModule of ...>
+
+As we see, the ``isTestModule`` method is used. You can pass another
+method that takes a module as only parameter and returns ``True`` or
+``False``. Let's create such a function::
+
+    >>> import os
+    >>> def custom_filter(module):
+    ...     modfile = os.path.basename(module.__file__)
+    ...     if modfile.startswith('notatest'):
+    ...         return True
+    ...     return False
+
+This functions accepts all modules, whose filename starts with
+'notatest'. Now, we setup a new test setup and see the result::
+
+    >>> custom_setup = UnitTestSetup(cave,
+    ...    pfilter_func = custom_filter)
+    >>> suite = custom_setup.getTestSuite()
+    >>> get_basenames_from_suite(suite)
+    ['notatest2.py']
 
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isModule()``.
