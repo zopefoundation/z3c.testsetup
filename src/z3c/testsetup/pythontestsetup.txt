@@ -94,15 +94,27 @@ Basically, all modules are accepted that
    that contains no `__init__.py` file). Also subpackages of 'hidden'
    directories are skipped.
 
-4) contain a ReStructured Text meta-marker in the module docstring,
+3) contain a ReStructured Text meta-marker in the module docstring,
    that declares the module as a unittest module explicitly::
 
        :Test-Layer: python
 
    This means: there *must* be a line like the above one in the
-   doctest file. The term might be preceeded or followed by whitspace
-   characters (spaces, tabs).
+   docstring of an accepted module. The term might be preceeded or
+   followed by whitspace characters (spaces, tabs).
 
-Only files, that meet all four conditions are searched for functional
-doctests. You can modify this behaviour of course, which will be
-explained below in detail.
+   The docstring of a module is written at the module header like
+   this:: 
+
+      """
+         This module smashes problems.
+
+         :Test-Layer: python
+
+      """
+      [normal Python code...]
+
+
+Only files, that meet all three conditions are searched for tests.
+You can modify this behaviour of course, which will be explained below
+in detail.
