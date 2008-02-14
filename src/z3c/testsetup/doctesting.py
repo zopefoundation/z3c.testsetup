@@ -172,6 +172,7 @@ class FunctionalDocTestSetup(DocTestSetup):
             globs=self.globs,
             optionflags=self.optionflags,
             encoding=self.encoding,
+            checker=self.checker,
             **self.additional_options
             )
         test.layer = self.layer
