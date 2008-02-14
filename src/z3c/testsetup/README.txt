@@ -396,11 +396,32 @@ be found, the other paramters tell how to setup single tests.
 
 - `zcml_config`:
 
+    A filepath of a ZCML file which is registered with functional
+    doctests. In the ZCML file you can for example register principals
+    (users) usable by functional doctests.
+
+    By default an empty ZCML file of the z3c.testsetup package is
+    used (``ftesting.zcml``).
+
+    This parameter has no effect, if also a ``layer`` parameter is
+    given.
+
 - `layer_name`:
+
+    You can name your layer, to distinguish different setups of
+    functional doctests. The layer name can be an arbitrary string.
+
+    This parameter has no effect, if also a ``layer`` parameter is
+    given.
 
 - `layer`:
 
+    You can register a ZCML layer yourself and pass it as the
+    ``layer`` parameter. If you only have a filepath to the according
+    ZCML file, use the ``zcml_config`` paramter instead.
 
+    This parameter overrides any ``zcml_config`` and ``layer_name``
+    parameter.
 
 
 .. below:
