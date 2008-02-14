@@ -1,0 +1,18 @@
+============
+Checker test
+============
+
+:Test-Layer: checker
+
+First we check, whether the <SOME NUMBER OF> term is matched by the
+modified checker::
+
+   >>> print "%s seconds" % 0.123
+   <SOME NUMBER OF> seconds
+
+Then we check the <SOME ADDRESS> term::
+
+   >>> print "A memory address at 0x1a0322ff"
+   A memory address at <SOME ADDRESS>
+
+That's it.
