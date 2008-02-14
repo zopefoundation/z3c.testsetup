@@ -1,0 +1,12 @@
+============
+Test Globals
+============
+
+:Test-Layer: globs
+
+This test tests the functionality of ``globs``. The framework should
+provide us a ``basename`` function, which we do not have to define nor
+import here::
+
+  >>> basename(__file__)
+  'globstest.chk'

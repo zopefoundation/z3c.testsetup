@@ -335,6 +335,8 @@ be found, the other paramters tell how to setup single tests.
 
       <SOME NUBMER OF> seconds
 
+    Please see ``testrunner.txt`` for examples of usage.
+
     Checkers are applied to functional doctests only!
 
 - `globs`:
@@ -351,7 +353,10 @@ be found, the other paramters tell how to setup single tests.
 
     If you want to register special globals for functional doctest or
     unit doctests only, then you can use the `fglobs` and/or `uglobs`
-    keyword respectively. These keywords replace any `globs` value.
+    keyword respectively. These keywords replace any `globs` value for
+    the respective kind of tests.
+
+    For more extensive examples see ``testrunner.txt``.
 
 - `setup`:
 
