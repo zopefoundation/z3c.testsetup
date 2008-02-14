@@ -305,6 +305,7 @@ be found, the other paramters tell how to setup single tests.
       not in range(128)
 
     While using 'latin-1' will work::
+
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
       ...     encoding='latin-1')
@@ -316,65 +317,77 @@ be found, the other paramters tell how to setup single tests.
     following PEP 0263 ( http://www.python.org/dev/peps/pep-0263/ ).
 
 
-- `checker`:    An output checker for functional doctests. `None` by
-                default. A typical output checker can be created like
-                this::
+- `checker`:
 
-                  >>> import re
-                  >>> from zope.testing import renormalizing
-                  >>> mychecker = renormalizing.RENormalizing([
-                  ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
-                  ...     '<SOME NUMBER OF> seconds'),
-                  ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
-                  ... ])
+    An output checker for functional doctests. `None` by default. A
+    typical output checker can be created like this::
 
-                This would match for example output like `0.123
-                seconds` if you write in your doctest::
+      >>> import re
+      >>> from zope.testing import renormalizing
+      >>> mychecker = renormalizing.RENormalizing([
+      ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+      ...     '<SOME NUMBER OF> seconds'),
+      ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
+      ... ])
 
-                  <SOME NUBMER OF> seconds
+    This would match for example output like `0.123 seconds` if you
+    write in your doctest::
 
-                Checkers are applied to functional doctests only!
+      <SOME NUBMER OF> seconds
 
-- `globs`:      A dictionary of things that should be available
-                immediately (without imports) during tests. Defaults
-                are::
+    Checkers are applied to functional doctests only!
 
-                  dict(http=HTTPCaller(),
-                       getRootFolder=getRootFolder,
-                       sync=sync)
+- `globs`:
 
-                for functional doctests and an empty dict for unit
-                doctests. Python test globals can't be set this way.
+    A dictionary of things that should be available immediately
+    (without imports) during tests. Defaults are::
 
-                If you want to register special globals for functional
-                doctest or unit doctests only, then you can use the
-                `fglobs` and/or `uglobs` keyword respectively. These
-                keywords replace any `globs` value.
+      dict(http=HTTPCaller(),
+           getRootFolder=getRootFolder,
+           sync=sync)
 
-- `setup`:      A function that takes a `test` argument and is
-                executed before every single doctest. By default it
-                runs::
+    for functional doctests and an empty dict for unit
+    doctests. Python test globals can't be set this way.
 
-                  zope.app.testing.functional.FunctionalTestSetup().setUp()
+    If you want to register special globals for functional doctest or
+    unit doctests only, then you can use the `fglobs` and/or `uglobs`
+    keyword respectively. These keywords replace any `globs` value.
 
-                for functional doctests and an empty function for unit
-                doctests. Python tests provide their own setups.
+- `setup`:
 
-                If you want to register special setup-functions for
-                either functional or unit doctests, then you can pass
-                keyword parameters `fsetup` or `usetup` respectively.
+    A function that takes a `test` argument and is executed before
+    every single doctest. By default it runs::
 
-- `teardown`:   The equivalent to `setup`. Runs by default::
+      zope.app.testing.functional.FunctionalTestSetup().setUp()
 
-                   FunctionalTestSetup().tearDown()
+    for functional doctests and an empty function for unit
+    doctests. Python tests provide their own setups.
 
-                for functional doctests and::
+    If you want to register special setup-functions for either
+    functional or unit doctests, then you can pass keyword parameters
+    `fsetup` or `usetup` respectively.
 
-		   zope.testing.cleanup.cleanUp()
+- `teardown`:   
 
-                for unit doctests.
+    The equivalent to `setup`. Runs by default::
+
+      FunctionalTestSetup().tearDown()
+
+    for functional doctests and::
+
+      zope.testing.cleanup.cleanUp()
+
+    for unit doctests. Python tests have to provide their own teardown
+    functions in TestCases.
 
 - `optionflags`:
+
+    Optionflags influence the behaviour of the testrunner. They are
+    logically or'd so that you can add them arithmetically. See
+
+      http://svn.zope.org/zope.testing/trunk/src/zope/testing/doctest.py
+
+    for details.
 
 - `zcml_config`:
 
