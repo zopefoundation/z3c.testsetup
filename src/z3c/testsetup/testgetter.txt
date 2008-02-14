@@ -98,5 +98,5 @@ With a ``TestGetter`` you can archieve the same effect like this::
    >>> get_basenames_from_suite(suite)
    ['file1.py', 'file1.rst', 'notatest1.foo']
 
-Despite the fact, that this notation is easier to read than the
-function above, it is also easier to reuse.
+Despite the fact, that this notation is easier to read and understand
+than the function above, it is also easier to reuse.
