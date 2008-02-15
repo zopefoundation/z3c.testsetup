@@ -11,7 +11,13 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Factories for testcollectors.
+"""TestGetters and TestCollectors.
+
+TestGetters wrap ordinary TestSetups and TestCollectors wrap
+TestGetters. They ease the writing of often used ``test_suite()``
+functions in test setup modules of projects.
+
+See testgetter.txt to learn more about this stuff.
 """
 import unittest
 from z3c.testsetup.doctesting import UnitDocTestSetup, FunctionalDocTestSetup
@@ -19,7 +25,11 @@ from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package, get_keyword_params
 
 class BasicTestGetter(object):
-    """Abstract base.
+    """Abstract base for TestGetters.
+
+    TestGetters are a replacement for the test_suite() functions often
+    defined in test setup modules. They are more elegant, more
+    flexible, reusable and better looking ;-)
     """
     defaults = {}
     settings = {}
@@ -36,10 +46,16 @@ class BasicTestGetter(object):
         return
 
     def initialize(self):
-        self.filter_keywords()
-        return
+        """Convenience method called at end of constructor.
+
+        Might be usable for derived classes.
+        """
+        pass
 
     def __call__(self):
+        """Get a testsuite.
+        """
+        self.filterKeywords()
         suite = unittest.TestSuite()
         suite.addTest(
             self.wrapped_class(
@@ -47,7 +63,11 @@ class BasicTestGetter(object):
             )
         return suite
     
-    def filter_keywords(self):
+    def filterKeywords(self):
+        """Filter keywords passed to the constructor.
+
+        See testgetter.txt for deeper insights.
+        """
         new_kws = self.defaults.copy()
         new_kws.update(self.settings)
         self.settings = new_kws
@@ -62,6 +82,13 @@ class BasicTestGetter(object):
                 del new_kws[kw]
         self.settings = new_kws
         return
+
+    def getTestSuite(self):
+        """A convenience method.
+
+        Some people might expect this method to exist.
+        """
+        return self.__call__()
 
 
 class FunctionalDocTestGetter(BasicTestGetter):
@@ -85,25 +112,37 @@ class PythonTestGetter(BasicTestGetter):
     wrapped_class = UnitTestSetup
     special_char = 'p'
 
-    
 
-class TestGetter(BasicTestGetter):
-    """Handle and pass parameters to different test setup types.
+class BasicTestCollector(BasicTestGetter):
+    """Abstract base of TestCollectors.
 
-    In fact ``TestGetter``s are a replacement for the normally used
-    ``test_suite()`` functions in test setup modules. Because in that
-    case only callables are expected, we can also use classes.
+    TestCollectors are TestGetters, that can handle several TestGetter
+    types at once.
     """
-
+    
+    handled_getters = []
     def __call__(self):
         """Return a test suite.
         """
         suite = unittest.TestSuite()
-        for getter in [FunctionalDocTestGetter, UnitDocTestGetter,
-                       PythonTestGetter]:
-            suite_getter =  getter(self.package, **self.settings)
-            suite_getter.defaults = getattr(self, 'defaults', {})
-            suite.addTest(
-                suite_getter()
-            )
+        for getter_cls in self.handled_getters:
+            getter = getter_cls(self.package, **self.settings)
+            # Merge our defaults with target defaults...
+            target_defaults = getattr(getter, 'defaults', {})
+            self_defaults = getattr(self, 'defaults', {})
+            getter.defaults = target_defaults.copy()
+            getter.defaults.update(self_defaults)
+            suite.addTest(getter.getTestSuite())
         return suite
+
+class DocTestCollector(BasicTestCollector):
+    """A TestCollector that wraps functional doctests and unit doctests.
+    """
+    handled_getters = [FunctionalDocTestGetter, UnitDocTestGetter]
+
+class TestCollector(BasicTestCollector):
+    """A TestCollector that wraps doctests and PythonTests.
+    """
+    handled_getters = [FunctionalDocTestGetter, UnitDocTestGetter,
+                       PythonTestGetter]
+
