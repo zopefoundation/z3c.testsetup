@@ -1,6 +1,6 @@
 import z3c.testsetup
 
-class CustomTestGetter(z3c.testsetup.TestGetter):
+class CustomTestCollector(z3c.testsetup.TestCollector):
     defaults = {
         'extensions' : ['.bar',],
         'fextensions' : ['.baz',],
@@ -9,4 +9,4 @@ class CustomTestGetter(z3c.testsetup.TestGetter):
     def dummyfunc(self):
         pass
 
-test_suite=CustomTestGetter('z3c.testsetup.tests.cave')
+test_suite=CustomTestCollector('z3c.testsetup.tests.cave')
