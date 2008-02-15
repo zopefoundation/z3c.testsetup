@@ -131,11 +131,6 @@ class FunctionalDocTestSetup(DocTestSetup):
 
     checker = None
 
-    param_list = BasicTestSetup.param_list + ['globs', 'setup', 'teardown',
-                                              'optionflags', 'checker',
-                                              'zcml_config', 'layer_name',
-                                              'layer', 'encoding']
-
     def __init__(self, package, checker=None, zcml_config = None,
                  layer_name='FunctionalLayer', layer=None, **kw):
         DocTestSetup.__init__(self, package, **kw)
@@ -186,55 +181,3 @@ class FunctionalDocTestSetup(DocTestSetup):
             suite.addTest(self.suiteFromFile(name))
         return suite
 
-def _collect_tests(pkg_or_dotted_name, setup_type,
-                   typespec_kws=[], *args, **kwargs):
-    pkg = get_package(pkg_or_dotted_name)
-    options = kwargs.copy()
-    for kw in typespec_kws:
-        if kw in kwargs.keys():
-            options[kw[1:]] = kwargs[kw]
-            del options[kw]
-    for kw in options.copy().keys():
-        if kw not in setup_type.param_list:
-            del options[kw]
-    return setup_type(pkg, *args, **options).getTestSuite()
-    
-
-def get_unitdoctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['ufilter_func', 'uextensions',
-           'uglobs', 'uoptionflags', 'usetup', 'uteardown']
-    return _collect_tests(pkg_or_dotted_name, UnitDocTestSetup,
-                          typespec_kws=kws, *args, **kwargs)
-
-def get_functionaldoctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['ffilter_func', 'fextensions',
-           'fglobs', 'foptionflags', 'fsetup', 'fteardown']
-    return _collect_tests(pkg_or_dotted_name, FunctionalDocTestSetup,
-                          typespec_kws=kws, *args, **kwargs)
-
-def get_doctests_suite(pkg_or_dotted_name, *args, **kwargs):
-    pkg = get_package(pkg_or_dotted_name)
-    suite = unittest.TestSuite()
-    suite.addTest(
-        get_unitdoctests_suite(pkg, *args, **kwargs))
-    suite.addTest(
-        get_functionaldoctests_suite(pkg, *args, **kwargs))
-    return suite
-
-def register_doctests(pkg_or_dotted_name, *args, **kwargs):
-    """Return a function that requires no argument and delivers a test
-    suite.
-
-    The resulting functions are suitable for use with unittest
-    testrunners, that look for an attribute `test_suite` on module
-    level. Such::
-
-       test_suite = register_doctests(pkg)
-
-    in a module should register all tests for the package `pkg`.
-    """
-    pkg = get_package(pkg_or_dotted_name)
-    def tmpfunc():
-        return get_doctests_suite(pkg, *args, **kwargs)
-    return tmpfunc
-    
