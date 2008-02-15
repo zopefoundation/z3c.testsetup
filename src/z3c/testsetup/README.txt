@@ -40,20 +40,21 @@ this::
 
 It is sufficient to put this lines into a python module which is found
 by your testrunner (see `samplesetup_short` examples in the ``cave``
-package and `testrunner.txt`).
+package and ``testrunner.txt``).
 
 To sum it up, testsetup with ``z3c.testsetup`` is done in two steps:
 
 1) Make sure your testfiles are named properly (.txt/.rst for
    doctests, valid python modules for usual unit tests) and provide a
-   suitable marker string as explained below_.
+   suitable marker string as explained below (`How to mark
+   testfiles/modules`_).
 
 2) Write a test setup module which is named so that your testrunner
    finds it and in this module call::
 
       test_suite = z3c.testsetup.register_all_tests(<package>)
 
-   where `<package>` must be a package object. Instead of a package
+   where ``<package>`` must be a package object. Instead of a package
    object you can also pass the package's dotted name as string like
    `'z3c.testsetup.tests.cave'`.
 
@@ -79,14 +80,14 @@ While `filter_func` and `extensions` determine the set of testfiles to
 be found, the other paramters tell how to setup single tests.
 
 
-- `filter_func` (`ufilter_func`, `ffilter_func`): 
+- **filter_func** (**ufilter_func**, **ffilter_func**)
 
-  a function that takes an absolute filepath and returns `True` or
-  `False`, depending on whether the file should be included in the
-  test suite as doctest or not. `filter_func` applies only to
-  doctests.
+   a function that takes an absolute filepath and returns `True` or
+   `False`, depending on whether the file should be included in the
+   test suite as doctest or not. `filter_func` applies only to
+   doctests.
 
-  We setup a few things to check that::
+   We setup a few things to check that::
 
      >>> import os
      >>> import unittest
@@ -94,14 +95,14 @@ be found, the other paramters tell how to setup single tests.
      >>> suite.countTestCases()
      4
 
-  Okay, the callable in `test_suite` we created above with
-  `register_all_tests` apparently delivered four testcases. This is
-  normally also the number of files involved, but let's check that
-  correctly.
+   Okay, the callable in `test_suite` we created above with
+   `register_all_tests` apparently delivered four testcases. This is
+   normally also the number of files involved, but let's check that
+   correctly.
 
-  We did setup a function `get_basenames_from_suite` in this testing
-  environment (as a `globs` entry) which determines the basenames of
-  the paths of all testcases contained in a `TestSuite`::
+   We did setup a function `get_basenames_from_suite` in this testing
+   environment (as a `globs` entry) which determines the basenames of
+   the paths of all testcases contained in a `TestSuite`::
 
      >>> get_basenames_from_suite(suite)
      ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
@@ -121,7 +122,7 @@ be found, the other paramters tell how to setup single tests.
       ...     filter_func=custom_file_filter)
 
    To get the resulting test suite, we again call the returned
-   callable:: 
+   callable::
 
       >>> suite = test_suite()
       >>> get_basenames_from_suite(suite)
@@ -156,8 +157,8 @@ be found, the other paramters tell how to setup single tests.
       >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
-    As expected, every .txt file was only registered once. The same
-    happens, when we switch and accept only unit doctests::
+   As expected, every .txt file was only registered once. The same
+   happens, when we switch and accept only unit doctests::
 
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
@@ -168,9 +169,9 @@ be found, the other paramters tell how to setup single tests.
       >>> get_basenames_from_suite(suite)
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
-    If you specify both, a `filter_func` and a more specialized
-    `ufilter_func` or `ffilter_func`, then this has the same effect as
-    passing both, `ufilter_func` and `ffilter_func`::
+   If you specify both, a `filter_func` and a more specialized
+   `ufilter_func` or `ffilter_func`, then this has the same effect as
+   passing both, `ufilter_func` and `ffilter_func`::
 
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
@@ -182,9 +183,9 @@ be found, the other paramters tell how to setup single tests.
       ['file1.py', 'file1.txt', 'subdirfile.txt']
 
 
-- `pfilter_func`:
+- **pfilter_func**:
 
-    Does basically the same as the `filter_func`s above, but handles
+    Does basically the same as the ``filter_funcs`` above, but handles
     Python modules instead of file paths. It therefore determines the
     set of 'normal' Python tests accepted and does not touch the set
     of doctests accepted.
@@ -232,7 +233,7 @@ be found, the other paramters tell how to setup single tests.
     about test loaders.
 
 
-- `extensions` (`uextensions`, `fextensions`):
+- **extensions** (**uextensions**, **fextensions**):
 
     a list of filename extensions to be considered during test
     search. Default value is `['.txt', '.rst']`. Python tests are not
@@ -288,7 +289,7 @@ be found, the other paramters tell how to setup single tests.
     files as functional ones.
 
 
-- `encoding`:   
+- **encoding**:   
 
     the encoding of testfiles. 'utf-8' by default. Setting this to `None`
     means using the default value. We've hidden one doctest file, that
@@ -317,7 +318,7 @@ be found, the other paramters tell how to setup single tests.
     following PEP 0263 ( http://www.python.org/dev/peps/pep-0263/ ).
 
 
-- `checker`:
+- **checker**:
 
     An output checker for functional doctests. `None` by default. A
     typical output checker can be created like this::
@@ -339,7 +340,7 @@ be found, the other paramters tell how to setup single tests.
 
     Checkers are applied to functional doctests only!
 
-- `globs`:
+- **globs**:
 
     A dictionary of things that should be available immediately
     (without imports) during tests. Defaults are::
@@ -358,7 +359,7 @@ be found, the other paramters tell how to setup single tests.
 
     For more extensive examples see ``testrunner.txt``.
 
-- `setup`:
+- **setup**:
 
     A function that takes a `test` argument and is executed before
     every single doctest. By default it runs::
@@ -372,7 +373,7 @@ be found, the other paramters tell how to setup single tests.
     functional or unit doctests, then you can pass keyword parameters
     `fsetup` or `usetup` respectively.
 
-- `teardown`:   
+- **teardown**:   
 
     The equivalent to `setup`. Runs by default::
 
@@ -385,7 +386,7 @@ be found, the other paramters tell how to setup single tests.
     for unit doctests. Python tests have to provide their own teardown
     functions in TestCases.
 
-- `optionflags`:
+- **optionflags**:
 
     Optionflags influence the behaviour of the testrunner. They are
     logically or'd so that you can add them arithmetically. See
@@ -394,7 +395,7 @@ be found, the other paramters tell how to setup single tests.
 
     for details.
 
-- `zcml_config`:
+- **zcml_config**:
 
     A filepath of a ZCML file which is registered with functional
     doctests. In the ZCML file you can for example register principals
@@ -406,7 +407,7 @@ be found, the other paramters tell how to setup single tests.
     This parameter has no effect, if also a ``layer`` parameter is
     given.
 
-- `layer_name`:
+- **layer_name**:
 
     You can name your layer, to distinguish different setups of
     functional doctests. The layer name can be an arbitrary string.
@@ -414,7 +415,7 @@ be found, the other paramters tell how to setup single tests.
     This parameter has no effect, if also a ``layer`` parameter is
     given.
 
-- `layer`:
+- **layer**:
 
     You can register a ZCML layer yourself and pass it as the
     ``layer`` parameter. If you only have a filepath to the according
@@ -423,8 +424,6 @@ be found, the other paramters tell how to setup single tests.
     This parameter overrides any ``zcml_config`` and ``layer_name``
     parameter.
 
-
-.. below:
 
 How to mark testfiles/modules
 -----------------------------
