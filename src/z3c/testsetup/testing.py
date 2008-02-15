@@ -15,15 +15,9 @@
 """
 import unittest
 import re
-import os.path
-from zope.testing import doctest, cleanup
-from zope.app.testing.functional import (
-    HTTPCaller, getRootFolder, sync, ZCMLLayer, FunctionalDocFileSuite,
-    FunctionalTestSetup)
 from martian.scan import module_info_from_dotted_name
 from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import get_package
-from z3c.testsetup.doctesting import _collect_tests
 
 class UnitTestSetup(BasicTestSetup):
     """A unit test setup for packages.
@@ -99,31 +93,3 @@ class UnitTestSetup(BasicTestSetup):
             tests = unittest.defaultTestLoader.loadTestsFromModule(module)
             suite.addTest(tests)
         return suite
-
-def get_pytests_suite(pkg_or_dotted_name, *args, **kwargs):
-    kws = ['pfilter_func',]
-    options = kwargs.copy()
-    for optname in ['filter_func', 'extensions']:
-        if optname in kwargs.keys():
-            del (options[optname])
-    return _collect_tests(pkg_or_dotted_name, UnitTestSetup,
-                          typespec_kws=kws, *args, **options)
-
-
-def register_pytests(pkg_or_dotted_name, *args, **kwargs):
-    """Return a function that requires no argument and delivers a test
-    suite.
-
-    The resulting functions are suitable for use with unittest
-    testrunners, that look for an attribute `test_suite` on module
-    level. Such::
-
-       test_suite = register_pytests(pkg)
-
-    in a module should register all tests for the package `pkg`.
-    """
-    pkg = get_package(pkg_or_dotted_name)
-    def tmpfunc():
-        return get_pytests_suite(pkg, *args, **kwargs)
-    return tmpfunc
-    
