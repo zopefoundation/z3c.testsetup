@@ -1,11 +1,387 @@
-===========
-TestGetters
-===========
+==============================
+TestGetters and TestCollectors
+==============================
 
 Convenience stuff to setup reusable test collectors.
 
-Test getters are intended to be called by unittest testrunners and
-should return a test suite.
+What are TestGetters/TestCollectors?
+====================================
+
+TestGetters are wrappers for TestSetups, that filter any keyword
+parameters passed to the constructor and return a
+``unittest.TestSuite`` if called::
+
+   >>> import z3c.testsetup
+   >>> from z3c.testsetup.tests import cave
+   >>> getter = z3c.testsetup.PythonTestGetter(cave)
+   >>> getter()
+   <unittest.TestSuite tests=[...]>
+
+   >>> get_basenames_from_suite(getter())
+   ['file1.py']
+
+TestCollectors are TestGetters that can handle several TestSetup types
+at once (TestGetters handle only one type of TestSetup). They do this
+by wrapping one or more TestGetters. While TestGetters wrap exactly
+one TestSetup each, TestCollectors can wrap a bunch of TestGetters.
+
+TestCollectors therefore are useful in cases, where you want to run
+not only for example, functional doctests, but also unitdoctests or
+your own customized type of TestSetup. TestCollectors too return a
+``unittest.TestSuite`` when called::
+
+   >>> collector = z3c.testsetup.TestCollector(cave)
+   >>> collector()
+   <unittest.TestSuite tests=[...]>
+
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
+
+The two main things, that make TestGetters and TestCollectors
+different from ordinary TestSetups are:
+
+- they provide a tolerant, non-fixed set of keyword parameters
+
+- they provide support for a different set of default values
+
+
+Which constructor keywords are supported?
+-----------------------------------------
+
+Every TestGetter and TestCollector expects a package to examine as
+first parameter. This package can be passed as a real package (which
+was previously imported) or a dotted name. It's the same as with
+normal TestSetups. The dotted name variant works like this::
+
+   >>> from z3c.testsetup import TestCollector
+   >>> collector = TestCollector('z3c.testsetup.tests.cave')
+   >>> collector
+   <z3c.testsetup.testgetter.TestCollector object at 0x...>
+
+A main difference of TestGetters and TestCollectors to ordinary
+TestSetups is the set of supported/accepted keyword parameters: it
+depends on the wrapped set of TestSetups. While TestSetups have a
+fixed set of those, TestGetters and TestCollectors accept any keyword
+parameter bit pass only those to the appropriate underlying
+TestSetups, that are supported by those. Keywords not supported by a
+underlying TestSetup are skipped silently::
+
+   >>> getter = z3c.testsetup.PythonTestGetter(cave,
+   ...                                         non_existant_param='boo')
+   >>> get_basenames_from_suite(getter())
+   ['file1.py']
+
+
+   >>> collector = z3c.testsetup.TestCollector(cave,
+   ...                                         non_existant_param='boo')
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
+
+If a keyword parameter is only supported by some of the underlying
+TestSetups, it is passed only to the supporting ones::
+
+   >>> collector = z3c.testsetup.TestCollector(cave,
+   ...                                         extensions=['.txt'])
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.txt', 'subdirfile.txt']
+
+The ``file1.py`` is included, because Python test setups do not
+support the ``extensions`` parameter.
+
+To distinguish parameters, that are supported by several TestSetups,
+but should only be passed to certain ones, every TestSetup type gets a
+char, which, if preceeding a keyword, lets Collectors and Getters pass
+this parameter only to the appropriate TestSetup.
+
+Example: we want to set the ``extensions`` parameter only for
+functional doctests (and not for unit doctests). The standard
+TestCollector now registers three TestGetters. This is stored in the
+``handled_getters`` attribute of TestCollectors::
+
+   >>> from z3c.testsetup.testgetter import TestCollector
+   >>> getter_classes = TestCollector.handled_getters
+   >>> getter_classes
+   [<class '....FunctionalDocTestGetter'>,
+    <class '....UnitDocTestGetter'>,
+    <class '....PythonTestGetter'>]
+
+Each of this classes should provide a 'signature char'. This is stored
+as the ``special_char`` attribute of a ``TestGetter`` class::
+
+   >>> [(x.__name__, x.special_char) for x in getter_classes]
+   [('FunctionalDocTestGetter', 'f'), ('UnitDocTestGetter', 'u'),
+    ('PythonTestGetter', 'p')]
+
+As we can see, functional doc test parameters are marked with a
+preceeding `f`. So we use 'fextensions' to mark the 'extensions'
+parameter as valid for functional doctests only::
+
+   >>> collector = z3c.testsetup.TestCollector(cave,
+   ...                                         fextensions=['.foo'])
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.rst', 'notatest1.foo']
+
+The `file1.rst` here was registered as a unit doctest, while
+functional doctests were only searched in files, that have a `.foo`
+filename extension.
+
+
+How can I modify default values?
+--------------------------------
+
+TestGetters and Collectors provide a ``defaults`` attribute, which is
+a dictionary. This dictionary is empty by default, which means: take
+the defaults from the underlying TestSetups::
+
+   >>> TestCollector.defaults
+   {}
+
+If we get an instance of the TestCollector, we can modify the
+defaults::
+
+   >>> collector = TestCollector(cave)
+   >>> collector.defaults = {'uextensions':['.foo']}
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.txt', 'notatest1.foo', 'subdirfile.txt']
+
+This might be nice, but the intended usage of TestCollectors is to
+write derived classes, that can be reused and modified themselves.
+
+If we define a class derived from a TestCollector or TestGetter, we
+can also give another set of defaults::
+
+   >>> class CustomTestCollector(TestCollector):
+   ...    defaults = {'extensions': ['.txt']}
+
+The values will be passed to the appropriate TestSetups, overriding
+the old defaults::
+
+   >>> custom_collector = CustomTestCollector(cave)
+   >>> get_basenames_from_suite(custom_collector())
+   ['file1.py', 'file1.txt', 'subdirfile.txt']
+
+Other defaults, like the expected marker strings or whatever are still
+taken from the underlying TestSetups.
+
+For users of this class, however, the new defaults can be overridden
+by passing appropriate keywords::
+
+   >>> custom_collector = CustomTestCollector(cave,
+   ...                                        extensions=['.foo'])
+   >>> get_basenames_from_suite(custom_collector())
+   ['file1.py', 'notatest1.foo', 'notatest1.foo']
+
+Here `notatest1.foo` was registered once as a unit doctest and once as
+a functional doctest.
+
+
+How to write your own TestGetters/TestCollectors
+================================================
+
+One self-written example was shown above, where we defined a
+CustomTestCollector.
+
+How to write a TestGetter
+-------------------------
+
+TestGetters are based on the abstract ``BasicTestGetter``, which can
+be found in the ``z3c.testsetup.testgetter`` module::
+
+   >>> from z3c.testsetup.testgetter import BasicTestGetter
+
+A ``BasicTestGetter`` is abstract, because it got no ``special_char``
+and no ``wrapped_class`` attributes. It can be created, but will not
+return any TestSuite objects::
+
+   >>> basic_getter = BasicTestGetter(cave)
+   >>> basic_getter
+   <z3c.testsetup.testgetter.BasicTestGetter object at 0x...>
+
+If we call it, this will fail miserably::
+
+   >>> basic_getter()
+   Traceback (most recent call last):
+   ...
+   AttributeError: 'BasicTestGetter' object has no attribute
+   'wrapped_class'
+
+All, a deriving class has to do, is to define a ``wrapped_class`` and
+a ``special_char``. The special char must be a single char and will
+distinguish parameters specifically passed for your wrapper from
+others. Let's create a TestGetter for functional doctest files::
+
+   >>> from z3c.testsetup.doctesting import FunctionalDocTestSetup
+   >>> class CustomGetter(BasicTestGetter):
+   ...     wrapped_class = FunctionalDocTestSetup
+   ...     special_char = 'c'
+
+That's it. This wrapper will examine the ``FunctionalDocTestSetup``
+class for supported keyword parameters and pass only those. The
+keyword mangling works like this:
+
+1) determine the list of supported keywords of the wrapped class.
+
+2) for every keyword passed:
+
+   2a) if the current keyword is supported: pass it and handle
+       next keyword.
+
+   2b) if the current keyword starts with the special char and
+       the keyword without the special char is supported by the
+       wrapped class: pass the keyword without the special char
+       and handle next keyword.
+
+   2c) skip the keyword.
+
+We can check this by calling the ``CustomGetter`` defined above. First
+we call it without any keywords::
+
+   >>> getter = CustomGetter(cave)
+   >>> get_basenames_from_suite(getter())
+   ['file1.txt', 'subdirfile.txt']
+
+These are the functional doctest files defined in the ``cave``
+package, that are found by a default FunctionalDocTestSetup.
+
+Now, with a 'directly' supported keyword, i.e. a keyword provided
+explicitly by FunctionalDocTestSetup. We use the ``extensions``
+keyword::
+
+   >>> getter = CustomGetter(cave, extensions=['.foo'])
+   >>> get_basenames_from_suite(getter())
+   ['notatest1.foo']
+
+What, if we use a 'specialized' keyword. We use ``cextensions``,
+because our special char is 'c'::
+
+   >>> getter = CustomGetter(cave, cextensions=['.foo'])
+   >>> get_basenames_from_suite(getter())
+   ['notatest1.foo']
+
+The ``fextensions`` keyword, however, will not work here::
+
+   >>> getter = CustomGetter(cave, fextensions=['.foo'])
+   >>> get_basenames_from_suite(getter())
+   ['file1.txt', 'subdirfile.txt']
+
+We get no errors, but the default set of files. This is, because the
+keyword was simply skipped when calling
+``FunctionalDocTestSetup``. For other TestGetters, however, that
+keyword might mean something.
+
+A third interesting attribute of TestGetters is ``defaults``. With it
+you can set a different set of defaults for your TestSetups::
+
+   >>> class CustomGetter(BasicTestGetter):
+   ...     wrapped_class = FunctionalDocTestSetup
+   ...     special_char = 'c'
+   ...     defaults = {'extensions': ['.foo']}
+
+If we create an instance of this class, by default only .foo-files are
+considered::
+
+   >>> getter = CustomGetter(cave)
+   >>> get_basenames_from_suite(getter())
+   ['notatest1.foo']
+
+TestGetters provide a ``initialize()`` method which takes no arguments
+and can be overridden in derived classes (to leave the ``__init__``
+untouched) and is called at the end of the ``__init__`` method.
+
+
+How to write a test collector
+-----------------------------
+
+As already told above, TestCollectors are wrappers around
+TestGetters. They call every TestGetter/TestCollector involved and
+collect the tests of all in one test suite, which they return upon
+calls.
+
+Because test collectors are TestGetters as well (that do not provide a
+``wrapped_class``), TestCollectors can also wrap other
+TestCollectors. It's a typical divide-and-conquer behaviour.
+
+TestCollectors are based on the abstract
+``z3c.testsetup.testgetter.BasicTestCollector``::
+
+   >>> from z3c.testsetup.testgetter import BasicTestCollector
+
+We define a TestCollector by deriving from that base and providing a
+list of handled TestGetters::
+
+   >>> class CustomTestCollector(BasicTestCollector):
+   ...     handled_getters = [CustomGetter]
+
+This collector can be called like any TestGetter::
+
+   >>> collector = CustomTestCollector(cave)
+   >>> suite = collector()
+   >>> suite
+   <unittest.TestSuite tests=[...]>
+
+The tests delivered are determined by the involved
+TestGetters. Because we are wrapping the CustomGetter, we should get a
+list of .foo-files::
+
+   >>> get_basenames_from_suite(suite)
+   ['notatest1.foo']
+
+The set of keywords supported is the joined set of all keywords supported
+by every wrapped TestGetter. Because we wrapped the CustomGetter, this
+collector supports (beside many other keywords) the ``cextensions``
+keyword:: 
+
+   >>> collector = CustomTestCollector(cave, cextensions=['.txt'])
+   >>> get_basenames_from_suite(collector())
+   ['file1.txt', 'subdirfile.txt']
+
+So far, this is no news. The same could be archieved with a simple
+CustomGetter instance. No need to wrap this. But now, let's also get
+Python tests. A test getter for Python tests is already defined in
+``z3c.testsetup.testgetter``::
+
+   >>> from z3c.testsetup.testgetter import PythonTestGetter
+   >>> class CustomPyTestCollector(BasicTestCollector):
+   ...     handled_getters = [PythonTestGetter, CustomTestCollector]
+
+
+Note, that this new collector also wraps the CustomTestCollector
+defined above.
+
+If we call it, we should get the python tests of the ``cave`` package
+as well::
+
+   >>> collector = CustomPyTestCollector(cave)
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'notatest1.foo']
+
+For Python test setups the keyword ``extensions`` does not mean
+anything. Can we pass it anyway?
+
+   >>> collector = CustomPyTestCollector(cave, extensions=['.txt'])
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.txt', 'subdirfile.txt']
+
+We can :-) 
+
+Finally, let's see, whether we can change the defaults. This is
+valuable, if we want to define a reusable set of defaults::
+
+   >>> class CustomPyTestCollector(BasicTestCollector):
+   ...     handled_getters = [PythonTestGetter, CustomTestCollector]
+   ...     defaults = {'extensions':['.foo']}
+   >>> collector = CustomPyTestCollector(cave)
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'notatest1.foo']
+
+   >>> collector = CustomPyTestCollector(cave, extensions=['.txt'])
+   >>> get_basenames_from_suite(collector())
+   ['file1.py', 'file1.txt', 'subdirfile.txt']
+
+
+
+Motivation
+==========
 
 Normally, you might setup tests with z3c.testsetup calling
 ``z3c.testsetup.register_all_tests()`` or similar functions. If your
@@ -17,14 +393,14 @@ parameters and that have to be done for several setups, this approach
 might get cumbersome: you have to pass all parameters for every test
 setup module or to write your own wrapper functions, which will take
 all the time you saved with the usage of z3c.testsetup before. This
-is, where ``TestGetters`` come to help.
+is, where ``TestGetters`` and ``TestCollectors`` come to help.
 
-They should provide a more convenient 'framework' to setup customized
-setups, which are reusable.
+TestGetters and TestCollectors therefore should provide a more
+convenient 'framework' to setup customized setups, which are reusable
+and save you time.
 
 Normally, you register tests with z3c.testsetup like this::
 
-   >>> import z3c.testsetup
    >>> test_suite = z3c.testsetup.register_all_tests(
    ...     'z3c.testsetup.tests.cave')
 
@@ -44,26 +420,26 @@ Well, we can of course write our own function, that checks all passed
 parameters, filters/modifies them for every test type respectively and
 then does the testsetup for every single kind of test type 'manually'.
 
-This can become quite cumbersome.
+This, of course, can become quite cumbersome.
 
 The basic test getter can be used like this::
 
-   >>> from z3c.testsetup import TestGetter
-   >>> getter = TestGetter('z3c.testsetup.tests.cave')
-   >>> getter
-   <z3c.testsetup.testgetter.TestGetter object at 0x...>
+   >>> from z3c.testsetup import TestCollector
+   >>> collector = TestCollector('z3c.testsetup.tests.cave')
+   >>> collector
+   <z3c.testsetup.testgetter.TestCollector object at 0x...>
 
 The package can passed as string in 'dotted name' notation or as real
 package::
 
    >>> from z3c.testsetup.tests import cave
-   >>> getter = TestGetter(cave)
-   >>> getter
-   <z3c.testsetup.testgetter.TestGetter object at 0x...>
+   >>> collector = TestCollector(cave)
+   >>> collector
+   <z3c.testsetup.testgetter.TestCollector object at 0x...>
 
 If we call that getter, we should get a ``unittest.TestSuite``::
 
-   >>> suite = getter()
+   >>> suite = collector()
    >>> suite
    <unittest.TestSuite tests=[...]>
 
@@ -92,7 +468,7 @@ this::
 
 With a ``TestGetter`` you can archieve the same effect like this::
 
-   >>> class FooTestGetter(TestGetter):
+   >>> class FooTestGetter(TestCollector):
    ...     defaults = {'fextensions': ['.foo',]}
    >>> suite = FooTestGetter(cave)()
    >>> get_basenames_from_suite(suite)
@@ -100,3 +476,9 @@ With a ``TestGetter`` you can archieve the same effect like this::
 
 Despite the fact, that this notation is easier to read and understand
 than the function above, it is also easier to reuse.
+
+The main advantage of TestGetters might be, that they automatically
+parse the parameters set by parameters to the constructor or by
+looking up the defaults and skip all, that do not match the signature
+of the classes handled by them.
+
