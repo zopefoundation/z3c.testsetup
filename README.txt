@@ -2,11 +2,16 @@
 z3c.testsetup
 =============
 
-is a package that provides some convenience stuff to enable rapid
-doctest setup for Zope 3 components. It finds doctests throughout a
-whole file tree and registers them with sensible, modifiable
-defaults. It is written for developers, that whish to test their code
-with functional or unit doctests.
+is a package that provides some convenience stuff to enable rapid test
+setup for Zope 3 components and normal Python packages. Currently
+doctests (normal unit doctests and functional doctests) and usual
+Python tests made of ``unittest.TestCase`` definitions are supported.
+
+Doctests and test modules are found throughout a whole package and
+registered with sensible, modifiable defaults.
+
+Also support for reusable test setups is provided by so-called
+TestGetters and TestCollectors.
 
 Setting up doctests (contrary to *writing* those tests) can become
 cumbersome with Zope 3. In the environment you often have to prepare
@@ -16,12 +21,13 @@ and much more. Often this steps have to be done again and again.
 ``z3c.testsetup`` can shorten this work by setting sensible defaults
 for the most important aspects of test setups.
 
-Currently only doctests (contrary to 'real' Python tests) are
-supported.
-
 See `README.txt` in the src/z3c/testsetup directory for API
-documentation.
+documentation. There is also extensive documentation for (hopefully)
+every aspect of the package in this directory. See all the .txt files
+to learn more.
 
+Note, that this is alphaware! Do not use it in productive
+environments!
 
 Prerequisites
 -------------
@@ -66,5 +72,5 @@ you can test the installed package.
 Usage
 -----
 
-See `README.txt` in the src/z3c/testsetup directory for API
-documentation.
+See `README.txt` and the other .txt files in the src/z3c/testsetup
+directory for API documentation.
