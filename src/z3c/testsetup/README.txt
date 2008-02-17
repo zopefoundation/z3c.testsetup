@@ -1,6 +1,5 @@
-=============
 z3c.testsetup
-=============
+*************
 
 Easy testsetups for Zope 3 and Python projects.
 
@@ -29,7 +28,7 @@ appropriate .txt files in this directory.
 
 
 Basic Example
--------------
+=============
 
 The shortest test setup possible with ``z3c.testsetup`` looks like
 this::
@@ -63,7 +62,7 @@ as well as python tests in the package and register them.
 
 
 Customized Setups
------------------
+=================
 
 The `register_all_tests` function mentioned above accepts a bunch of
 keyword parameters::
@@ -427,7 +426,7 @@ be found, the other paramters tell how to setup single tests.
 
 
 How to mark testfiles/modules
------------------------------
+=============================
 
 To avoid non-wanted files and modules to be registered, you have to
 mark your wanted test files/modules with a special string explicitly:
