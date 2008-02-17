@@ -401,8 +401,9 @@ be found, the other paramters tell how to setup single tests.
     doctests. In the ZCML file you can for example register principals
     (users) usable by functional doctests.
 
-    By default an empty ZCML file of the z3c.testsetup package is
-    used (``ftesting.zcml``).
+    By default any `ftesting.zcml` file from the root of the given
+    package is taken. If this does not exist, an empty ZCML file of
+    the z3c.testsetup package is used (``ftesting.zcml``).
 
     This parameter has no effect, if also a ``layer`` parameter is
     given.
