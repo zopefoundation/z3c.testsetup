@@ -394,9 +394,34 @@ available:
 
 - `zcml_config`
 
+    The path to a ZCML file, often named `ftesting.zcml`. If a
+    package, provides a file `ftesting.zcml` in its root, then this is
+    taken as default. The ``cave_to_let`` package in the tests/
+    directory provides such an `ftesting.zcml`::
+
+       >>> from z3c.testsetup.tests import cave_to_let
+       >>> setup = FunctionalDocTestSetup(cave_to_let)
+       >>> pnorm(setup.layer.config_file)
+       '.../tests/cave_to_let/ftesting.zcml'
+
+    The fallback-solution is to take the layer from the
+    `z3c.testsetup` package::
+
+       >>> setup = FunctionalDocTestSetup(cave)
+       >>> pnorm(setup.layer.config_file)
+       '...z3c/testsetup/ftesting.zcml'
+
+    Now the fallback `ftesting.zcml` was taken, because the cave got
+    no own ftesting.zcml.
+
 - `layer_name`
 
+    A string. The default is ``FunctionalLayer``.
+
 - `layer`
+
+    A ``zope.app.testing.functional.ZCMLLayer`` object. Setting a
+    layer overrides `zcml_config` and `layer_name`.
 
 Their usage is explained in the next section.
 
@@ -404,7 +429,19 @@ Their usage is explained in the next section.
 Cutomizing the ZCML layer
 +++++++++++++++++++++++++
 
-The ZCML layer registered by default by ``z3c.testsetup`` is very
+The ZCML layer of a FunctionalDocTestSetup is searched in four steps:
+
+1) If a setup is called with `layer` parameter, take this.
+
+2) If a setup is called with `zcml_config` paramter, take this.
+
+3) If an `ftesting.zcml` can be found in the root of the package to
+   search, take this (default).
+
+4) Take the (very poor) ftesting.zcml of the z3c.testsetup package
+   (fallback).
+
+The ZCML layer registered as fallback by ``z3c.testsetup`` is very
 poor. In fact it only exists, to satisfy dependencies. In most cases,
 you would like to write your own ZCML configuration to register
 principals etc. during functional doctests.

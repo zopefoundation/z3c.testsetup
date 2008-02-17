@@ -1,8 +1,23 @@
-=======
 CHANGES
-=======
+*******
 
-0.1.0 (2008-02-15)
-------------------
+0.2 (unreleased)
+==================
+
+Feature Changes
+---------------
+
+* An `ftesting.zcml` in the root of a handled package is now taken as
+  default layer for functional doctests if it exists.
+
+Bug fixes
+---------
+
+
+0.1 (2008-02-15)
+================
+
+Feature changes
+---------------
 
 - Initial Release
