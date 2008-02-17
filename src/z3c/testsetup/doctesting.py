@@ -143,6 +143,13 @@ class FunctionalDocTestSetup(DocTestSetup):
                     zcml_config)
             self.layer = ZCMLLayer(zcml_config, self.package.__name__,
                                    layer_name)
+        elif layer is None:
+            # Look for ftesting.zcml in pkg-root...
+            pkg_ftesting_zcml = os.path.join(
+                os.path.dirname(self.package.__file__), 'ftesting.zcml')
+            if os.path.isfile(pkg_ftesting_zcml):
+                self.layer = ZCMLLayer(pkg_ftesting_zcml,
+                                       self.package.__name__, layer_name)
         # Passing a ready-for-use layer overrides layer specified by
         # zcml_config...
         if layer is not None:
