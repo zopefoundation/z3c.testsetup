@@ -1,6 +1,6 @@
-=============
+
 z3c.testsetup
-=============
+*************
 
 is a package that provides some convenience stuff to enable rapid test
 setup for Zope 3 components and normal Python packages. Currently
@@ -30,7 +30,7 @@ Note, that this is alphaware! Do not use it in productive
 environments!
 
 Prerequisites
--------------
+=============
 
 You need::
 
@@ -45,7 +45,7 @@ installation.
 
 
 Installation
-------------
+============
 
 From the root of the package run::
 
@@ -70,7 +70,8 @@ you can test the installed package.
 
 
 Usage
------
+=====
 
 See `README.txt` and the other .txt files in the src/z3c/testsetup
 directory for API documentation.
+
