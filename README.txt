@@ -75,3 +75,19 @@ Usage
 See `README.txt` and the other .txt files in the src/z3c/testsetup
 directory for API documentation.
 
+**Note:** ``z3c.testsetup`` does **not** fetch all packages you might
+  need to run your tests automatically by default. Namely the
+  ``zope.app.testing`` and ``zope.component`` packages are not
+  included if you require only z3c.testsetup in your `setup.py`.
+
+  This is, to make ``z3c.testsetup`` compatible with packages that
+  refuse collaboration when those packages are installed. For
+  instance including ``zope.component`` in the dependencies would
+  exclude Plone developers from using ``z3c.testsetup``.
+
+  Therefore you must include ``zope.component`` and
+  ``zope.app.testing`` to your ``requires`` list in `setup.py` if you
+  want to use Zope 3 tests. This, however, is done anyway by other
+  packages used in Zope 3 projects and in most cases you do not have
+  to care about this matter.
+
