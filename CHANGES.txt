@@ -1,6 +1,17 @@
 CHANGES
 *******
 
+0.2.2 (unreleased)
+==================
+
+Bug fixes
+---------
+
+* ``z3c.testsetup`` now does not require ``zope.component`` nor
+  ``zope.app.testing`` for usage in other packages. You must take
+  care, that those packages are available during tests, for example by
+  adding those packages to your `setup.py`.
+
 0.2.1 (2008-02-18)
 ==================
 
