@@ -4,6 +4,11 @@ import os
 def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
+tests_require = [
+    'zope.app.testing',
+    'zope.component',
+    ]
+
 long_description = (
     read('README.txt')
     + '\n\n'
@@ -20,7 +25,7 @@ long_description = (
 
 setup(
     name='z3c.testsetup',
-    version='0.2.1dev',
+    version='0.2.2dev',
     author='Uli Fouquet and the Zope Community',
     author_email='uli@gnufix.de',
     url = 'http://pypi.python.org/pypi/z3c.testsetup',
@@ -44,9 +49,9 @@ setup(
     include_package_data = True,
     zip_safe=False,
     install_requires=['setuptools',
-                      'zope.component',
                       'zope.testing',
-                      'zope.app.testing',
                       'martian',
                       ],
+    tests_require = tests_require,
+    extras_require = dict(test=tests_require),
 )
