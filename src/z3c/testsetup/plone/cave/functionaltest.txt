@@ -1,0 +1,10 @@
+Functional DocTesting
+*********************
+
+:Test-Layer: plone-functional
+
+A simple functional test::
+
+   >>> self.portal.getProperty('title')
+   'A Plone Site'
+
