@@ -145,5 +145,7 @@ def test_suite():
         suite.addTests(suiteFromFile(name))
     suite.addTest(testrunner_suite())
     if not '--ignore_dir=plone' in sys.argv:
-        suite.addTests(plone_suite())
+        if sys.version_info[0] == 2 and sys.version_info[1] < 5:
+            # Skip Plone tests if Python < 2.5
+            suite.addTests(plone_suite())
     return suite
