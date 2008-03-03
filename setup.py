@@ -7,6 +7,7 @@ def read(*rnames):
 tests_require = [
     'zope.app.testing',
     'zope.component',
+    'elementtree',
     ]
 
 long_description = (
