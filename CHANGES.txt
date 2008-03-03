@@ -4,6 +4,11 @@ CHANGES
 0.2.3 (unreleased)
 ==================
 
+Feature Changes
+---------------
+
+* Added experimental support for test setups with plone.
+
 
 0.2.2 (2008-02-29)
 ==================
