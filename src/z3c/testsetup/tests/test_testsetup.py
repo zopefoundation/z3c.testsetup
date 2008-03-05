@@ -3,7 +3,6 @@ import sys
 import gc
 import re
 import unittest
-from subprocess import Popen, PIPE
 from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
@@ -45,9 +44,7 @@ def get_basenames_from_suite(suite):
     basenames = [os.path.basename(x) for x in get_filenames_from_suite(suite)]
     basenames.sort()
     return basenames
-
-def get_output_from_cmd(*args):
-    return Popen(args, stdout=PIPE, stderr=PIPE).communicate()[0]
+    
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
@@ -109,43 +106,9 @@ def suiteFromFile(filename):
     suite.addTest(test)
     return suite
 
-def plone_suite():
-    def setUp(test):
-        test.globs['saved-sys-info'] = (
-            sys.path[:],
-            sys.argv[:],
-            sys.modules.copy(),
-            gc.get_threshold(),
-            )
-        test.globs['this_directory'] = os.path.split(__file__)[0]
-        test.globs['testrunner_script'] = __file__
-        test.globs['get_basenames_from_suite'] = get_basenames_from_suite
-        test.globs['get_output_from_cmd'] = get_output_from_cmd
-
-    def tearDown(test):
-        sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
-        gc.set_threshold(*test.globs['saved-sys-info'][3])
-        sys.modules.clear()
-        sys.modules.update(test.globs['saved-sys-info'][2])
-    suites = [
-        doctest.DocFileSuite(
-            os.path.join('plone', 'README.txt'),
-            package='z3c.testsetup',
-            setUp=setUp, tearDown=tearDown,
-            optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
-            checker=checker),
-        ]
-
-    suite = unittest.TestSuite(suites)
-    return suite
-
 def test_suite():
     suite = unittest.TestSuite()
     for name in TESTFILES:
-        suite.addTests(suiteFromFile(name))
+        suite.addTest(suiteFromFile(name))
     suite.addTest(testrunner_suite())
-    if not '--ignore_dir=plone' in sys.argv:
-        if sys.version_info[0] == 2 and sys.version_info[1] < 5:
-            # Skip Plone tests if Python < 2.5
-            suite.addTests(plone_suite())
     return suite

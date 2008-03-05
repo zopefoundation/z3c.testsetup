@@ -1,1 +1,0 @@
-from plonetesting import PloneTestCollector
