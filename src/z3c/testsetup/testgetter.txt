@@ -56,7 +56,7 @@ normal TestSetups. The dotted name variant works like this::
    >>> from z3c.testsetup import TestCollector
    >>> collector = TestCollector('z3c.testsetup.tests.cave')
    >>> collector
-   <z3c.testsetup.testgetter.TestCollector object at 0x...>
+   <z3c.testsetup.functional.testgetter.TestCollector object at 0x...>
 
 A main difference of TestGetters and TestCollectors to ordinary
 TestSetups is the set of supported/accepted keyword parameters: it
@@ -98,7 +98,7 @@ functional doctests (and not for unit doctests). The standard
 TestCollector now registers three TestGetters. This is stored in the
 ``handled_getters`` attribute of TestCollectors::
 
-   >>> from z3c.testsetup.testgetter import TestCollector
+   >>> from z3c.testsetup.functional.testgetter import TestCollector
    >>> getter_classes = TestCollector.handled_getters
    >>> getter_classes
    [<class '....FunctionalDocTestGetter'>,
@@ -210,7 +210,7 @@ a ``special_char``. The special char must be a single char and will
 distinguish parameters specifically passed for your wrapper from
 others. Let's create a TestGetter for functional doctest files::
 
-   >>> from z3c.testsetup.doctesting import FunctionalDocTestSetup
+   >>> from z3c.testsetup.functional.doctesting import FunctionalDocTestSetup
    >>> class CustomGetter(BasicTestGetter):
    ...     wrapped_class = FunctionalDocTestSetup
    ...     special_char = 'c'
@@ -427,7 +427,7 @@ The basic test getter can be used like this::
    >>> from z3c.testsetup import TestCollector
    >>> collector = TestCollector('z3c.testsetup.tests.cave')
    >>> collector
-   <z3c.testsetup.testgetter.TestCollector object at 0x...>
+   <z3c.testsetup.functional.testgetter.TestCollector object at 0x...>
 
 The package can passed as string in 'dotted name' notation or as real
 package::
@@ -435,7 +435,7 @@ package::
    >>> from z3c.testsetup.tests import cave
    >>> collector = TestCollector(cave)
    >>> collector
-   <z3c.testsetup.testgetter.TestCollector object at 0x...>
+   <z3c.testsetup.functional.testgetter.TestCollector object at 0x...>
 
 If we call that getter, we should get a ``unittest.TestSuite``::
 

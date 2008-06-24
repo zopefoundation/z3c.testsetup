@@ -34,11 +34,11 @@ testrunner::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     Total: 4 tests, 0 failures, 0 errors in ... seconds.
     False
 
@@ -68,11 +68,11 @@ string. This is enough information for a testrunner::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     Total: 3 tests, 0 failures, 0 errors in ... seconds.
     False
 
@@ -100,11 +100,11 @@ testrunner with this setup::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     Total: 3 tests, 0 failures, 0 errors in ... seconds.
     False
 
@@ -231,11 +231,11 @@ Running the testrunner with this setup will result in::
     ...     ]
     >>> sys.argv = 'test -f '.split()
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     False
 
 The same setup, but without a modified checker will deliver::
@@ -246,8 +246,8 @@ The same setup, but without a modified checker will deliver::
     ...     ]
     >>> sys.argv = 'test -f '.split()
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
     <BLANKLINE>
     <BLANKLINE>
     Failure in test ...checkertest.chk
@@ -271,7 +271,7 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
       Ran 2 tests with 1 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     True
 
 Note that checkers are currently only supported for functional
@@ -324,11 +324,11 @@ Here the ``os.path.basename`` function is registered under the name
     ...     ]
     >>> sys.argv = 'test -f '.split()
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     False
 
 The testrunner finished without any error. So the ``basename``
@@ -356,7 +356,7 @@ The same should happen, if we use the ``fglobs`` argument instead of
     ...     ]
     >>> sys.argv = 'test -f '.split()
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
     ...
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
     ...
@@ -434,11 +434,11 @@ to return a testsuite::
     >>> testrunner.run(defaults)
     Running unit tests:
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Running z3c.testsetup.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup.doctesting.FunctionalLayer in ... seconds.
+    Running z3c.testsetup....doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
     Total: 3 tests, 0 failures, 0 errors in ... seconds.
     False
 
