@@ -7,7 +7,8 @@ from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
 
-TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
+TESTFILES = ['basicsetup.txt',
+             os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt', 'unitdoctestsetup.txt', 'util.txt',
              'unittestsetup.txt']
 
