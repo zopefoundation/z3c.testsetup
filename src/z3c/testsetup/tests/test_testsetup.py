@@ -7,7 +7,8 @@ from zope.testing import doctest, cleanup, renormalizing
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
 
-TESTFILES = ['basicsetup.txt', 'functionaldoctestsetup.txt',
+TESTFILES = ['basicsetup.txt',
+             os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt', 'unitdoctestsetup.txt', 'util.txt',
              'unittestsetup.txt']
 
@@ -89,6 +90,43 @@ def testrunner_suite():
     suite = unittest.TestSuite(suites)
     return suite
 
+def zopeapptestingless_suite():
+    def setUp(test):
+        test.globs['saved-sys-info'] = (
+            sys.path[:],
+            sys.argv[:],
+            sys.modules.copy(),
+            gc.get_threshold(),
+            )
+        mlist = [x for x in sys.modules.keys()
+                 if 'zope.app' in x or 'z3c.testsetup' in x]
+        for m in mlist:
+            del sys.modules[m]
+        plist = [x for x in sys.path if 'zope.app' in x]
+        for p in plist:
+            del sys.path[sys.path.index(p)]
+
+        test.globs['this_directory'] = os.path.split(__file__)[0]
+        test.globs['testrunner_script'] = __file__
+        test.globs['get_basenames_from_suite'] = get_basenames_from_suite
+
+    def tearDown(test):
+        sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
+        gc.set_threshold(*test.globs['saved-sys-info'][3])
+        sys.modules.clear()
+        sys.modules.update(test.globs['saved-sys-info'][2])
+    suites = [
+        doctest.DocFileSuite(
+        'nozopeapptesting.txt',
+        package='z3c.testsetup',
+        setUp=setUp, tearDown=tearDown,
+        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
+        checker=checker),
+        ]
+
+    suite = unittest.TestSuite(suites)
+    return suite
+
 
 def suiteFromFile(filename):
     suite = unittest.TestSuite()
@@ -111,4 +149,5 @@ def test_suite():
     for name in TESTFILES:
         suite.addTest(suiteFromFile(name))
     suite.addTest(testrunner_suite())
+    suite.addTest(zopeapptestingless_suite())
     return suite
