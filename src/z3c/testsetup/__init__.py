@@ -2,6 +2,7 @@ from z3c.testsetup.doctesting import UnitDocTestSetup
 from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package
 try:
+    import zope.app.testing
     from z3c.testsetup.functional.doctesting import FunctionalDocTestSetup
     from z3c.testsetup.functional.testgetter import (
         TestCollector, DocTestCollector, PythonTestGetter)
