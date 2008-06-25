@@ -1,0 +1,80 @@
+===================================
+Testsetups without zope.app.testing
+===================================
+
+In some packages zope.app.testing might not be available or it is not
+wanted. This is important for ``z3c.testsetup`` because functional
+tests require that package for setup, etc. For example when it comes
+to plain Python packages. 
+
+The ``z3c.testsetup`` package in this case should provide us reduced
+sets of test collectors automatically and run all but the functional
+tests.
+
+To simulate this, we removed ``zope.app.testing`` from the registered
+modules in ``sys.modules`` before running this testfile and reloaded
+the z3c.testsetup package. The latter is necessary, because
+z3c.testsetup decides on import time, whether zope.app.testing is
+available and then provides different testgetters and -collectors.
+
+We can see this when we do a testsetup, that would normally include
+functional tests. Consider the example given in the
+``samplesetup_short0.py`` setup file, which is located in the ``cave``
+package of the ``tests``::
+
+    >>> import os
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests', 'cave')
+    >>> setupfile = os.path.join(cavepath, 'samplesetup_short0.py')
+    >>> print open(setupfile).read()
+    import z3c.testsetup
+    test_suite = z3c.testsetup.register_all_tests('z3c.testsetup.tests.cave')
+
+It is the same setup file, that we used in testrunner.txt (at the very
+beginning). Using it there (with ``zope.app.testing`` available), this
+setup found four (successful) tests, of which two were functional
+ones.
+
+The only difference now is, that we have no ``zope.app.testing`` and
+therefore no machinery for functional tests. We can check that
+beforehand by looking at the testgetters defined in the general test
+collector::
+
+    >>> import z3c.testsetup
+    >>> from z3c.testsetup import TestCollector
+    >>> tc = z3c.testsetup.TestCollector.handled_getters
+    >>> from pprint import pprint
+    >>> pprint(sorted([str(x) for x in tc]))
+    ["<class 'z3c.testsetup.testgetter.PythonTestGetter'>",
+     "<class 'z3c.testsetup.testgetter.UnitDocTestGetter'>"]
+
+What is missing here, is the FunctionalDocTestGetter that normally
+appears here. As a result there will be less tests found and run by
+the testrunner::
+
+    >>> import sys
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^samplesetup_short0$',
+    ...     ]
+    >>> sys.argv = 'test '.split()
+    >>> from zope.testing import testrunner
+    >>> testrunner.run(defaults)
+    Running unit tests:
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
+    False
+
+As we can see, only unit test were run and no functional ones anymore.
+
+After making zope.app.testing available again, we should get a
+different result::
+
+    >>> sys.path[:] = globals()['saved-sys-info'][0]
+    >>> sys.modules.update(globals()['saved-sys-info'][2])
+    >>> z3c.testsetup = __import__('z3c.testsetup')
+    >>> from z3c.testsetup import TestCollector
+    >>> tc = TestCollector.handled_getters
+    >>> from pprint import pprint
+    >>> pprint(sorted([str(x) for x in tc]))
+    ["<class 'z3c.testsetup.functional.testgetter.FunctionalDocTestGetter'>",
+     "<class 'z3c.testsetup.testgetter.PythonTestGetter'>",
+     "<class 'z3c.testsetup.testgetter.UnitDocTestGetter'>"]

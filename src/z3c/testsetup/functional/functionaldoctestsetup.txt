@@ -55,7 +55,7 @@ package. This can be simply archieved by doing::
    >>> from z3c.testsetup import FunctionalDocTestSetup
    >>> setup = FunctionalDocTestSetup('z3c.testsetup.tests.cave')
    >>> setup
-   <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>
+   <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>
 
 Apparently the package to handle was passed as a string in 'dotted
 name' notation. We could also pass the package itself, if it was
@@ -64,7 +64,7 @@ loaded before::
    >>> from z3c.testsetup.tests import cave
    >>> setup = FunctionalDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>   
+   <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>   
 
 This setup is ready for use::
 
@@ -145,7 +145,7 @@ using the default set of options, the following values are set::
   
      >>> setup.setUp
      <bound method FunctionalDocTestSetup.setUp of
-      <z3c.testsetup.doctesting.FunctionalDocTestSetup object at 0x...>>
+      <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>>
 
 * The setup-instance's `globs` attribute is passed as the `globs`
   parameter. By default `globs` is a dictionary of functions, that
@@ -409,7 +409,7 @@ available:
 
        >>> setup = FunctionalDocTestSetup(cave)
        >>> pnorm(setup.layer.config_file)
-       '...z3c/testsetup/ftesting.zcml'
+       '...z3c/testsetup/functional/ftesting.zcml'
 
     Now the fallback `ftesting.zcml` was taken, because the cave got
     no own ftesting.zcml.
@@ -476,7 +476,7 @@ and create a functional doctest setup with it::
    ...     zcml_config = 'sampleftesting.zcml',
    ...     layer = mylayer)
    >>> pnorm(setup_w_custom_layer.layer.config_file)
-   '.../testsetup/ftesting.zcml'
+   '.../testsetup/functional/ftesting.zcml'
 
 As we can see, the `mylayer` config file is registered and the
 `zcml_config` parameter was skipped.
