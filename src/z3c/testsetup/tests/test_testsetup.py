@@ -106,8 +106,6 @@ def zopeapptestingless_suite():
         for p in plist:
             del sys.path[sys.path.index(p)]
 
-        import z3c.testsetup
-        z3c.testsetup = reload(z3c.testsetup)
         test.globs['this_directory'] = os.path.split(__file__)[0]
         test.globs['testrunner_script'] = __file__
         test.globs['get_basenames_from_suite'] = get_basenames_from_suite
