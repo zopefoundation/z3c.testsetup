@@ -1,0 +1,36 @@
+Setting up tests in packages __init__.py
+----------------------------------------
+
+We can also setup tests in packages' __init__ modules. We defined such
+a test setup in the cave package::
+
+    >>> import os
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 'cave')
+
+The setup looks like this::
+
+    >>> setupfile = os.path.join(cavepath, 'tests', '__init__.py')
+    >>> print open(setupfile).read()
+    # this is a package that contains a testsetup.
+    #
+    # To let it be found by the testrunner, you must call the testrunner
+    # with the approriate options set.
+    import z3c.testsetup
+    test_suite = z3c.testsetup.register_all_tests('z3c.testsetup.tests.cave')
+
+Now we run this test, requiring `__init__` as the test-file-pattern
+for the testrunner::
+
+    >>> import sys
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^tests$',
+    ...     '--test-file-pattern', '__init__',
+    ...     ]
+    >>> sys.argv = 'test '.split()
+    >>> from zope.testing import testrunner
+    >>> testrunner.run(defaults)
+    Running unit tests:
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
+    False
+

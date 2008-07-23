@@ -10,7 +10,9 @@ from z3c.testsetup.util import get_package
 TESTFILES = ['basicsetup.txt',
              os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt', 'unitdoctestsetup.txt', 'util.txt',
-             'unittestsetup.txt']
+             'unittestsetup.txt',
+             os.path.join('tests', 'setupininit.txt'),
+             ]
 
 def pnorm(path):
     """Normalization of paths to use forward slashes. This is needed
