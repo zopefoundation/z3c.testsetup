@@ -41,7 +41,12 @@ class BasicTestGetter(object):
             self.defaults = kw['defaults']
             del kw['defaults']
         self.settings = kw
-        self.package = get_package(pkg_or_dotted_name)
+        try:
+            self.package = get_package(pkg_or_dotted_name)
+        except ImportError:
+            # This might happen when we try to resolve the calling script.
+            self.package = None
+            pass
         self.initialize()
         return
 
@@ -57,6 +62,8 @@ class BasicTestGetter(object):
         """
         self.filterKeywords()
         suite = unittest.TestSuite()
+        if self.package is None:
+            return suite
         suite.addTest(
             self.wrapped_class(
                 self.package, **self.settings).getTestSuite()
@@ -119,6 +126,8 @@ class BasicTestCollector(BasicTestGetter):
         """
         suite = unittest.TestSuite()
         for getter_cls in self.handled_getters:
+            if self.package is None:
+                continue
             getter = getter_cls(self.package, **self.settings)
             # Merge our defaults with target defaults...
             target_defaults = getattr(getter, 'defaults', {})
