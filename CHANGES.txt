@@ -1,8 +1,8 @@
 CHANGES
 *******
 
-0.2.3 (unreleased)
-==================
+0.3 (unreleased)
+================
 
 Bug fixes
 ---------
@@ -13,6 +13,13 @@ Bug fixes
   ``register_all_tests`` from ``z3c.testsetup``.
 
 * Broken modules are ignored while scanning for tests.
+
+* Modules are not loaded anymore if their source code does not provide
+  a suitable marker string. For this to work, the default checker
+  method ``isTestModule`` now expects a ``martian.scan.ModuleInfo`` as
+  argument and not a real module. Module infos can be easily created
+  by using ``module_info_from_dotted_name`` and
+  ``module_info_from_package`` from the ``martian.scan`` package.
 
 
 0.2.2 (2008-02-29)
