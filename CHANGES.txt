@@ -12,6 +12,8 @@ Bug fixes
   cannot register functional tests, which is determined when loading
   ``register_all_tests`` from ``z3c.testsetup``.
 
+* Broken modules are ignored while scanning for tests.
+
 
 0.2.2 (2008-02-29)
 ==================
