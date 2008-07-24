@@ -59,13 +59,24 @@ class UnitTestSetup(BasicTestSetup):
                 break
         return len(regexp_list) == len(found_list)
 
-    def isTestModule(self, module):
+    def isTestModule(self, module_info):
         """Return ``True`` if a module matches our expectations for a
         test file.
 
         This is the case if it got a module docstring which matches
         each of our regular expressions.
         """
+        # Do not even try to load modules, that have no marker string.
+        if not self.fileContains(
+            module_info.path, self.regexp_list):
+            return False
+        module = None        
+        try:
+            module = module_info.getModule()
+        except ImportError:
+            # Broken modules cannot provide executable tests.
+            # We might throw out a warning here...
+            return False
         docstr = getattr(module, '__doc__', '')
         if not self.docstrContains(docstr, self.regexp_list):
             return False
@@ -79,15 +90,11 @@ class UnitTestSetup(BasicTestSetup):
         for submod_info in info.getSubModuleInfos():
             if submod_info.isPackage():
                 result.extend(self.getModules(submod_info.getModule()))
-            else:
-                module = None
-                try:
-                    module = submod_info.getModule()
-                except ImportError:
-                    # Broken modules cannot provide executable tests.
-                    continue
-                if self.pfilter_func(module):
-                    result.append(module)
+                continue
+            if not self.pfilter_func(submod_info):
+                continue
+            module = submod_info.getModule()
+            result.append(module)
         return result
         
 
