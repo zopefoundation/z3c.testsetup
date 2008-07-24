@@ -80,7 +80,12 @@ class UnitTestSetup(BasicTestSetup):
             if submod_info.isPackage():
                 result.extend(self.getModules(submod_info.getModule()))
             else:
-                module = submod_info.getModule()
+                module = None
+                try:
+                    module = submod_info.getModule()
+                except ImportError:
+                    # Broken modules cannot provide executable tests.
+                    continue
                 if self.pfilter_func(module):
                     result.append(module)
         return result
