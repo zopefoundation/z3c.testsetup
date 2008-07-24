@@ -169,13 +169,14 @@ marker. We can get the list of test files using
 The ``isTestModule()`` method of our setup object did the filtering
 here::
 
-    >>> setup.isTestModule(testfile_list[0])
+    >>> from martian.scan import module_info_from_module
+    >>> setup.isTestModule(module_info_from_module(testfile_list[0]))
     True
 
 The `notatest2` module in `cave` does not contain a unit test marker::
 
     >>> from z3c.testsetup.tests.cave import notatest2
-    >>> setup.isTestModule(notatest2)
+    >>> setup.isTestModule(module_info_from_module(notatest2))
     False
 
 The `regexp_list` attribute of a ``UnitTestSetup`` contains a

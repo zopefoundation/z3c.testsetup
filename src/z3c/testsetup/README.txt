@@ -191,8 +191,8 @@ be found, the other paramters tell how to setup single tests.
 
     We define a simple custom filter::
 
-      >>> def custom_module_filter(module):
-      ...     return 'Tests with real' in str(module.__doc__)
+      >>> def custom_module_filter(module_info):
+      ...     return 'Tests with real' in open(module_info.path, 'r').read()
 
     that checks for a certain string in modules' doc strings.
 

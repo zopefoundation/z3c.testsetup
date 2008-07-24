@@ -185,14 +185,15 @@ marker. We can get the list of modules using `getModules()``::
 The ``isTestModule()`` method of our setup object did the filtering
 here::
 
-    >>> setup.isTestModule(module_list[0])
+    >>> from martian.scan import module_info_from_module
+    >>> setup.isTestModule(module_info_from_module(module_list[0]))
     True
 
 The module ``notatest2`` of the ``cave`` package does not contain a
 Python test marker::
 
     >>> from z3c.testsetup.tests.cave import notatest2
-    >>> setup.isTestModule(notatest2)
+    >>> setup.isTestModule(module_info_from_module(notatest2))
     False
 
 The ``regexp_list`` attribute of a ``UnitTestSetup`` contains a list
@@ -253,13 +254,16 @@ module. That's what the ``pfilter_func`` parameter is for::
     <bound method UnitTestSetup.isTestModule of ...>
 
 As we see, the ``isTestModule`` method is used. You can pass another
-method that takes a module as only parameter and returns ``True`` or
-``False``. Let's create such a function::
+method that takes a module info as only parameter and returns ``True``
+or ``False``. A module info can be created by using
+``module_info_from_dotted_name`` and ``module_info_from_module``
+functions in the ``martian.scan`` module. Let's create such a
+function::
 
     >>> import os
-    >>> def custom_filter(module):
-    ...     modfile = os.path.basename(module.__file__)
-    ...     if modfile.startswith('notatest'):
+    >>> def custom_filter(mod_info):
+    ...     modname = mod_info.dotted_name.split('.')[-1]
+    ...     if modname.startswith('notatest'):
     ...         return True
     ...     return False
 
