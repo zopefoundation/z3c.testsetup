@@ -104,4 +104,84 @@ neighter appear::
    ['sparkles', 'temperature']
 
 
+get_marker_from_string
+----------------------
+
+Looks for a markerstring in a string and returns the found value or
+`None`. A markerstring has the form::
+
+  :<Tag>: <Value>
+
+We define a marker string::
+
+   >>> markerstring = """Some text
+   ... 
+   ... :Test-Layer: foo
+   ...
+   ... Some other text
+   ... """
+
+Now let's lookup the value of the marker `Test-Layer`::
+
+   >>> from z3c.testsetup.util import get_marker_from_string
+   >>> get_marker_from_string('Test-Layer', markerstring)
+   u'foo'
+
+Another marker cannot be found::
+
+   >>> get_marker_from_string('Not-there', markerstring) is None
+   True
+
+It does not matter, whether the marker string starts at the beginning
+of a line. Also several whitespaces between the marker string and the
+applied value are accepted. The tag in the marker can be written with
+upper or lower case letters or both in a wild mix::
+
+   >>> markerstring = """Some text
+   ... 
+   ...    :TeSt-lAyEr:        foo
+   ...
+   ... Some other text
+   ... """
+   >>> get_marker_from_string('test-Layer', markerstring)
+   u'foo'
+
+
+get_marker_from_file
+--------------------
+
+Looks for a markerstring  in a file and returns the found value or
+`None`. A markerstring has the form::
+
+  :<Tag>: <Value>
+
+We define a marker string and put it into a file::
+
+   >>> markerstring = """Some text
+   ... 
+   ...    :TeSt-lAyEr:        foo
+   ...
+   ... Some other text
+   ... """
+
+   >>> open('tempfile', 'w').writelines(markerstring)
+   >>> import os
+   >>> os.path.isfile('tempfile')
+   True
+
+Now we lookup the marker string from this file::
+
+   >>> from z3c.testsetup.util import get_marker_from_file
+   >>> get_marker_from_file('tEsT-LaYeR', 'tempfile')
+   u'foo'
+
+If the string does not exist, we get `None`::
+
+   >>> get_marker_from_file('Senseless', 'tempfile') is None
+   True
+   
+We remove the file to clean up::
+
+   >>> os.unlink('tempfile')
+
 """
