@@ -82,7 +82,7 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        'testrunner.txt', 'README.txt', 'testgetter.txt',
+        'testrunner.txt', 'README.txt', 'testgetter.txt', 'layerrunner.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
