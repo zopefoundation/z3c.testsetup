@@ -17,7 +17,7 @@ import unittest
 import os.path
 from zope.testing import doctest, cleanup
 from z3c.testsetup.base import BasicTestSetup
-from z3c.testsetup.util import get_package
+from z3c.testsetup.util import get_package, get_marker_from_file
 
 class DocTestSetup(BasicTestSetup):
     """A test setup for doctests."""
@@ -78,13 +78,13 @@ class UnitDocTestSetup(DocTestSetup):
         docfiles = self.getDocTestFiles(package=self.package)
         suite = unittest.TestSuite()
         for name in docfiles:
+            layerdef = get_marker_from_file('Test-Layerdef', name)
             if os.path.isabs(name):
                 # We get absolute pathnames, but we need relative ones...
                 common_prefix = os.path.commonprefix([self.package.__file__,
                                                       name])
                 name = name[len(common_prefix):]
-            suite.addTest(
-                doctest.DocFileSuite(
+            test = doctest.DocFileSuite(
                 name,
                 package=self.package,
                 setUp=self.setUp,
@@ -92,6 +92,8 @@ class UnitDocTestSetup(DocTestSetup):
                 globs=self.globs,
                 optionflags=self.optionflags,
                 **self.additional_options
-                ))
+                )
+            if layerdef is not None:
+                test.layer = layerdef
+            suite.addTest(test)
         return suite
-
