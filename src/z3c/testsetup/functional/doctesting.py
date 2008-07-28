@@ -20,7 +20,7 @@ from zope.app.testing.functional import (
     HTTPCaller, getRootFolder, sync, ZCMLLayer, FunctionalDocFileSuite,
     FunctionalTestSetup)
 from z3c.testsetup.doctesting import DocTestSetup
-from z3c.testsetup.util import get_package
+from z3c.testsetup.util import get_package, get_marker_from_file
 
 class FunctionalDocTestSetup(DocTestSetup):
     """A functional test setup for packages.
@@ -87,6 +87,7 @@ class FunctionalDocTestSetup(DocTestSetup):
 
     def suiteFromFile(self, name):
         suite = unittest.TestSuite()
+        layer = get_marker_from_file('Test-Layerdef', name)
         if os.path.isabs(name):
             # We get absolute pathnames, but we need relative ones...
             common_prefix = os.path.commonprefix([self.package.__file__, name])
@@ -101,6 +102,8 @@ class FunctionalDocTestSetup(DocTestSetup):
             **self.additional_options
             )
         test.layer = self.layer
+        if layer is not None:
+            test.layer = layer
         suite.addTest(test)
         return suite
 
