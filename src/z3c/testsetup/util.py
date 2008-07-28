@@ -51,3 +51,30 @@ def get_keyword_params(cls, method_name):
         if varkw is None:
             break
     return list(result)
+
+def get_marker_from_string(marker, text):
+    """Looks for a markerstring  in a string.
+
+    Returns the found value or `None`. A markerstring has the form::
+
+     :<Tag>: <Value>
+    """
+    marker = ":%s:" % marker.lower()
+    for line in text.split('\n'):
+        line = line.strip()
+        if not line.lower().startswith(marker):
+            continue
+        result = line[len(marker):].strip()
+        return unicode(result)
+    return None
+
+def get_marker_from_file(marker, filepath):
+    """Looks for a markerstring  in a file.
+
+    Returns the found value or `None`. A markerstring has the form::
+
+     :<Tag>: <Value>
+
+    """
+    return get_marker_from_string(marker, open(filepath, 'r').read())
+
