@@ -1,0 +1,14 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   i18n_domain="zope"
+   >
+
+  <!--
+      This is only a dummy layer to enable local tests and avoid
+      dependencies from packages we do not need badly.
+
+      For tests that include testbrowser tests and similar, write your
+      own ftesting.zcml with registration of principals etc.
+  -->
+
+</configure>
