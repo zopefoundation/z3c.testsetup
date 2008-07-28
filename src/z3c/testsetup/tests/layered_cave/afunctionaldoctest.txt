@@ -1,0 +1,10 @@
+This is a function doctest
+==========================
+
+This doctest will be applied to a ZCML layer.
+
+:Test-Layer: functional
+:Test-Layerdef: z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1
+
+  >>> 1+1
+  2
