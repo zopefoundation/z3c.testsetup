@@ -7,6 +7,8 @@ CHANGES
 Bug fixes
 ---------
 
+* Updated doctest examples to reflect new ``zope.testing`` behaviour.
+
 * ``z3c.testsetup`` really shouldn't require ``zope.app.testing`` any
   more. If you use it in an environment without this package, then you
   cannot register functional tests, which is determined when loading
