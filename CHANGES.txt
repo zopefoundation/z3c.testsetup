@@ -4,6 +4,10 @@ CHANGES
 0.2.4 (unreleased)
 ==================
 
+Bug fixes
+---------
+
+* Updated doctest examples to reflect new ``zope.testing`` behaviour.
 
 0.2.3 (2008-06-25)
 ==================
