@@ -59,8 +59,11 @@ the testrunner::
     >>> sys.argv = 'test '.split()
     >>> from zope.testing import testrunner
     >>> testrunner.run(defaults)
-    Running unit tests:
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Set up zope.testing.testrunner.layer.UnitTests in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
+    Tearing down left over layers:
+      Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
     False
 
 As we can see, only unit test were run and no functional ones anymore.
