@@ -4,6 +4,7 @@ import gc
 import re
 import unittest
 from zope.testing import doctest, cleanup, renormalizing
+from zope.testing.testrunner.tests import checker
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
 
@@ -55,13 +56,7 @@ def setUpZope(test):
 def cleanUpZope(test):
     cleanup.cleanUp()
 
-checker = renormalizing.RENormalizing([
-    # str(Exception) has changed from Python 2.4 to 2.5 (due to
-    # Exception now being a new-style class).  This changes the way
-    # exceptions appear in traceback printouts.
-    (re.compile(r"ConfigurationExecutionError: <class '([\w.]+)'>:"),
-                r'ConfigurationExecutionError: \1:'),
-    ])
+
 
 def testrunner_suite():
     def setUp(test):
@@ -82,7 +77,7 @@ def testrunner_suite():
         sys.modules.update(test.globs['saved-sys-info'][2])
     suites = [
         doctest.DocFileSuite(
-        'testrunner.txt', 'README.txt', 'testgetter.txt', 'layerrunner.txt',
+        'README.txt', 'testgetter.txt', 'testrunner.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,

@@ -27,10 +27,18 @@ for the testrunner::
     ...     '--tests-pattern', '^tests$',
     ...     '--test-file-pattern', '__init__',
     ...     ]
-    >>> sys.argv = 'test '.split()
+    >>> sys.argv = [sys.argv[0]]
     >>> from zope.testing import testrunner
     >>> testrunner.run(defaults)
-    Running unit tests:
+    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup...doctesting.FunctionalLayer in ... seconds.
       Ran 2 tests with 0 failures and 0 errors in ... seconds.
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
+      Running in a subprocess.
+      Set up zope.testing.testrunner.layer.UnitTests in ... seconds.
+      Ran 2 tests with 0 failures and 0 errors in ... seconds.
+      Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
+    Total: 4 tests, 0 failures, 0 errors in ... seconds.
     False
 
