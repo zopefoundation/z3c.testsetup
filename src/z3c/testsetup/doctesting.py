@@ -18,7 +18,8 @@ import os.path
 from os import listdir
 from zope.testing import doctest, cleanup
 from z3c.testsetup.base import BasicTestSetup
-from z3c.testsetup.util import get_package, get_marker_from_file, warn
+from z3c.testsetup.util import (get_package, get_marker_from_file, warn,
+                                get_attribute)
 
 class DocTestSetup(BasicTestSetup):
     """A test setup for doctests."""
@@ -51,13 +52,24 @@ class SimpleDocTestSetup(DocTestSetup):
         suite = unittest.TestSuite()
         for name in docfiles:
             layerdef = get_marker_from_file('layer', name)
+
             zcml_layer = self.getZCMLLayer(name, 'zcml-layer')
             if zcml_layer is not None:
                 layerdef = zcml_layer
+
             functional_zcml_layer = self.getZCMLLayer(
                 name, 'functional-zcml-layer')
             if functional_zcml_layer is not None:
                 layerdef = functional_zcml_layer
+
+            setup = get_marker_from_file('setup', name) or self.setUp
+            if setup is not None and isinstance(setup, basestring):
+                setup = get_attribute(setup)
+
+            teardown = get_marker_from_file('teardown', name) or self.tearDown
+            if teardown is not None and isinstance(teardown, basestring):
+                teardown = get_attribute(teardown)
+
             if os.path.isabs(name):
                 # We get absolute pathnames, but we need relative ones...
                 common_prefix = os.path.commonprefix([self.package.__file__,
@@ -70,8 +82,8 @@ class SimpleDocTestSetup(DocTestSetup):
             test = suite_creator(
                 name,
                 package=self.package,
-                setUp=self.setUp,
-                tearDown=self.tearDown,
+                setUp=setup,
+                tearDown=teardown,
                 globs=self.globs,
                 optionflags=self.optionflags,
                 **self.additional_options
@@ -102,7 +114,6 @@ Please include `zope.app.testing` in your project setup to run this testfile.
             DefaultZCMLLayer.__module__,
             '%s [%s]' % (DefaultZCMLLayer.__name__, zcml_file))
         return layer
-
 
     def isTestFile(self, filepath):
         """Return ``True`` if a file matches our expectations for a
