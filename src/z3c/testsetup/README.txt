@@ -125,8 +125,8 @@ be found, the other paramters tell how to setup single tests.
 
       >>> suite = test_suite()
       >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt',
-      'subdirfile.txt']
+      ['file1.py', 'file1.txt', 'file1.txt', 'file1.txt', 'subdirfile.txt',
+      'subdirfile.txt', 'subdirfile.txt']
 
    Compared with the first call to `register_all_tests` we got some
    strange results here: there is a '.py' file, which should have been
@@ -179,7 +179,8 @@ be found, the other paramters tell how to setup single tests.
 
       >>> suite = test_suite()
       >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'subdirfile.txt']
+      ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt', 
+       'subdirfile.txt']
 
 
 - **pfilter_func**:

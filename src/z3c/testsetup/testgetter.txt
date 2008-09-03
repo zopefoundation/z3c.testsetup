@@ -103,14 +103,15 @@ TestCollector now registers three TestGetters. This is stored in the
    >>> getter_classes
    [<class '....FunctionalDocTestGetter'>,
     <class '....UnitDocTestGetter'>,
-    <class '....PythonTestGetter'>]
+    <class '....PythonTestGetter'>,
+    <class '....SimpleDocTestGetter'>]
 
 Each of this classes should provide a 'signature char'. This is stored
 as the ``special_char`` attribute of a ``TestGetter`` class::
 
    >>> [(x.__name__, x.special_char) for x in getter_classes]
    [('FunctionalDocTestGetter', 'f'), ('UnitDocTestGetter', 'u'),
-    ('PythonTestGetter', 'p')]
+    ('PythonTestGetter', 'p'), ('SimpleDocTestGetter', 'd')]
 
 As we can see, functional doc test parameters are marked with a
 preceeding `f`. So we use 'fextensions' to mark the 'extensions'
