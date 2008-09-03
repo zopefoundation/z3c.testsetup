@@ -3,6 +3,8 @@
    i18n_domain="zope"
    >
 
+  <include package="zope.app.zcmlfiles" />
+
   <!--
       This is only a dummy layer to enable local tests and avoid
       dependencies from packages we do not need badly.
