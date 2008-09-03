@@ -2,10 +2,10 @@ import os
 from zope.app.testing.functional import ZCMLLayer
 
 def setUp(test):
-    print "Setting up ", test
+    print "    Custom setUp for ", test
 
 def tearDown(test):
-    print "Tearing down ", test
+    print "    Custom tearDown for ", test
 
 # We define a ZCML test layer. ZCML layers are special as they define
 # some setup code for creation of empty ZODBs and more. If you only
