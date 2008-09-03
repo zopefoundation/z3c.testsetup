@@ -8,5 +8,5 @@ We didn't define a real environment in ftesting.zcml, but in
 functional tests certain often needed functions should be available
 automatically::
 
-  >>> getRootFolder
-  <function getRootFolder at 0x...>
+  >>> getRootFolder()
+  <zope.app.folder.folder.Folder object at 0x...>
