@@ -105,6 +105,8 @@ Let's start the testrunner and see what it gives::
     Running zope.testing.testrunner.layer.UnitTests tests:
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+        Custom setUp for  <DocTest doctest05.txt from ... (1 example)>
+        Custom tearDown for  <DocTest doctest05.txt from ... (1 example)>
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
     Total: 7 tests, 0 failures, 0 errors in N.NNN seconds.
