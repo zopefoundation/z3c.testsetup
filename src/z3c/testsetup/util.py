@@ -13,6 +13,7 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
+import sys
 from inspect import getmro, ismethod, getargspec
 from martian.scan import resolve
 
@@ -80,3 +81,13 @@ def get_marker_from_file(marker, filepath):
 
 def warn(text):
     print "Warning: ", text
+
+def import_name(name):
+    __import__(name)
+    return sys.modules[name]
+
+def get_attribute(name):
+    name, attr = name.rsplit('.', 1)
+    obj = import_name(name)
+    return getattr(obj, attr)
+
