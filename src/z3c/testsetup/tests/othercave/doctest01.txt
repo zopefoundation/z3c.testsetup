@@ -1,0 +1,9 @@
+A doctest
+=========
+
+:doctest:
+
+This is a simple doctest.
+
+  >>> 1+1
+  2
