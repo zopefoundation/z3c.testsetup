@@ -29,6 +29,14 @@ to learn more.
 Note, that this is alphaware! Do not use it in productive
 environments!
 
+**Important Note:**
+
+  This version of ``z3c.testsetup`` uses a new set of testfile markers
+  than previous releases did. If you are still using `Test-Layer:
+  unit` or similar, please read the README2.txt in the source directory
+  carefully to learn how to switch to the new names.
+
+
 Prerequisites
 =============
 
