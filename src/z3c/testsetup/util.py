@@ -78,3 +78,5 @@ def get_marker_from_file(marker, filepath):
     """
     return get_marker_from_string(marker, open(filepath, 'r').read())
 
+def warn(text):
+    print "Warning: ", text
