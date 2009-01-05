@@ -71,3 +71,24 @@ class UnitLayer1(object):
         layer. It is optional.
         """
         print "    Running testTearDown of UnitLayer1"
+
+class UnitLayer2(UnitLayer1):
+    """This Layer inherits ``UnitLayer1``.
+
+    This way we define nested setups. During test runs the testrunner
+    will first call the setup methods of ``UnitTest1`` and then those
+    of this class. Handling of teardown-methods will happen the other
+    way round.
+    """
+
+    @classmethod
+    def setUp(self):
+        pass
+
+    @classmethod
+    def testSetUp(self):
+        print "    Running testSetUp of UnitLayer2"
+
+    @classmethod
+    def testTearDown(self):
+        print "    Running testTearDown of UnitLayer2"

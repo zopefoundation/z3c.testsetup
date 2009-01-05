@@ -2,7 +2,7 @@ A doctests with layer
 =====================
 
 :doctest:
-:layer: z3c.testsetup.tests.othercave.testing.UnitLayer1
+:layer: z3c.testsetup.tests.othercave.testing.UnitLayer2
 
   >>> 1+1
   2
