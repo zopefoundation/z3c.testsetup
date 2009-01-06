@@ -57,10 +57,6 @@ def print_file(path):
     contents = open(path, 'r').read()
     print '|  ' + '\n|  '.join(contents.split('\n'))
     return
-    print 
-    contents = contents.split('\n')
-    return '\n|'.join(contents)
-    return
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
