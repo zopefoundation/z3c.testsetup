@@ -48,7 +48,19 @@ def get_basenames_from_suite(suite):
     basenames = [os.path.basename(x) for x in get_filenames_from_suite(suite)]
     basenames.sort()
     return basenames
-    
+
+def print_file(path):
+    """Prints file contents with leading bar on each line.
+
+    This way we prevent the testrunner to test the output.
+    """
+    contents = open(path, 'r').read()
+    print '|  ' + '\n|  '.join(contents.split('\n'))
+    return
+    print 
+    contents = contents.split('\n')
+    return '\n|'.join(contents)
+    return
 
 def setUpZope(test):
     zope.component.eventtesting.setUp(test)
@@ -69,6 +81,7 @@ def testrunner_suite():
         test.globs['this_directory'] = os.path.split(__file__)[0]
         test.globs['testrunner_script'] = __file__
         test.globs['get_basenames_from_suite'] = get_basenames_from_suite
+        test.globs['print_file'] = print_file
 
     def tearDown(test):
         sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
@@ -133,7 +146,8 @@ def suiteFromFile(filename):
                                 tearDown=cleanUpZope,
                                 globs={'pnorm':pnorm,
                                        'get_basenames_from_suite':
-                                       get_basenames_from_suite},
+                                       get_basenames_from_suite,
+                                       'print_file':print_file,},
                                 checker=checker,
                                 optionflags=doctest.ELLIPSIS+
                                 doctest.NORMALIZE_WHITESPACE)
