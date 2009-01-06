@@ -148,7 +148,7 @@ want developers to be explicit about that).
 
 The 
 
- `:layer:`
+ `:layer: <DOTTED_NAME_OF_LAYER_DEF>`
 
 marker then tells, where the testsetup machinery can
 find the layer definition. It is given in dotted name notation.
@@ -235,4 +235,50 @@ during test runs the appropriate setup and teardown methods are called
 More about test layers can be found at the documentation of
 `testrunner layers API
 <http://apidoc.zope.org/++apidoc++/Code/zope/testing/testrunner-layers-api.txt/index.html>`_.
+
+Specifying a ZCML file
+======================
+
+When it comes to integration or functional tests, we need to specify a
+ZCML file to which configures the test environment for us. We can do
+that using the
+
+  `:zcml-layer: <ZCML-file-name>`
+
+marker. It expects a ZCML filename as argument and sets up a
+ZCML-layered testsuite for us. An example setup might look like so (see
+``tests/othercave/doctest03.txt``)::
+
+  A doctest with a ZCML-layer
+  ===========================
+
+  :doctest:
+  :zcml-layer: ftesting.zcml
+
+    >>> 1+1
+    2
+
+.. note:: Requires ``zope.app.testing``
+
+   The ``zope.app.testing`` package must be available when running the
+   tests and during test setup. This package is not fetched by default
+   by ``z3c.testsetup``.
+
+Here we say, that the the local file ``ftesting.zcml`` should be used
+as ZCML configuration. As we can see in the above output of testruner,
+this file is indeed read during test runs and used by a ZCML layer
+called ``DefaultZCMLLayer``. This layer is in fact only a
+``zope.app.testing.functional.ZCMLLayer``.
+
+The ZCML file is looked up in the same directory as the doctest file.
+
+When using the ``:zcml-layer:`` marker, the concerned tests are set up
+via special methods and functions from `zope.app.testing`. This way
+you get 'functional' or 'integration' tests out of the box: in the
+beginning an empty ZODB db is setup, ``getRootFolder``, ``sync`` and
+other functions are pulled into the test namespace and several things
+more.
+
+If you want a plain setup instead then use your own layer definition
+using ``:layer:`` and remove the ``:zcml-layer:`` marker.
 
