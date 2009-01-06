@@ -75,10 +75,21 @@ class SimpleDocTestSetup(DocTestSetup):
                 common_prefix = os.path.commonprefix([self.package.__file__,
                                                       name])
                 name = name[len(common_prefix):]
+
             suite_creator = doctest.DocFileSuite
             if functional_zcml_layer is not None:
-                from zope.app.testing.functional import FunctionalDocFileSuite
+                try:
+                    from zope.app.testing.functional import (
+                        FunctionalDocFileSuite)
+                except ImportError:
+                    warn("""You specified `:functional-zcml-layer:` in
+    %s
+but there seems to be no `zope.app.testing` package available.
+Please include `zope.app.testing` in your project setup to run this testfile.
+""" % (os.path.join(common_prefix, name),))
+                    continue
                 suite_creator = FunctionalDocFileSuite
+                
             test = suite_creator(
                 name,
                 package=self.package,
