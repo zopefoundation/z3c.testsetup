@@ -3,10 +3,13 @@ from zope.app.testing.functional import ZCMLLayer
 
 def setUp(test):
     print "    Custom setUp for ", test
+    # We register a function that will be available during tests.
+    test.globs['myfunc'] = lambda x: 2*x
 
 def tearDown(test):
     print "    Custom tearDown for ", test
-
+    del test.globs['myfunc'] # unregister function
+    
 # We define a ZCML test layer. ZCML layers are special as they define
 # some setup code for creation of empty ZODBs and more. If you only
 # want some ZCML registrations to be done, you can use it like so:
