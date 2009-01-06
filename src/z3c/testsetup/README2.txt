@@ -35,16 +35,17 @@ can be found in a subpackage::
 
 In this subpackage there is a simple doctest `doctest01.txt`::
 
-  >>> print open(os.path.join(cavepath, 'doctest01.txt')).read()
-  A doctest
-  =========
-  <BLANKLINE>
-  :doctest:
-  <BLANKLINE>
-  This is a simple doctest.
-  <BLANKLINE>
-  ...>>> 1+1
-  ...2
+  >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
+  |  A doctest
+  |  =========
+  |  
+  |  :doctest:
+  |  
+  |  This is a simple doctest.
+  |  
+  |    >>> 1+1
+  |    2
+  |  
 
 
 As we can see, the doctest is marked by a special marker
@@ -260,9 +261,9 @@ ZCML-layered testsuite for us. An example setup might look like so (see
 
 .. note:: Requires ``zope.app.testing``
 
-   The ``zope.app.testing`` package must be available when running the
-   tests and during test setup. This package is not fetched by default
-   by ``z3c.testsetup``.
+   If you use ``:zcml-layer``, the ``zope.app.testing`` package must
+   be available when running the tests and during test setup. This
+   package is not fetched by default by ``z3c.testsetup``.
 
 Here we say, that the the local file ``ftesting.zcml`` should be used
 as ZCML configuration. As we can see in the above output of testruner,
@@ -281,4 +282,49 @@ more.
 
 If you want a plain setup instead then use your own layer definition
 using ``:layer:`` and remove the ``:zcml-layer:`` marker.
+
+
+Setting up a functional ZCML layer
+==================================
+
+Sometimes we want tests to be registered using the
+``FunctionalDocFileSuite`` function from
+``zope.app.testing.functional`` (other tests are set up using
+``zope.testing.doctest.DocFileSuite``). This function pulls in even
+more functions into ``globs``, like ``http`` (a ``HTTPCaller``
+instance), wraps your ``setUp`` and ``tearDown`` methods into
+ZODB-setups and several things more. See the definition in
+http://svn.zope.org/zope.app.testing/trunk/src/zope/app/testing/functional.py?view=auto.
+
+This setup needs also a ZCML configuration file, which can be
+specified via::
+
+  :functional-zcml-layer: <ZCML-file-name>
+
+If a functional ZCML layer is specified in a testfile this way, it
+will override any simple ``:zcml-layer:`` or ``:layer:`` definition.
+
+An example setup might look like this (see
+``tests/othercave/doctest04.txt``)::
+
+  >>> print_file(os.path.join(cavepath, 'doctest04.txt'))
+  |  A functional doctest with ZCML-layer
+  |  ====================================
+  |
+  |  :doctest:
+  |  :functional-zcml-layer: ftesting.zcml
+  |
+  |  We didn't define a real environment in ftesting.zcml, but in
+  |  functional tests certain often needed functions should be available
+  |  automatically::
+  |
+  |    >>> getRootFolder()
+  |    <zope.app.folder.folder.Folder object at 0x...>
+  |
+
+.. note:: Requires ``zope.app.testing``
+
+   If you use ``:zcml-layer``, the ``zope.app.testing`` package must
+   be available when running the tests and during test setup. This
+   package is not fetched by default by ``z3c.testsetup``.
 
