@@ -110,11 +110,11 @@ Let's start the testrunner and see what it gives::
     Running zope.testing.testrunner.layer.UnitTests tests:
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
-        Custom setUp for  <DocTest doctest05.txt from ... (1 example)>
-        Custom tearDown for  <DocTest doctest05.txt from ... (1 example)>
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+        Custom setUp for  <DocTest doctest05.txt from ... (2 examples)>
+        Custom tearDown for  <DocTest doctest05.txt from ... (2 examples)>
+      Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
-    Total: 7 tests, 0 failures, 0 errors in N.NNN seconds.
+    Total: 8 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 As we can see, there were regular unittests as well as functional
@@ -328,3 +328,54 @@ An example setup might look like this (see
    be available when running the tests and during test setup. This
    package is not fetched by default by ``z3c.testsetup``.
 
+Specifying ``setUp`` and ``tearDown`` methods
+=============================================
+
+We can specify a ``setUp(test)`` and ``tearDown(test)`` method for the
+examples in a doctest file, which will be executed once for the whole
+doctest file. This can be done using::
+
+  :setup: <dotted.name.of.callable>
+  :teardown: <dotted.name.of.callable>
+
+The callables denoted by the dotted names must accept a ``test``
+parameter which will be the whole test suite of examples in the
+current doctest file.
+
+An example can be found in ``doctest05.txt``::
+
+  >>> print_file(os.path.join(cavepath, 'doctest05.txt'))
+  |  A doctest with custom setup/teardown functions
+  |  ==============================================
+  |  
+  |  :doctest:
+  |  :setup: z3c.testsetup.tests.othercave.testing.setUp
+  |  :teardown: z3c.testsetup.tests.othercave.testing.tearDown
+  |  
+  |    >>> 1+1
+  |    2
+  |  
+  |  We make use of a function registered during custom setup::
+  |  
+  |    >>> myfunc(2)
+  |    4
+  |
+
+The setup/teardown functions denoted in the example look like this::
+
+  >>> print open(os.path.join(cavepath, 'testing.py'), 'rb').read()
+  import os
+  ...
+  def setUp(test):
+      print "    Custom setUp for ", test
+      # We register a function that will be available during tests.
+       test.globs['myfunc'] = lambda x: 2*x
+  <BLANKLINE>
+  def tearDown(test):
+      print "    Custom tearDown for ", test
+      del test.globs['myfunc'] # unregister function
+  ...
+
+As we can see, there is a function ``myfunc`` pulled into the
+namespace of the doctest. We could, however, do arbitrary other things
+here, set up a relational test database or whatever.
