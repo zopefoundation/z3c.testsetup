@@ -125,6 +125,54 @@ ZCML-files for configuration.
 Of course, there were more tests than only the ones defined in
 ``doctest01.txt``. Let's have a look at the other stuff.
 
+Defining doctests in Python modules
+===================================
+
+The doctest file described above was a pure .txt file. By default
+``z3c.testsetup`` looks for doctests in files with filename extension
+``.txt``, ``.rst`` and ``.py``. This means, that also doctests in
+Python modules are found by default as in the following example::
+
+  >>> print_file(os.path.join(cavepath, 'doctest08.py'))
+  |  """
+  |  Doctests in a Python module
+  |  ===========================
+  |  
+  |  We can place doctests also in Python modules.
+  |  
+  |  :doctest:
+  |  
+  |  Here the Cave class is defined::
+  |  
+  |    >>> from z3c.testsetup.tests.othercave.doctest08 import Cave
+  |    >>> Cave
+  |    <class 'z3c.testsetup...doctest08.Cave'>
+  |  
+  |  """
+  |  class Cave(object):
+  |      """A Cave.
+  |  
+  |      A cave has a number::
+  |  
+  |        >>> hasattr(Cave, 'number')
+  |        True
+  |      
+  |      """
+  |      number = None
+  |  
+  |      def __init__(self, number):
+  |          """Create a Cave.
+  |  
+  |          We have to give a number if we create a cave::
+  |  
+  |            >>> c = Cave(12)
+  |            >>> c.number
+  |            12
+  |            
+  |          """
+  |          self.number = number
+  |  
+
 
 Setting up a unittest layer
 ===========================
