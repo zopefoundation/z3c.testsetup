@@ -36,7 +36,7 @@ class UnitTestSetup(BasicTestSetup):
     """
 
     regexp_list = [
-        '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
+        '^((\.\.\s+)?:unittest:(.*))|(\s*:(T|t)est-(L|l)ayer:\s*(python)\s*)',
         ]
 
     def __init__(self, package, pfilter_func=None, regexp_list=None):
