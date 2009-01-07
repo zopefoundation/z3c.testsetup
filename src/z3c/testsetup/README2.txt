@@ -44,7 +44,8 @@ can be found in a subpackage::
   >>> cavepath = os.path.dirname(__file__)
   >>> cavepath = os.path.join(cavepath, 'tests', 'othercave')
 
-In this subpackage there is a simple doctest `doctest01.txt`::
+In this subpackage there is a simple doctest `doctest01.txt` (please
+ignore the pipes on the left)::
 
   >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
   |  A doctest
@@ -70,6 +71,12 @@ this marker, a testfile won't be registered during tests!
 This is the only difference to 'normal' doctests here.
 
 Other markers detected by ``z3c.testsetup`` are:
+
+ - ``:unittest:``
+
+   A replacement for ``:doctest:``, marking a Python module as
+   containing unittests to run. Replaces old ``Test-Layer: python``
+   marker.
 
  - ``:setup: <dotted.name.of.function>``
 
@@ -233,6 +240,47 @@ testfile.
 Note that you have to import the entities (classes, functions, etc.)
 from the very same file if you want to use them.
 
+
+Registering regular unittests from Python modules
+-------------------------------------------------
+
+``z3c.testsetup`` provides also (limited) support for regular
+`unittest` deployments as usually written in Python. An example file
+could look like this::
+
+  >>> print_file(os.path.join(cavepath, 'pythontest1.py'))
+  |  """
+  |  Tests with real TestCase objects.
+  |  
+  |  :unittest:
+  |  
+  |  """
+  |  
+  |  import unittest
+  |  
+  |  class TestTest(unittest.TestCase):
+  |  
+  |      def setUp(self):
+  |          pass
+  |  
+  |      def testFoo(self):
+  |          self.assertEqual(2, 1+1)
+  |
+  |
+
+The module contains a marker ``:unittest:`` in its module docstring
+instead of the ``:doctest:`` marker used in the other examples
+above. It is also the replacement for the formely used ``:Test-Layer:
+python`` marker.
+
+This means, that this file is registered as a regular unittest.
+
+If you use unittests instead of doctests, then you are mainly on your
+own with setting up and tearing down tests. All this should be done by
+the test cases themselves.
+
+The only advantage of using ``z3c.testsetup`` here is, that those
+tests are found and run automatically when they provide the marker.
 
 
 ``register_all_tests()``
