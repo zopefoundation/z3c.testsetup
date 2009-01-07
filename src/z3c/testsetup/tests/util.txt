@@ -1,0 +1,68 @@
+Tests for helper functions
+**************************
+
+In the ``util`` module we provide some helpers.
+
+utils.get_marker_from_string(marker, text)
+==========================================
+
+Gets us the first occurence of a line in ``text``, which is headed by
+a marker string ``marker``::
+
+  >>> from z3c.testsetup.util import get_marker_from_string
+  >>> text = """
+  ... My File
+  ...
+  ... :mymarker:  blah
+  ... """
+  >>> get_marker_from_string('mymarker', text)
+  u'blah'
+
+The marker is also found in the first line::
+
+  >>> text = """:mymarker: blah"""
+  >>> get_marker_from_string('mymarker', text)
+  u'blah'
+
+When several same-named markers occur, the first one is picked::
+
+  >>> text = """
+  ... :mymarker: blah
+  ... :mymarker: blubb
+  ... """
+  >>> get_marker_from_string('mymarker', text)
+  u'blah'
+
+The lookup is case insensitive while the result is not::
+
+  >>> text = """
+  ... :MyMarker: Blah
+  ... """
+  >>> get_marker_from_string('mymarker', text)
+  u'Blah'
+
+We also accept marker strings preceeded by two dot followed by
+whitespaces (a comment in restructured text)::
+
+  >>> text = """
+  ... .. :MyMarker: Blah
+  ... """
+  >>> get_marker_from_string('mymarker', text)
+  u'Blah'
+
+When the marker string cannot be found, ``None`` is returned::
+
+  >>> text = """
+  ... :NotMyMarker: Blah
+  ... """
+  >>> get_marker_from_string('mymarker', text) is None
+  True
+
+Also other chars preceeding the marker string are not allowed::
+
+  >>> text = """
+  ... garbage :MyMarker: Blah
+  ... """
+  >>> get_marker_from_string('mymarker', text) is None
+  True
+
