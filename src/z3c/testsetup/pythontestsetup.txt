@@ -97,11 +97,12 @@ Basically, all modules are accepted that
 3) contain a ReStructured Text meta-marker in the module docstring,
    that declares the module as a unittest module explicitly::
 
-       :Test-Layer: python
+       :unittest:
 
    This means: there *must* be a line like the above one in the
    docstring of an accepted module. The term might be preceeded or
-   followed by whitspace characters (spaces, tabs).
+   followed by whitspace characters (spaces, tabs) or a restructured
+   text comment marker (leading ``.. ``).
 
    The docstring of a module is written at the module header like
    this:: 
@@ -109,10 +110,17 @@ Basically, all modules are accepted that
       """
          This module smashes problems.
 
-         :Test-Layer: python
+         :unittest:
 
       """
       [normal Python code...]
+
+   .. note:: The ``:Test-Layer: python`` marker is deprectated.
+
+      In former releases of `z3c.testsetup` the mentioned marker was
+      used to mark unittests. This changed with version 0.3 and the
+      old marker is now deprecated (while still supported for some
+      limited time).
 
 
 Only files, that meet all three conditions are searched for tests.
@@ -162,7 +170,7 @@ two methods ``getModules`` and ``isTestModule``. The latter does
 additional checking. Namely it checks for the existance of the above
 mentioned ReStructured Text meta-marker::
 
-    `:Test-Layer: python`
+    `:unittest:`
 
 This marker is determined by a list of regular expressions, which is
 also available as an object attribute::
