@@ -1,7 +1,7 @@
 """
 Tests with real TestCase objects.
 
-:unittest: python
+:unittest:
 
 """
 
