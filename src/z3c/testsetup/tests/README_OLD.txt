@@ -1,6 +1,17 @@
 z3c.testsetup
 *************
 
+.. warning:: THIS IS OUTDATED STUFF
+
+   The tests in here exist only to check for compatibility with
+   former releases.
+
+   The methods and markers herein are mostly deprecated, subject to
+   change or vanish completely and should not be used any more.
+
+   See `README.txt` in the parent directory for up-to-date
+   information.
+
 Easy testsetups for Zope 3 and Python projects.
 
 Setting up tests for Zope 3 projects sometimes tends to be
