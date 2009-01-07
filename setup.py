@@ -15,7 +15,9 @@ long_description = (
     + 'Detailed Documentation\n'
     + '**********************\n'
     + '\n'
-    + read('src', 'z3c', 'testsetup', 'README2.txt')
+    + read('src', 'z3c', 'testsetup', 'README.txt')
+    + '\n\n'
+    + read('src', 'z3c', 'testsetup', 'HOWTO_UPGRADE.txt')
     + '\n\n'
     + read('CHANGES.txt')
     + '\n\n'
