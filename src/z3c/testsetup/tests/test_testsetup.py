@@ -13,6 +13,7 @@ TESTFILES = ['basicsetup.txt',
              'pythontestsetup.txt', 'unitdoctestsetup.txt', 'util.txt',
              'unittestsetup.txt',
              os.path.join('tests', 'setupininit.txt'),
+             os.path.join('tests', 'util.txt'),
              ]
 
 def pnorm(path):
