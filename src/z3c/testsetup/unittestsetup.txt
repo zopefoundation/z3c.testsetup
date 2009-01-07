@@ -151,7 +151,7 @@ in their module docstring. This is determined by a list of regular
 expressions, which is also available as an object attribute::
 
     >>> setup.regexp_list
-    ['^((/././s+)?:unittest:(.*))|(/s*:(T|t)est-(L|l)ayer:/s*(python)/s*)']
+    ['^/s*:(T|t)est-(L|l)ayer:/s*(python)/s*']
 
 This is the default value of unit test setups.
 
