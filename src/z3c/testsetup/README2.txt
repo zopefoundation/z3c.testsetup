@@ -173,6 +173,13 @@ Python modules are found by default as in the following example::
   |          self.number = number
   |  
 
+Here we placed the marker string ``:doctest:`` into the docstring of
+the module. Without it, the module would not have been considered a
+testfile.
+
+Note that you have to import the entities (classes, functions, etc.)
+from the very same file if you want to use them.
+
 
 Setting up a unittest layer
 ===========================
