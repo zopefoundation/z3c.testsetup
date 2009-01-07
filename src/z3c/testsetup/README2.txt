@@ -112,9 +112,9 @@ Let's start the testrunner and see what it gives::
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
         Custom setUp for  <DocTest doctest05.txt from ... (2 examples)>
         Custom tearDown for  <DocTest doctest05.txt from ... (2 examples)>
-      Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
+      Ran 6 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
-    Total: 8 tests, 0 failures, 0 errors in N.NNN seconds.
+    Total: 11 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 As we can see, there were regular unittests as well as functional
