@@ -1,0 +1,15 @@
+Another functional doctest with ZCML-layer
+==========================================
+
+This is the second doctest with a functional ZCML layer applied. We
+want to make sure, that both are run in the same layer.
+
+:doctest:
+:functional-zcml-layer: ftesting.zcml
+
+We didn't define a real environment in ftesting.zcml, but in
+functional tests certain often needed functions should be available
+automatically::
+
+  >>> getRootFolder
+  <function getRootFolder at 0x...>

@@ -23,6 +23,52 @@ Bug fixes
   by using ``module_info_from_dotted_name`` and
   ``module_info_from_package`` from the ``martian.scan`` package.
 
+Feature Changes
+---------------
+
+* New set of testfile markers:
+
+  - `:doctest:`
+
+    marks a testfile as a doctest.
+
+  - `:unittest:`
+
+    marks a testfile as a regular unittest.
+
+  - `:layer: dotted.name.to.layer.def`
+
+    applies the given layer definition to the tests in the doctest
+    file.
+
+  - `:zcml-layer: filename.zcml`
+
+    sets up a ZCML layer with the given filename and applies this
+    layer to the doctests in the doctest file.
+
+  - `:functional-zcml-layer: filename.zcml`
+
+    sets up a ZCML layer with the given filename and applies this
+    layer to the doctests in the doctest file. Furthermore the tests
+    are set up as functional doc tests.
+
+  - `:setup: dotted.name.to.setup.function`
+
+    applies the setUp function denoted by the dotted name to the tests
+    in the doctest file.
+
+  - `:teardown: dotted.name.to.teardown.function`
+
+    applies the tearDown function denoted by the dotted name to the
+    tests in the doctests file.
+
+  See the examples in `tests/othercave` and README.txt to learn more
+  about using these new directives.
+
+  The old `:test-layer:` marker is still supported but it is
+  deprecated now and will vanish at least with the 0.5 version of
+  `z3c.testsetup`.
+
 
 0.2.2 (2008-02-29)
 ==================

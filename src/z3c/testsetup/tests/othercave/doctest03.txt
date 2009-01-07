@@ -1,0 +1,8 @@
+A doctest with a ZCML-layer
+===========================
+
+:doctest:
+:zcml-layer: ftesting.zcml
+
+  >>> 1+1
+  2

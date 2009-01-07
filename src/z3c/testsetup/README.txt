@@ -5,247 +5,314 @@ Easy testsetups for Zope 3 and Python projects.
 
 Setting up tests for Zope 3 projects sometimes tends to be
 cumbersome. ``z3c.testsetup`` jumps in here, to support much flatter
-test setups. The package supports three kinds of tests:
+test setups. The package supports normal Python `unit tests
+<http://docs.python.org/library/unittest.html>`_ and
+`doctests <http://docs.python.org/library/doctest.html>`_.
 
-- normal python tests: i.e. tests, that consist of python modules
-  which in turn contain ``unittest.TestCase`` classes.
+Note, that if you want integration or functional tests, that you have
+to make sure, that the ``zope.app.testing`` package is available
+during test runs. ``z3c.testsetup`` does **not** depend on it.
 
-- unit doctests: i.e. tests, that are written as doctests, but require
-  no complicated layer setup etc.
+The package works in two steps:
 
-- functional doctests: i.e. tests, that are written as doctests, but
-  also require a more or less complex framework to test for example
-  browser requests.
+1) It looks for testfiles in a given package.
 
-``z3c.testsetup`` is package-oriented. That means, it registers more or
-less automatically all the three kinds of tests mentioned above
-insofar they are part of a certain package.
+2) It registers the tests according to your specifications.
+
+.. note: Important note for users of ':Test-Layer:':
+
+  The marker strings of `z3c.testsetup` changed!
+
+  Please switch to the new syntax described below, if you are still
+  using the old ':Test-Layer:' marker. It is more powerful and less
+  magic.
 
 This is a general introduction to ``z3c.testsetup``. For setup
-examples you might see the ``cave`` package contained in the `tests/`
-directory. More details on special topics can be found in the
+examples you might see the ``othercave`` package contained in the
+`tests/` directory. More details on special topics can be found in the
 appropriate .txt files in this directory.
 
 
 Basic Example
 =============
 
-The shortest test setup possible with ``z3c.testsetup`` looks like
-this::
+Before we can find, register and execute tests, we first have to write
+them down. We already have some ready to use tests available, which
+can be found in a subpackage::
 
-   >>> import z3c.testsetup
-   >>> test_suite = z3c.testsetup.register_all_tests(
-   ...                   'z3c.testsetup.tests.cave')
+  >>> import os
+  >>> cavepath = os.path.dirname(__file__)
+  >>> cavepath = os.path.join(cavepath, 'tests', 'othercave')
 
-It is sufficient to put this lines into a python module which is found
-by your testrunner (see `samplesetup_short` examples in the ``cave``
-package and ``testrunner.txt``).
+In this subpackage there is a simple doctest `doctest01.txt` (please
+ignore the pipes on the left)::
 
-To sum it up, testsetup with ``z3c.testsetup`` is done in two steps:
-
-1) Make sure your testfiles are named properly (.txt/.rst for
-   doctests, valid python modules for usual unit tests) and provide a
-   suitable marker string as explained below (`How to mark
-   testfiles/modules`_).
-
-2) Write a test setup module which is named so that your testrunner
-   finds it and in this module call::
-
-      test_suite = z3c.testsetup.register_all_tests(<package>)
-
-   where ``<package>`` must be a package object. Instead of a package
-   object you can also pass the package's dotted name as string like
-   `'z3c.testsetup.tests.cave'`.
-
-Given that, this setup should find all doctests (unit and functional)
-as well as python tests in the package and register them.
+  >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
+  |  A doctest
+  |  =========
+  |  
+  |  :doctest:
+  |  
+  |  This is a simple doctest.
+  |  
+  |    >>> 1+1
+  |    2
+  |  
 
 
-Customized Setups
-=================
+As we can see, the doctest is marked by a special marker
+
+   `:doctest:`. 
+
+This marker tells the testsetup machinery, that this file contains
+doctest examples that should be registered during test runs. Without
+this marker, a testfile won't be registered during tests!
+
+This is the only difference to 'normal' doctests here.
+
+Other markers detected by ``z3c.testsetup`` are:
+
+ - ``:unittest:``
+
+   A replacement for ``:doctest:``, marking a Python module as
+   containing unittests to run. Replaces old ``Test-Layer: python``
+   marker.
+
+ - ``:setup: <dotted.name.of.function>``
+
+   Execute the given setup function before running doctests in this
+   file.
+
+ - ``:teardown: <dotted.name.of.function>``
+
+   Execute the given teardown function after running doctests in this
+   file.
+
+ - ``:layer: <dotted.name.of.layer.def>``
+
+   Use the given layer definition for tests in this file.
+
+ - ``:zcml-layer: <ZCML_filename>``
+
+   Use the given ZCML file and run tests in this file on a ZCML
+   layer. Tests are registered using
+   `zope.testing.doctest.DocFileSuite`.
+
+ - ``:functional-zcml-layer: <ZCML_filename>``
+
+   Use the given ZCML file and run tests in this file registered with
+   `zope.app.testing.functional.DocFileSuite`.
+
+See below for explanations of the respective markers.
+
+.. note:: How to disable markers or make them invisible
+
+   All markers can be written as restructured text comment (two
+   leading dots followed by whitespace) like this::
+
+     .. :doctest:
+
+  and will still work. This way you can make the markers disappear
+  from autogenerated docs etc. Markers are case-insensitive. If you
+  want to disable a test, just turn ``:doctest:`` into ``:nodoctest:``
+  and the file will be ignored.
+
+Now, that we have a doctest available, we can write a testsetup
+routine, that collects all tests, registers them and passes them to
+the testrunner.
+
+We have such a simple testsetup already available::
+
+  >>> print open(os.path.join(cavepath, 'simplesetup01.py')).read()
+  import z3c.testsetup
+  test_suite = z3c.testsetup.register_all_tests(
+      'z3c.testsetup.tests.othercave')
+
+This is all we need in simple cases. We use
+
+   `register_all_tests(<dotted_pkg_name>)` 
+
+to tell the setup machinery, where to look for test files. Note, that
+also files in subpackages will be found, registered and executed, when
+they are marked approriately.
+
+Let's start the testrunner and see what it gives::
+
+  >>> import sys
+  >>> sys.argv = [sys.argv[0],]
+  >>> defaults = [
+  ...     '--path', cavepath,
+  ...     '--tests-pattern', '^simplesetup01$',
+  ...     ]
+  >>> from zope.testing import testrunner
+  >>> testrunner.run(defaults)
+    Running z3c...functional.layer.DefaultZCMLLayer [ftesting.zcml] tests:
+      Set up z3c....layer.DefaultZCMLLayer [ftesting.zcml] in N.NNN seconds.
+      Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c...functional.layer.DefaultZCMLLayer [ftesting2.zcml] tests:
+      Tear down z3c...layer.DefaultZCMLLayer [ftesting.zcml] ... not supported
+      Running in a subprocess.
+      Set up z3c...layer.DefaultZCMLLayer [ftesting2.zcml] in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...layer.DefaultZCMLLayer [ftesting2.zcml] ... not supported
+    Running z3c.testsetup.tests.othercave.testing.UnitLayer2 tests:
+      Running in a subprocess.
+      Set up z3c.testsetup.tests.othercave.testing.UnitLayer1 in N.NNN seconds.
+      Set up z3c.testsetup.tests.othercave.testing.UnitLayer2 in N.NNN seconds.
+        Running testSetUp of UnitLayer1
+        Running testSetUp of UnitLayer2
+        Running testTearDown of UnitLayer2
+        Running testTearDown of UnitLayer1
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...tests.othercave.testing.UnitLayer2 in N.NNN seconds.
+      Tear down z3c...tests.othercave.testing.UnitLayer1 in N.NNN seconds.
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Running in a subprocess.
+      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+        Custom setUp for  <DocTest doctest05.txt from ... (2 examples)>
+        Custom tearDown for  <DocTest doctest05.txt from ... (2 examples)>
+      Ran 7 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    Total: 12 tests, 0 failures, 0 errors in N.NNN seconds.
+    False
+
+As we can see, there were regular unittests as well as functional
+tests run. Some of the unittests used their own layer (``UnitLayer1``)
+whose location were printed and the functional tests used different
+ZCML-files for configuration.
+
+Of course, there were more tests than only the ones defined in
+``doctest01.txt``. Let's have a look at the other stuff.
+
+
+Defining doctests in Python modules
+-----------------------------------
+
+The doctest file described above was a pure .txt file. By default
+``z3c.testsetup`` looks for doctests in files with filename extension
+``.txt``, ``.rst`` and ``.py``. This means, that also doctests in
+Python modules are found by default as in the following example::
+
+  >>> print_file(os.path.join(cavepath, 'doctest08.py'))
+  |  """
+  |  Doctests in a Python module
+  |  ===========================
+  |  
+  |  We can place doctests also in Python modules.
+  |  
+  |  :doctest:
+  |  
+  |  Here the Cave class is defined::
+  |  
+  |    >>> from z3c.testsetup.tests.othercave.doctest08 import Cave
+  |    >>> Cave
+  |    <class 'z3c.testsetup...doctest08.Cave'>
+  |  
+  |  """
+  |  class Cave(object):
+  |      """A Cave.
+  |  
+  |      A cave has a number::
+  |  
+  |        >>> hasattr(Cave, 'number')
+  |        True
+  |      
+  |      """
+  |      number = None
+  |  
+  |      def __init__(self, number):
+  |          """Create a Cave.
+  |  
+  |          We have to give a number if we create a cave::
+  |  
+  |            >>> c = Cave(12)
+  |            >>> c.number
+  |            12
+  |            
+  |          """
+  |          self.number = number
+  |  
+
+Here we placed the marker string ``:doctest:`` into the docstring of
+the module. Without it, the module would not have been considered a
+testfile.
+
+Note that you have to import the entities (classes, functions, etc.)
+from the very same file if you want to use them.
+
+
+Registering regular unittests from Python modules
+-------------------------------------------------
+
+``z3c.testsetup`` provides also (limited) support for regular
+`unittest` deployments as usually written in Python. An example file
+could look like this::
+
+  >>> print_file(os.path.join(cavepath, 'pythontest1.py'))
+  |  """
+  |  Tests with real TestCase objects.
+  |  
+  |  :unittest:
+  |  
+  |  """
+  |  
+  |  import unittest
+  |  
+  |  class TestTest(unittest.TestCase):
+  |  
+  |      def setUp(self):
+  |          pass
+  |  
+  |      def testFoo(self):
+  |          self.assertEqual(2, 1+1)
+  |
+  |
+
+The module contains a marker ``:unittest:`` in its module docstring
+instead of the ``:doctest:`` marker used in the other examples
+above. It is also the replacement for the formely used ``:Test-Layer:
+python`` marker.
+
+This means, that this file is registered as a regular unittest.
+
+If you use unittests instead of doctests, then you are mainly on your
+own with setting up and tearing down tests. All this should be done by
+the test cases themselves.
+
+The only advantage of using ``z3c.testsetup`` here is, that those
+tests are found and run automatically when they provide the marker.
+
+
+``register_all_tests()``
+========================
 
 The `register_all_tests` function mentioned above accepts a bunch of
 keyword parameters::
 
-   register_all_tests(pkg_or_dotted_name, filter_func, extensions,
-                      encoding, checker,
-                      globs, setup, teardown, optionflags
-                      zcml_config, layer_name, layer)
+   register_all_tests(pkg_or_dotted_name [, extensions] [, encoding]
+                      [, checker] [, globs] [, optionflags] 
+                      [, setup] [, teardown]
+                      [, zcml_config] [, layer_name] [, layer])
 
 where all but the first parameter are keyword paramters and all but
 the package parameter are optional.
 
-While `filter_func` and `extensions` determine the set of testfiles to
-be found, the other paramters tell how to setup single tests.
+While the `extensions` parameter determines the set of testfiles to be
+found, the other paramters tell how to setup single tests.
 
+The last five parameters are only fallbacks, that should better be
+configured in doctest files themselves via marker strings.
 
-- **filter_func** (**ufilter_func**, **ffilter_func**)
+- **extensions**:
 
-   a function that takes an absolute filepath and returns `True` or
-   `False`, depending on whether the file should be included in the
-   test suite as doctest or not. `filter_func` applies only to
-   doctests.
-
-   We setup a few things to check that::
-
-     >>> import os
-     >>> import unittest
-     >>> suite = test_suite()
-     >>> suite.countTestCases()
-     4
-
-   Okay, the callable in `test_suite` we created above with
-   `register_all_tests` apparently delivered four testcases. This is
-   normally also the number of files involved, but let's check that
-   correctly.
-
-   We did setup a function `get_basenames_from_suite` in this testing
-   environment (as a `globs` entry) which determines the basenames of
-   the paths of all testcases contained in a `TestSuite`::
-
-     >>> get_basenames_from_suite(suite)
-     ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
-
-   Ah, okay. There are in fact four files, in which testcases were
-   found. Now, we define a plain filter function::
-
-      >>> def custom_file_filter(path):
-      ...     """Accept all txt files."""
-      ...     return path.endswith('.txt')
-
-   This one accepts all '.txt' files. We run `register_all_tests`
-   again, but this time with a `filter_func` parameter::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     filter_func=custom_file_filter)
-
-   To get the resulting test suite, we again call the returned
-   callable::
-
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt',
-      'subdirfile.txt']
-
-   Compared with the first call to `register_all_tests` we got some
-   strange results here: there is a '.py' file, which should have been
-   refused by our filter function and the other two files appear
-   twice. What happened?
-
-   The python module is included, because python tests are not
-   filtered by `filter_func`. Instead this value applies only to
-   doctests.
-
-   The second strange result, that every .txt file appears twice in
-   the list, comes from the fact, that the filter is valid for unit
-   and functional doctests at the same time. In other words: the tests
-   in those .txt files are registered twice, as unittests and a second
-   time as functional tests as well.
-
-   If you want a filter function for functional doctests or unit
-   doctests only, then you can use `ffilter_func` and `ufilter_func`
-   respectively::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     ffilter_func=custom_file_filter,
-      ...     ufilter_func=lambda x: False)
-
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'subdirfile.txt']
-
-   As expected, every .txt file was only registered once. The same
-   happens, when we switch and accept only unit doctests::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     ffilter_func=lambda x: False,
-      ...     ufilter_func=custom_file_filter)
-
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'subdirfile.txt']
-
-   If you specify both, a `filter_func` and a more specialized
-   `ufilter_func` or `ffilter_func`, then this has the same effect as
-   passing both, `ufilter_func` and `ffilter_func`::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     ffilter_func=lambda x: False,
-      ...     filter_func=custom_file_filter)
-
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'subdirfile.txt']
-
-
-- **pfilter_func**:
-
-    Does basically the same as the ``filter_funcs`` above, but handles
-    Python modules instead of file paths. It therefore determines the
-    set of 'normal' Python tests accepted and does not touch the set
-    of doctests accepted.
-
-    We define a simple custom filter::
-
-      >>> def custom_module_filter(module_info):
-      ...     return 'Tests with real' in open(module_info.path, 'r').read()
-
-    that checks for a certain string in modules' doc strings.
-
-    Now we start again with `pfilter_func` set::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     pfilter_func=custom_module_filter)
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.rst', 'file1.txt', 'notatest2.py', 'subdirfile.txt']
-
-    Because file1.py and notatest2.py in the cave package contain the
-    required string, this is correct. Because the default function
-    checks for the string `:Test-Layer: python`, the second module was
-    omitted by default.
-
-    Now let's use a filter, that refuses all modules::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     pfilter_func=lambda x: False)
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.rst', 'file1.txt', 'subdirfile.txt']
-
-    All Python modules vanished from the list.
-   
-    In case you wonder, why not all the other Python files of the
-    `cave` package (`__init__.py`, for example) appear in one of the
-    lists: we get only the result list, which contains only such
-    modules, which provide `unittest.TestCase` definitions. Because
-    most modules of the `cave` package don't define test cases, they
-    do not appear in the list. This automatism is driven by a
-    `unittest.TestLoader`. See
-    http://docs.python.org/lib/testloader-objects.html to learn more
-    about test loaders.
-
-
-- **extensions** (**uextensions**, **fextensions**):
-
-    a list of filename extensions to be considered during test
-    search. Default value is `['.txt', '.rst']`. Python tests are not
-    touched by this (they have to be regular Python modules with '.py'
-    extension).
-
-    Note, that the `extensions` attribute is used by the default
-    filter function. If you pass your own filter function using
-    `[u|f]filter_func`, then the extensions filtering won't work any
-    more. 
+    a list of filename extensions to be considered during doctest
+    search. Default value for doctests is `['.txt', '.rst',
+    '.py']`. Python tests are not touched by this (they have to be
+    regular Python modules with '.py' extension).
 
     If we want to register .foo files, we can do so::
 
+      >>> import z3c.testsetup
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
       ...     extensions=['.foo'])
@@ -254,41 +321,10 @@ be found, the other paramters tell how to setup single tests.
       ['file1.py', 'notatest1.foo', 'notatest1.foo']
 
     Note, that only files that contain an appropriate marker are
-    found, regardless of the filename extension. The new .foo file
-    contains a marker for unit doctests and functional doctests, such
-    it is included twice in the list.
-
-    As we can see, the new file appears twice. This is, because it is
-    registered as functional doctest and unitdoctest as well.
-
-    To collect only functional doctests with a certain set of filename
-    extensions you can use: `fextensions`::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     fextensions=['.foo'])
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.rst', 'notatest1.foo']
-
-    Here the .rst file were registered as unit doctest, while the .foo
-    file was registered as functional doctest.
-
-    To collect only unit doctests with a different set of filename
-    extensions you can use `uextensions`::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     uextensions=['.foo'])
-      >>> suite = test_suite()
-      >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'notatest1.foo', 'subdirfile.txt']
-
-    Here the .foo file was registered as unit doctest and the .txt
-    files as functional ones.
+    found, regardless of the filename extension.
 
 
-- **encoding**:   
+- **encoding**:
 
     the encoding of testfiles. 'utf-8' by default. Setting this to `None`
     means using the default value. We've hidden one doctest file, that
@@ -319,8 +355,8 @@ be found, the other paramters tell how to setup single tests.
 
 - **checker**:
 
-    An output checker for functional doctests. `None` by default. A
-    typical output checker can be created like this::
+    An output checker for doctests. `None` by default. A typical
+    output checker can be created like this::
 
       >>> import re
       >>> from zope.testing import renormalizing
@@ -339,51 +375,19 @@ be found, the other paramters tell how to setup single tests.
 
     Checkers are applied to functional doctests only!
 
+
 - **globs**:
 
     A dictionary of things that should be available immediately
-    (without imports) during tests. Defaults are::
+    (without imports) during tests. Default is an empty dict, which
+    might be populated by appropriate layers (see below). ZCML layers
+    for example get you the ``getRootFolder`` method automatically.
 
-      dict(http=HTTPCaller(),
-           getRootFolder=getRootFolder,
-           sync=sync)
+    This parameter is a fallback which can be overriden by testfile
+    markers specifying a certain layer (see below).
 
-    for functional doctests and an empty dict for unit
-    doctests. Python test globals can't be set this way.
+    The `globs` parameter applies only to doctests.
 
-    If you want to register special globals for functional doctest or
-    unit doctests only, then you can use the `fglobs` and/or `uglobs`
-    keyword respectively. These keywords replace any `globs` value for
-    the respective kind of tests.
-
-    For more extensive examples see ``testrunner.txt``.
-
-- **setup**:
-
-    A function that takes a `test` argument and is executed before
-    every single doctest. By default it runs::
-
-      zope.app.testing.functional.FunctionalTestSetup().setUp()
-
-    for functional doctests and an empty function for unit
-    doctests. Python tests provide their own setups.
-
-    If you want to register special setup-functions for either
-    functional or unit doctests, then you can pass keyword parameters
-    `fsetup` or `usetup` respectively.
-
-- **teardown**:   
-
-    The equivalent to `setup`. Runs by default::
-
-      FunctionalTestSetup().tearDown()
-
-    for functional doctests and::
-
-      zope.testing.cleanup.cleanUp()
-
-    for unit doctests. Python tests have to provide their own teardown
-    functions in TestCases.
 
 - **optionflags**:
 
@@ -393,6 +397,34 @@ be found, the other paramters tell how to setup single tests.
       http://svn.zope.org/zope.testing/trunk/src/zope/testing/doctest.py
 
     for details.
+
+
+- **setup**:
+
+    A callable that takes a `test` argument and is executed before
+    every single doctest.
+
+    The default function does nothing.
+
+    This parameter is a fallback which can be overriden by testfile
+    markers specifying a certain layer (see below).
+
+    Specifying setup functions in a layer is also the recommended way.
+
+
+- **teardown**:   
+
+    The equivalent to `setup`.
+
+    The default function runs
+
+      zope.testing.cleanup.cleanUp()
+
+    unless overriden by a layer.
+
+    Specifying teardown functions in a layer is also the recommended
+    way.
+
 
 - **zcml_config**:
 
@@ -405,7 +437,11 @@ be found, the other paramters tell how to setup single tests.
     the z3c.testsetup package is used (``ftesting.zcml``).
 
     This parameter has no effect, if also a ``layer`` parameter is
-    given.
+    given or a docfile specifies its own layer/ZCML config (see below).
+
+    This is a fallback parameter. Use of docfile specific layer markers
+    is recommended.
+
 
 - **layer_name**:
 
@@ -413,7 +449,11 @@ be found, the other paramters tell how to setup single tests.
     functional doctests. The layer name can be an arbitrary string.
 
     This parameter has no effect, if also a ``layer`` parameter is
-    given.
+    given or a docfile specifies its own layer/ZCML config (see
+    below).
+
+    This is a fallback parameter. Use of docfile specific layer
+    markers is recommended.
 
 - **layer**:
 
@@ -424,102 +464,286 @@ be found, the other paramters tell how to setup single tests.
     This parameter overrides any ``zcml_config`` and ``layer_name``
     parameter.
 
-
-How to mark testfiles/modules
-=============================
-
-To avoid non-wanted files and modules to be registered, you have to
-mark your wanted test files/modules with a special string explicitly:
-
-- python modules you want to register must provide a module docstring
-  that contains a line::
-
-    :Test-Layer: python
-
-  A module doctring is written at the top of file like this:
-
-  **Python Unit Test Example:**::
-
-    """
-    A module that tests things.
-
-    :Test-Layer: python
-
-    """
-    import unittest
-    class MyTest(unittest.TestCase):
-        def testFoo(self):
-            pass
+    This is a fallback parameter and has no effect for docfiles
+    specifying their own layer or ZCML config.
 
 
-- doctest files that contain unit tests must provide a string::
+Deprectated/unsupported parameters
+----------------------------------
 
-    :Test-Layer: unit
+The following ``register_all_tests``-parameters are deprecated,
+starting with ``z3c.testsetup`` 0.3:
 
-  to be registered. Futhermore, their filename extension must be by
-  default '.txt' or '.rst'. A file `sampletest.txt` with a unit
-  doctest therefore might look like this:
+- **filter_func**
 
-  **Unit Doctest Example 1:**::
+   and related (``ufilter_func``, ``pfilter_func``, etc.)
 
-     ==========
-     My package
-     ==========
+- All testtype specific parameters
 
-     :Test-Layer: unit
-
-     This is documentation for the MyPackage package.
-
-        >>> 1+1
-        2
-
-  Also python modules which contain tests in doctests notation are
-  doctests. As rule of thumb you can say: if a module contains tests
-  that are written preceeded by '>>>', then this is a doctest. If
-  ``unittest.TestCase`` classes are defined, then it is a 'normal'
-  python testfile. Another valid unit doctest module therefore can
-  look like this:
-
-  **Unit Doctest Example 2:**::
-
-     """
-     ==========
-     My package
-     ==========
-
-     A package for doing things.
-
-     :Test-Layer: unit
-
-     We check for basic things::
-
-        >>> 1+1
-        2
-
-     """
-     class MyClass:
-         pass
+  Support for testfile specific parameters (``uextensions``,
+  ``fextensions``, etc.) is running out and its use deprecated.
 
 
-- files that contain functional doctests must provide a string::
+Layers and setup/teardown functions
+===================================
 
-    :Test-Layer: functional
+Starting with ``z3c.testsetup`` 0.3 there is first reasonable support
+for setting up layers per testfile. This way you can easily create
+setup-functions that are only run before/after certain tests.
 
-  to be registered. Furthermore they must by default have a filename
-  extension `.txt` or `.rst`. A file `sampletest.txt` with functional
-  tests might look like this:
-
-  **Functional Doctest Example:**::
-
-     ==========
-     My package
-     ==========
-
-     :Test-Layer: functional
-
-     This is documentation for the MyPackage package.
-
-        >>> 1+1
-        2
+Overall, use of layers is the recommended way from now on.
 
 
+Setting up a unittest layer
+---------------------------
+
+We can tell ``z3c.testsetup`` to use a certain unittest layer using
+the ``:layer:`` marker as in the following example (see
+``tests/othercave/doctest02.txt``)::
+
+    A doctests with layer
+    =====================
+    <BLANKLINE>
+    :doctest:
+    :layer: z3c.testsetup.tests.othercave.testing.UnitLayer2
+    <BLANKLINE>
+      >>> 1+1
+      2
+
+
+The ``:doctest:`` marker was used here as well, because without it the
+file would not have been detected as a registerable doctest file (we
+want developers to be explicit about that).
+
+The 
+
+ `:layer: <DOTTED_NAME_OF_LAYER_DEF>`
+
+marker then tells, where the testsetup machinery can
+find the layer definition. It is given in dotted name notation.
+
+How does the layer definition look like? It is defined as regualr
+Python code::
+
+  >>> print open(os.path.join(cavepath, 'testing.py')).read()
+  import os
+  ...
+  class UnitLayer1(object):
+      """This represents a layer.
+      A layer is a way to have common setup and teardown that happens
+      once for a whole group of tests.
+  <BLANKLINE>
+      It must be an object with a `setUp` and a `tearDown` method, which
+      are run once before or after all the tests applied to a layer
+      respectively.
+  <BLANKLINE>
+      Optionally you can additionally define `testSetUp` and
+      `testTearDown` methods, which are run before and after each single
+      test.
+  <BLANKLINE>
+      This class is not instantiated. Therefore we use classmethods.
+      """
+  <BLANKLINE>
+      @classmethod
+      def setUp(self):
+          """This gets run once for the whole test run, or at most once per
+          TestSuite that depends on the layer.
+          (The latter can happen if multiple suites depend on the layer
+          and the testrunner decides to tear down the layer after first
+          suite finishes.)
+          """
+  <BLANKLINE>
+      @classmethod
+      def tearDown(self):
+          """This gets run once for the whole test run, or at most
+          once per TestSuite that depends on the layer,
+          after all tests in the suite have finished.
+          """
+  <BLANKLINE>
+      @classmethod
+      def testSetUp(self):
+          """This method is run before each single test in the current
+          layer. It is optional.
+          """
+          print "    Running testSetUp of UnitLayer1"
+  <BLANKLINE>
+      @classmethod
+      def testTearDown(self):
+          """This method is run before each single test in the current
+          layer. It is optional.
+          """
+          print "    Running testTearDown of UnitLayer1"
+  <BLANKLINE>
+  class UnitLayer2(UnitLayer1):
+      """This Layer inherits ``UnitLayer1``.
+  <BLANKLINE>
+      This way we define nested setups. During test runs the testrunner
+      will first call the setup methods of ``UnitTest1`` and then those
+      of this class. Handling of teardown-methods will happen the other
+      way round.
+      """
+  <BLANKLINE>
+      @classmethod
+      def setUp(self):
+          pass
+  <BLANKLINE>
+      @classmethod
+      def testSetUp(self):
+          print "    Running testSetUp of UnitLayer2"
+  <BLANKLINE>
+      @classmethod
+      def testTearDown(self):
+          print "    Running testTearDown of UnitLayer2"
+
+In a layer you can do all the special stuff that is needed to run a
+certain group of tests properly. Our setup here is special in that we
+defined a nested one: ``UnitLayer2`` inherits ``UnitLayer1`` so that
+during test runs the appropriate setup and teardown methods are called
+(see testrunner output above).
+
+More about test layers can be found at the documentation of
+`testrunner layers API
+<http://apidoc.zope.org/++apidoc++/Code/zope/testing/testrunner-layers-api.txt/index.html>`_.
+
+Specifying a ZCML file
+----------------------
+
+When it comes to integration or functional tests, we need to specify a
+ZCML file to which configures the test environment for us. We can do
+that using the
+
+  `:zcml-layer: <ZCML-file-name>`
+
+marker. It expects a ZCML filename as argument and sets up a
+ZCML-layered testsuite for us. An example setup might look like so (see
+``tests/othercave/doctest03.txt``)::
+
+  A doctest with a ZCML-layer
+  ===========================
+
+  :doctest:
+  :zcml-layer: ftesting.zcml
+
+    >>> 1+1
+    2
+
+.. note:: Requires ``zope.app.testing``
+
+   If you use ``:zcml-layer``, the ``zope.app.testing`` package must
+   be available when running the tests and during test setup. This
+   package is not fetched by default by ``z3c.testsetup``.
+
+Here we say, that the the local file ``ftesting.zcml`` should be used
+as ZCML configuration. As we can see in the above output of testruner,
+this file is indeed read during test runs and used by a ZCML layer
+called ``DefaultZCMLLayer``. This layer is in fact only a
+``zope.app.testing.functional.ZCMLLayer``.
+
+The ZCML file is looked up in the same directory as the doctest file.
+
+When using the ``:zcml-layer:`` marker, the concerned tests are set up
+via special methods and functions from `zope.app.testing`. This way
+you get 'functional' or 'integration' tests out of the box: in the
+beginning an empty ZODB db is setup, ``getRootFolder``, ``sync`` and
+other functions are pulled into the test namespace and several things
+more.
+
+If you want a plain setup instead then use your own layer definition
+using ``:layer:`` and remove the ``:zcml-layer:`` marker.
+
+
+Setting up a functional ZCML layer
+----------------------------------
+
+Sometimes we want tests to be registered using the
+``FunctionalDocFileSuite`` function from
+``zope.app.testing.functional`` (other tests are set up using
+``zope.testing.doctest.DocFileSuite``). This function pulls in even
+more functions into ``globs``, like ``http`` (a ``HTTPCaller``
+instance), wraps your ``setUp`` and ``tearDown`` methods into
+ZODB-setups and several things more. See the definition in
+http://svn.zope.org/zope.app.testing/trunk/src/zope/app/testing/functional.py?view=auto.
+
+This setup needs also a ZCML configuration file, which can be
+specified via::
+
+  :functional-zcml-layer: <ZCML-file-name>
+
+If a functional ZCML layer is specified in a testfile this way, it
+will override any simple ``:zcml-layer:`` or ``:layer:`` definition.
+
+An example setup might look like this (see
+``tests/othercave/doctest04.txt``)::
+
+  >>> print_file(os.path.join(cavepath, 'doctest04.txt'))
+  |  A functional doctest with ZCML-layer
+  |  ====================================
+  |
+  |  :doctest:
+  |  :functional-zcml-layer: ftesting.zcml
+  |
+  |  We didn't define a real environment in ftesting.zcml, but in
+  |  functional tests certain often needed functions should be available
+  |  automatically::
+  |
+  |    >>> getRootFolder()
+  |    <zope.app.folder.folder.Folder object at 0x...>
+  |
+
+.. note:: Requires ``zope.app.testing``
+
+   If you use ``:zcml-layer``, the ``zope.app.testing`` package must
+   be available when running the tests and during test setup. This
+   package is not fetched by default by ``z3c.testsetup``.
+
+Specifying ``setUp`` and ``tearDown`` methods
+---------------------------------------------
+
+We can specify a ``setUp(test)`` and ``tearDown(test)`` method for the
+examples in a doctest file, which will be executed once for the whole
+doctest file. This can be done using::
+
+  :setup: <dotted.name.of.callable>
+  :teardown: <dotted.name.of.callable>
+
+The callables denoted by the dotted names must accept a ``test``
+parameter which will be the whole test suite of examples in the
+current doctest file.
+
+An example can be found in ``doctest05.txt``::
+
+  >>> print_file(os.path.join(cavepath, 'doctest05.txt'))
+  |  A doctest with custom setup/teardown functions
+  |  ==============================================
+  |  
+  |  :doctest:
+  |  :setup: z3c.testsetup.tests.othercave.testing.setUp
+  |  :teardown: z3c.testsetup.tests.othercave.testing.tearDown
+  |  
+  |    >>> 1+1
+  |    2
+  |  
+  |  We make use of a function registered during custom setup::
+  |  
+  |    >>> myfunc(2)
+  |    4
+  |
+
+The setup/teardown functions denoted in the example look like this::
+
+  >>> print open(os.path.join(cavepath, 'testing.py'), 'rb').read()
+  import os
+  ...
+  def setUp(test):
+      print "    Custom setUp for ", test
+      # We register a function that will be available during tests.
+       test.globs['myfunc'] = lambda x: 2*x
+  <BLANKLINE>
+  def tearDown(test):
+      print "    Custom tearDown for ", test
+      del test.globs['myfunc'] # unregister function
+  ...
+
+As we can see, there is a function ``myfunc`` pulled into the
+namespace of the doctest. We could, however, do arbitrary other things
+here, set up a relational test database or whatever.

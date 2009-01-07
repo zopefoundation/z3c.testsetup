@@ -17,7 +17,8 @@ import unittest
 import re
 from martian.scan import module_info_from_dotted_name
 from z3c.testsetup.base import BasicTestSetup
-from z3c.testsetup.util import get_package
+from z3c.testsetup.util import (get_package, get_marker_from_string,
+                                get_marker_from_file)
 
 class UnitTestSetup(BasicTestSetup):
     """A unit test setup for packages.
@@ -38,10 +39,11 @@ class UnitTestSetup(BasicTestSetup):
     regexp_list = [
         '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
         ]
-
+    
     def __init__(self, package, pfilter_func=None, regexp_list=None):
         BasicTestSetup.__init__(self, package, regexp_list=regexp_list)
         self.pfilter_func = pfilter_func or self.isTestModule
+        self.filter_func = self.pfilter_func
 
     def docstrContains(self, docstr, regexp_list):
         """Does a docstring contain lines matching every of the regular
@@ -50,6 +52,8 @@ class UnitTestSetup(BasicTestSetup):
         found_list = []
         if docstr is None:
             return False
+        if get_marker_from_string('unittest', docstr) is not None:
+            return True
         for line in docstr.split('\n'):
             for regexp in regexp_list:
                 if re.compile(regexp).match(line) and (
@@ -69,7 +73,8 @@ class UnitTestSetup(BasicTestSetup):
         # Do not even try to load modules, that have no marker string.
         if not self.fileContains(
             module_info.path, self.regexp_list):
-            return False
+            if get_marker_from_file('unittest', module_info.path) is None:
+                return False
         module = None        
         try:
             module = module_info.getModule()

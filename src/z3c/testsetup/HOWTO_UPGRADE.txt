@@ -1,0 +1,34 @@
+How to upgrade from `z3c.testsetup` < 0.3
+=========================================
+
+With the 0.3 release of `z3c.testsetup` the set of valid marker
+strings changed, introducing support for file-dependent setups,
+layers, etc.
+
+If you still mark your testfiles with the ``:Test-Layer:`` marker,
+update your testfiles as follows:
+
+- ``:Test-Layer: unit``
+
+  Change to: ``:doctest:``
+
+- ``:Test-Layer: python``
+
+  Change to: ``:unittest:``
+
+- ``:Test-Layer: functional``
+
+  Change to: ``:functional-zcml-layer: <ZCML-FILE>``
+
+  The ZCML file must explicitly be given.
+
+If you used custom setups passed to ``register_all_tests``, consider
+declaring those setup/teardown functions in the appropriate doctest
+files using ``:setup:`` and ``:teardown:``.
+
+You might also get better structured test suites when using the new
+layer markers ``:layer:``, ``:zcml-layer:`` and
+``functional-zcml-layer:``.
+
+Try to get rid of all parameters passed to ``register_all_tests``
+except those, mentioned in ``README.txt``.

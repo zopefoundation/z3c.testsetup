@@ -13,6 +13,8 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
+import sys
+import re
 from inspect import getmro, ismethod, getargspec
 from martian.scan import resolve
 
@@ -58,13 +60,20 @@ def get_marker_from_string(marker, text):
     Returns the found value or `None`. A markerstring has the form::
 
      :<Tag>: <Value>
+
+    or
+
+     .. :<Tag>: <Value>
+    
     """
     marker = ":%s:" % marker.lower()
+    rexp = re.compile('^(\.\.\s+)?%s(.*)$' % (marker,), re.IGNORECASE)
     for line in text.split('\n'):
         line = line.strip()
-        if not line.lower().startswith(marker):
+        result = rexp.match(line)
+        if result is None:
             continue
-        result = line[len(marker):].strip()
+        result = result.groups()[1].strip()
         return unicode(result)
     return None
 
@@ -76,5 +85,17 @@ def get_marker_from_file(marker, filepath):
      :<Tag>: <Value>
 
     """
-    return get_marker_from_string(marker, open(filepath, 'r').read())
+    return get_marker_from_string(marker, open(filepath, 'rb').read())
+
+def warn(text):
+    print "Warning: ", text
+
+def import_name(name):
+    __import__(name)
+    return sys.modules[name]
+
+def get_attribute(name):
+    name, attr = name.rsplit('.', 1)
+    obj = import_name(name)
+    return getattr(obj, attr)
 

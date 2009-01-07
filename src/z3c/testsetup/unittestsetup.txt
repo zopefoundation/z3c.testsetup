@@ -105,19 +105,24 @@ Basically, all modules are accepted that
    that defines the module as a testing module
    explicitly::
 
-       :Test-Layer: python
+       :unittest:
 
    This means: there *must* be a line like the above one in the
    docstring of the module (not: docstring of a class or function
    therein). The term might be preceeded or followed by whitspace
    characters (spaces, tabs).
 
+   .. note:: What about ``:Test-Layer: python``?
+
+      This marker was used in former releases of ``z3c.testsetup``. It
+      currently still works but is deprecated now.
+
    For example a module `example.py` would be found if it contains::
 
       """
       Tests to foo.
 
-      :Test-Layer: python
+      :unittest:
       """
       import unittest
 
@@ -145,15 +150,7 @@ Customizing the test module search:
 The unit test setup requires that files contain the above mentioned
 ReStructured Text meta-marker::
 
-    `:Test-Layer: unit`
-
-in their module docstring. This is determined by a list of regular
-expressions, which is also available as an object attribute::
-
-    >>> setup.regexp_list
-    ['^\\s*:(T|t)est-(L|l)ayer:\\s*(python)\\s*']
-
-This is the default value of unit test setups.
+    `:unittest:`
 
 There is one file in the `cave` subpackage, which includes that
 marker. We can get the list of test files using

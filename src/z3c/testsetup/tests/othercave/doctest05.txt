@@ -1,0 +1,14 @@
+A doctest with custom setup/teardown functions
+==============================================
+
+:doctest:
+:setup: z3c.testsetup.tests.othercave.testing.setUp
+:teardown: z3c.testsetup.tests.othercave.testing.tearDown
+
+  >>> 1+1
+  2
+
+We make use of a function registered during custom setup::
+
+  >>> myfunc(2)
+  4
