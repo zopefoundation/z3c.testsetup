@@ -47,6 +47,9 @@ class DocTestSetup(BasicTestSetup):
 class SimpleDocTestSetup(DocTestSetup):
     """A unified doctest setup for packages.
     """
+    
+    extensions = ['.rst', '.txt', '.py']
+    
     def getTestSuite(self):
         docfiles = self.getDocTestFiles(package=self.package)
         suite = unittest.TestSuite()
