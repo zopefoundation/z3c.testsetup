@@ -115,7 +115,7 @@ Basically, all modules are accepted that
       """
       [normal Python code...]
 
-   .. note:: The ``:Test-Layer: python`` marker is deprectated.
+   .. note:: The ``:Test-Layer: python`` marker is deprecated.
 
       In former releases of `z3c.testsetup` the mentioned marker was
       used to mark unittests. This changed with version 0.3 and the
