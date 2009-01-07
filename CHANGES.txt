@@ -32,6 +32,10 @@ Feature Changes
 
     marks a testfile as a doctest.
 
+  - `:unittest:`
+
+    marks a testfile as a regular unittest.
+
   - `:layer: dotted.name.to.layer.def`
 
     applies the given layer definition to the tests in the doctest
@@ -58,11 +62,11 @@ Feature Changes
     applies the tearDown function denoted by the dotted name to the
     tests in the doctests file.
 
-  See the examples in `tests/othercave` and README2.txt to learn more
+  See the examples in `tests/othercave` and README.txt to learn more
   about using these new directives.
 
   The old `:test-layer:` marker is still supported but it is
-  deprecated now and will vanish with the 0.4 version of
+  deprecated now and will vanish at least with the 0.5 version of
   `z3c.testsetup`.
 
 
