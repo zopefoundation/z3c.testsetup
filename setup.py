@@ -28,7 +28,7 @@ long_description = (
 
 setup(
     name='z3c.testsetup',
-    version='0.3dev',
+    version='0.3',
     author='Uli Fouquet and the Zope Community',
     author_email='uli@gnufix.de',
     url = 'http://pypi.python.org/pypi/z3c.testsetup',
