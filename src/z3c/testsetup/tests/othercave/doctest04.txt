@@ -9,4 +9,4 @@ functional tests certain often needed functions should be available
 automatically::
 
   >>> getRootFolder()
-  <zope.app.folder.folder.Folder object at 0x...>
+  <zope...folder.Folder object at 0x...>

@@ -6,6 +6,7 @@ def read(*rnames):
 
 tests_require = [
     'zope.app.testing',
+    'zope.app.zcmlfiles',
     'zope.component',
     ]
 

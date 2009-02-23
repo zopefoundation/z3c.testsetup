@@ -687,8 +687,12 @@ An example setup might look like this (see
   |  automatically::
   |
   |    >>> getRootFolder()
-  |    <zope.app.folder.folder.Folder object at 0x...>
+  |    <zope...folder.Folder object at 0x...>
   |
+
+The placeholder between ``zope`` and ``folder`` was used because the
+location of the Folder class changed recently. This way we cover
+setups with old packages as well as recent ones.
 
 .. note:: Requires ``zope.app.testing``
 
