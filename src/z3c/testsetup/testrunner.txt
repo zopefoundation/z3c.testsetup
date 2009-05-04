@@ -524,3 +524,63 @@ tests::
 
 As we can see, the layer `UnitLayer1` was executed here.
 
+Convenience Stuff
+-----------------
+
+Here we collect some convenience stuff, that might be useful for
+testers. Most people, however, won't need them.
+
+`z3c.testsetup.testrunner`
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With `zope.testing`_ 3.7.3 the behaviour of
+`zope.testing.testrunner.run()` changed and now exits always with
+status. See http://svn.zope.org/zope.testing/?rev=99366&view=rev 
+
+To run testrunners as part of tests, one now has to use
+`testrunner.run_internal()` instead of `testrunner.run()`. This makes
+it hard to test with packages, that sometimes use `zope.testing`_
+>= 3.7.3 but are also used with `zope.testing` < 3.7.3.
+
+For those cases (i.e. where testrunners are run as part of tests
+themselves) `z3c.testsetup` now offers the convenience functions
+`testrunner.run()` and `testrunner.run_internal()` that are wrappers
+guaranteed to be aliases for the same function of `zope.testing`:
+``zope.testing.testrunner.run_internal()`` if it exists or
+``zope.testing.testrunner.run()`` otherwise.
+
+In doctests you now can use
+
+   >>> from z3c.testsetup import testrunner
+
+call ``testrunner.run()`` afterwards and it will work, regardless of
+what version of `zope.testing` you are using.
+
+This is only interesting for people that run tests, which itself run
+testrunners (like `z3c.testsetup` itself). 
+
+The functions provided by the faked testrunners of z3c.testsetup refer
+to the same thing:
+
+    >>> from z3c.testsetup import testrunner
+    >>> testrunner.run is testrunner.run_internal
+    True
+
+If `zope.testing` >= 3.7.3 is running in background, both functions
+refer to `zope.testing.testrunner.run_internal`:
+
+    >>> import pkg_resources
+    >>> info = pkg_resources.get_distribution('zope.testing')
+    >>> version = tuple(info.version.split('.'))
+    >>> new_version = (version > ('3', '7', '2'))
+
+    >>> from zope.testing.testrunner import run
+    >>> not new_version or (testrunner.run is not run)
+    True
+
+Otherwise both functions refer to `zope.testing.testrunner.run()`:
+
+    >>> (run is testrunner.run_internal) or new_version
+    True
+
+.. _`zope.testing`: http://pypi.python.org/pypi/zope.testing
