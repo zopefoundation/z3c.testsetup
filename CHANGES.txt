@@ -4,6 +4,14 @@ CHANGES
 0.4 (unreleased)
 ================
 
+Feature Changes
+---------------
+
+* Added ``z3c.testsetup.testrunner`` that provides wrappers for
+  ``zope.testing.testrunner``s ``run()`` and ``run_internal()``
+  functions. Using it, one can make sure that running testrunners
+  inside tests will work regardless of which version of
+  ``zope.testing`` is used during testruns.
 
 0.3 (2009-02-23)
 ================
