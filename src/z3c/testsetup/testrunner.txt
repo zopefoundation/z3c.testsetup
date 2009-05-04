@@ -507,19 +507,30 @@ tests::
     ...     '--tests-pattern', '^layeredsetup01$',
     ...     ]
     >>> testrunner.run(defaults)
+    Running z3c...DefaultZCMLLayer [/.../bar/ftesting.zcml] tests:
+      Set up z3c...DefaultZCMLLayer [/.../bar/ftesting.zcml] in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c...DefaultZCMLLayer [/.../foo/ftesting.zcml] tests:
+      Tear down z3c...efaultZCMLLayer [/.../bar/ftesting.zcml] ... not supported
+      Running in a subprocess.
+      Set up z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] ... not supported
     Running z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1 tests:
-      Set up z3c.testsetup...yered_cave.layer.FunctionalLayer1 in ... seconds.
-      Ran 1 tests with 0 failures and 0 errors in ... seconds.
+      Running in a subprocess.
+      Set up z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
     Running z3c.testsetup.tests.layered_cave.layer.UnitLayer1 tests:
-      Tear down z3c.testsetup...red_cave.layer.FunctionalLayer1 in ... seconds.
-      Set up z3c.testsetup...layered_cave.layer.UnitLayer1 in ... seconds.
+      Running in a subprocess.
+      Set up z3c.testsetup.tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
         Running testSetUp of UnitLayer1
         Running testTearDown of UnitLayer1
-      Ran 1 tests with 0 failures and 0 errors in ... seconds.
-    Tearing down left over layers:
-      Tear down z3c.testsetup...layered_cave.layer.UnitLayer1 in ... seconds.
-    Total: 2 tests, 0 failures, 0 errors in ... seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...layered_cave.layer.UnitLayer1 in N.NNN seconds.
+    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
+
 
 As we can see, the layer `UnitLayer1` was executed here.
 

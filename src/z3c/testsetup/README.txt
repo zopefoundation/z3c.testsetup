@@ -146,15 +146,15 @@ Let's start the testrunner and see what it gives::
   ...     ]
   >>> from z3c.testsetup import testrunner
   >>> testrunner.run(defaults)
-    Running z3c...functional.layer.DefaultZCMLLayer [ftesting.zcml] tests:
-      Set up z3c....layer.DefaultZCMLLayer [ftesting.zcml] in N.NNN seconds.
+    Running z3c...layer.DefaultZCMLLayer [...ftesting.zcml] tests:
+      Set up z3c...DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
       Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running z3c...functional.layer.DefaultZCMLLayer [ftesting2.zcml] tests:
-      Tear down z3c...layer.DefaultZCMLLayer [ftesting.zcml] ... not supported
+    Running z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] tests:
+      Tear down z3c...DefaultZCMLLayer [...ftesting.zcml] ... not supported
       Running in a subprocess.
-      Set up z3c...layer.DefaultZCMLLayer [ftesting2.zcml] in N.NNN seconds.
+      Set up z3c...DefaultZCMLLayer [...ftesting2.zcml] in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down z3c...layer.DefaultZCMLLayer [ftesting2.zcml] ... not supported
+      Tear down z3c...DefaultZCMLLayer [...ftesting2.zcml] ... not supported
     Running z3c.testsetup.tests.othercave.testing.UnitLayer2 tests:
       Running in a subprocess.
       Set up z3c.testsetup.tests.othercave.testing.UnitLayer1 in N.NNN seconds.
