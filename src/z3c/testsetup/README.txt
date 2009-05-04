@@ -144,7 +144,7 @@ Let's start the testrunner and see what it gives::
   ...     '--path', cavepath,
   ...     '--tests-pattern', '^simplesetup01$',
   ...     ]
-  >>> from zope.testing import testrunner
+  >>> from z3c.testsetup import testrunner
   >>> testrunner.run(defaults)
     Running z3c...functional.layer.DefaultZCMLLayer [ftesting.zcml] tests:
       Set up z3c....layer.DefaultZCMLLayer [ftesting.zcml] in N.NNN seconds.

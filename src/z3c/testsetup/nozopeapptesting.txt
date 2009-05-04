@@ -58,7 +58,7 @@ the testrunner::
     ...     '--tests-pattern', '^samplesetup_short0$',
     ...     ]
     >>> sys.argv = 'test '.split()
-    >>> from zope.testing import testrunner
+    >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
     Running zope.testing.testrunner.layer.UnitTests tests:
       Set up zope.testing.testrunner.layer.UnitTests in ... seconds.
