@@ -4,6 +4,15 @@ CHANGES
 0.4 (unreleased)
 ================
 
+Bug fixes
+---------
+
+* Made ``z3c.testsetup`` selftests work with ``zope.testing`` >=
+  3.7.3. Thanks to Jonathan Ballet for pointing to that problem.
+
+* Ignore *nix hidden test files (i.e. such starting with a dot in
+  filename) by default. Thanks to Jonathan Ballet for patch.
+
 Feature Changes
 ---------------
 
