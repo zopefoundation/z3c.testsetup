@@ -121,7 +121,9 @@ be found, the other paramters tell how to setup single tests.
    found. Now, we define a plain filter function::
 
       >>> def custom_file_filter(path):
-      ...     """Accept all txt files."""
+      ...     """Accept all txt files that are not hidden."""
+      ...     if os.path.basename(path).startswith('.'):
+      ...       return False
       ...     return path.endswith('.txt')
 
    This one accepts all '.txt' files. We run `register_all_tests`

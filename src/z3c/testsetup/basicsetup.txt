@@ -70,7 +70,7 @@ Which files are found?
 ----------------------
 
 By default, all .txt and .rst files are taken
-into account::
+into account, that do not start with a dot::
 
    >>> exts = ['.rst', '.txt']
    >>> [x for x in file_list if not os.path.splitext(x)[1].lower() in exts]
@@ -87,8 +87,8 @@ Also subdirectories are searched::
    >>> file_list
    [...'...subdirfile.txt'...]
 
-Hidden directories, however, are skipped. To check this, we look for a
-'hidden' testfile put into a hidden directory in the `cave`
+Hidden directories and files, however, are skipped. To check this, we
+look for a 'hidden' testfile put into a hidden directory in the `cave`
 directory. We first make sure, that the hidden file really exists::
 
    >>> cavepath = os.path.dirname(cave.__file__)
@@ -97,6 +97,16 @@ directory. We first make sure, that the hidden file really exists::
    True
 
 And now check that it was *not* included in the file list::
+
+   >>> hiddenpath in file_list
+   False
+
+Also another hidden file, which resides in a regular (non-hidden)
+directory was skipped:
+
+   >>> hiddenfile = os.path.join(cavepath, '.hiddenfile.txt')
+   >>> os.path.exists(hiddenfile)
+   True
 
    >>> hiddenpath in file_list
    False
@@ -126,6 +136,10 @@ filename extension and compares it with the instance-attribute
    >>> basic_setup.isTestFile('cave.foo')
    False
 
+Hidden files (i.e. such starting with a dot in filename) are ignored:
+
+   >>> basic_setup.isTestFile('.hiddenfile.txt')
+   False
 
 How to find a customized set of files:
 --------------------------------------
@@ -146,10 +160,11 @@ You can pass an alternative filterfunction as keyword parameter
 ``filter_func`` to the ``BasicTestSetup`` constructor::
 
    >>> def myFilter(filename):
+   ...     # We accept all '.txt' files, also hidden ones.
    ...     return filename.endswith('.txt')
    >>> basic_setup2 = BasicTestSetup(cave, filter_func=myFilter)
    >>> len(basic_setup2.getDocTestFiles())
-   2
+   3
 
 Note, that the filter function must accept a single parameter, which
 should contain a filepath as string and it should return a boolean
@@ -161,7 +176,7 @@ the constructor, using the ``extensions`` keyword::
 
    >>> basic_setup3 = BasicTestSetup(cave, extensions=['.txt'])
 
-Note, that the extensions should alway be written with a leading dot
+Note, that the extensions should always be written with a leading dot
 and in lower case. Such we can find only .txt files::
 
    >>> len(basic_setup3.getDocTestFiles())
