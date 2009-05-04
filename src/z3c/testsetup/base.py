@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2008 Zope Corporation and Contributors.
+# Copyright (c) 2008-2009 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -81,6 +81,9 @@ class BasicTestSetup(object):
         doctest file.
         """
         if os.path.splitext(filepath)[1].lower() not in self.extensions:
+            return False
+        if os.path.basename(filepath).startswith('.'):
+            # Ignore *nix hidden files
             return False
         if not self.fileContains(filepath, self.regexp_list):
             return False

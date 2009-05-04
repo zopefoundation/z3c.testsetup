@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2007-2008 Zope Corporation and Contributors.
+# Copyright (c) 2007-2009 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -134,6 +134,9 @@ Please include `zope.app.testing` in your project setup to run this testfile.
         doctest file.
         """
         if os.path.splitext(filepath)[1].lower() not in self.extensions:
+            return False
+        if os.path.basename(filepath).startswith('.'):
+            # Ignore *nix hidden files
             return False
         if get_marker_from_file('doctest', filepath) is None:
             return False
