@@ -13,6 +13,8 @@ registered with sensible, modifiable defaults.
 Also support for reusable test setups is provided by so-called
 TestGetters and TestCollectors.
 
+.. contents::
+
 Setting up doctests (contrary to *writing* those tests) can become
 cumbersome with Zope 3. In the environment you often have to prepare
 complex things like test layers, setup functions, teardown functions
