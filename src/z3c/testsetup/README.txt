@@ -1,5 +1,5 @@
-z3c.testsetup
-*************
+Detailed Documentation
+**********************
 
 Easy testsetups for Zope 3 and Python projects.
 

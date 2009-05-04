@@ -1,9 +1,8 @@
-=============================
-z3c.testsetup and testrunners
-=============================
+Setup Examples
+==============
 
 Here we discuss complete test setups for the `cave` package contained
-in thie `tests` directory. We will run the `zope.testing.testrunner`
+in the `tests` directory. We will run the `zope.testing.testrunner`
 and examine their output.
 
 Short setups
@@ -448,7 +447,7 @@ We ran one unittest and two functional tests.
 
 
 z3c.testsetup and layers
-========================
+------------------------
 
 Here we discuss complete testsetups that involve test layers. Test
 layers are a method to group several tests or test suites in groups.
@@ -461,7 +460,7 @@ See `layered_cave/layer.py` for examples of working layers. We will
 use the layers defined there in the following examples.
 
 Simple unit doctests with layers
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Using z3c.testsetup, we can define quite complex testsetups with only
 two lines of code::
@@ -525,13 +524,13 @@ tests::
 As we can see, the layer `UnitLayer1` was executed here.
 
 Convenience Stuff
------------------
+=================
 
 Here we collect some convenience stuff, that might be useful for
 testers. Most people, however, won't need them.
 
-`z3c.testsetup.testrunner`
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+``z3c.testsetup.testrunner``
+----------------------------
 
 With `zope.testing`_ 3.7.3 the behaviour of
 `zope.testing.testrunner.run()` changed and now exits always with
@@ -540,7 +539,7 @@ status. See http://svn.zope.org/zope.testing/?rev=99366&view=rev
 To run testrunners as part of tests, one now has to use
 `testrunner.run_internal()` instead of `testrunner.run()`. This makes
 it hard to test with packages, that sometimes use `zope.testing`_
->= 3.7.3 but are also used with `zope.testing` < 3.7.3.
+>= 3.7.3 but are also used with `zope.testing`_ < 3.7.3.
 
 For those cases (i.e. where testrunners are run as part of tests
 themselves) `z3c.testsetup` now offers the convenience functions
@@ -557,7 +556,7 @@ call ``testrunner.run()`` afterwards and it will work, regardless of
 what version of `zope.testing` you are using.
 
 This is only interesting for people that run tests, which itself run
-testrunners (like `z3c.testsetup` itself). 
+testrunners (like `z3c.testsetup` itself in self-tests). 
 
 The functions provided by the faked testrunners of z3c.testsetup refer
 to the same thing:
@@ -566,7 +565,7 @@ to the same thing:
     >>> testrunner.run is testrunner.run_internal
     True
 
-If `zope.testing` >= 3.7.3 is running in background, both functions
+If `zope.testing`_ >= 3.7.3 is running in background, both functions
 refer to `zope.testing.testrunner.run_internal`:
 
     >>> import pkg_resources
