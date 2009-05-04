@@ -1,0 +1,11 @@
+============================
+A hidden test won't be found
+============================
+
+As this testfile is hidden (i.e. its name starts with a dot), it will
+not be considered when looking for tests.
+
+:test-layer: functional
+
+    >>> 1+1
+    2
