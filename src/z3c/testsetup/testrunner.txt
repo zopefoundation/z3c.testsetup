@@ -496,11 +496,17 @@ denoted by the trailing dotted name should be applied to the tests of
 the file. It is vital that the denoted object really exist. The format
 of the layer declaration is::
 
-  :Test-Layerdef: <dotted.name.of.layer.definition>
+  :test-layerdef: <dotted.name.of.layer.definition>
 
 where the marker string can be written in upper or lower or mixed
 case. Doing so, the testrunner will apply the declared layer to our
-tests::
+tests.
+
+To make things more interesting we also created two subpackages in our
+package, named ``foo`` and ``bar``. Both contain functional doctests
+that need separate ZCML code for initialization and use the default
+layer. Although both ZCML files are called ``ftesting.zcml`` the
+setups will run isolated from each other::
 
     >>> defaults = [
     ...     '--path', cavepath, '-f',
