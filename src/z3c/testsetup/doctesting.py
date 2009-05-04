@@ -126,7 +126,8 @@ Please include `zope.app.testing` in your project setup to run this testfile.
         layer = DefaultZCMLLayer(
             os.path.join(os.path.dirname(filepath), zcml_file),
             DefaultZCMLLayer.__module__,
-            '%s [%s]' % (DefaultZCMLLayer.__name__, zcml_file))
+            '%s [%s]' % (DefaultZCMLLayer.__name__,
+                         os.path.join(os.path.dirname(filepath), zcml_file)))
         return layer
 
     def isTestFile(self, filepath):
