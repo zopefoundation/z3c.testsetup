@@ -1,0 +1,17 @@
+
+
+:doctest:
+:functional-zcml-layer: ftesting.zcml
+
+Only our local ftesting.zcml is considered during test runs:
+
+    >>> from zope.component import getUtility
+    >>> from z3c.testsetup.tests.layered_cave.bar import IBar
+    >>> getUtility(IBar, name='bar utility')().do_bar()
+    Bar!
+
+    >>> from z3c.testsetup.tests.layered_cave.foo import IFoo
+    >>> getUtility(IFoo, name='foo utility')
+    Traceback (most recent call last):
+    ...
+    ComponentLookupError: (<InterfaceClass ...foo.IFoo>, 'foo utility')
