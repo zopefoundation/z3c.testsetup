@@ -13,6 +13,13 @@ Bug fixes
 * Ignore *nix hidden test files (i.e. such starting with a dot in
   filename) by default. Thanks to Jonathan Ballet for patch.
 
+* ZCML files registered via the default layer are now separated from
+  each other, even if they own the same filename. Therefore you can now
+  register a default layer with an ``ftesting.zcml`` in one subpackage
+  while having another ``ftesting.zcml`` in another package. This was
+  not handled correctly before. Many thanks go to Jonathan Ballet who
+  contributed a patch.
+
 Feature Changes
 ---------------
 
