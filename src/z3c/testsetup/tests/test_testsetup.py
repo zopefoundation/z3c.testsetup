@@ -90,7 +90,7 @@ def testrunner_suite():
         'tests/README_OLD.txt', 'testgetter.txt', 'testrunner.txt', 'README.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
-        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
+        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE+doctest.REPORT_NDIFF,
         checker=checker),
         ]
 
@@ -127,7 +127,7 @@ def zopeapptestingless_suite():
         'nozopeapptesting.txt',
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
-        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE,
+        optionflags=doctest.ELLIPSIS+doctest.NORMALIZE_WHITESPACE+doctest.REPORT_NDIFF,
         checker=checker),
         ]
 
@@ -147,7 +147,8 @@ def suiteFromFile(filename):
                                        'print_file':print_file,},
                                 checker=checker,
                                 optionflags=doctest.ELLIPSIS+
-                                doctest.NORMALIZE_WHITESPACE)
+                                doctest.NORMALIZE_WHITESPACE+
+                                doctest.REPORT_NDIFF)
 
     suite.addTest(test)
     return suite
