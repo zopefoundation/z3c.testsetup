@@ -41,6 +41,3 @@ for the testrunner::
       Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
     Total: 4 tests, 0 failures, 0 errors in 1.854 seconds.
     False
-
-TODO Note on ^^^: I copy-pasted the real output and I'm still getting some
-invisible error on the last "ran 2 tests" line.
