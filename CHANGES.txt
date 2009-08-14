@@ -4,6 +4,16 @@ CHANGES
 0.5 (unreleased)
 ================
 
+Feature changes
+---------------
+
+* functional-zcml-layer tests now use the allow_teardown=True option of the
+  ZCMLLayer.  This prevents the zcml layer from running in a subprocess which
+  throws off profiling and thus code coverage tools.  Running it in a
+  subprocess is only normally needed when you do things like adding an
+  interface to a class after the fact in your code.
+
+
 0.4 (2009-06-11)
 ================
 
