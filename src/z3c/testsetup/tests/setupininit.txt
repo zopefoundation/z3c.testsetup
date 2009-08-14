@@ -34,7 +34,7 @@ for the testrunner::
       Set up z3c.testsetup.functional.doctesting.FunctionalLayer in 0.040 seconds.
       Ran 2 tests with 0 failures and 0 errors in 0.004 seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup.functional.doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup.functional.doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
       Ran 2 tests with 0 failures and 0 errors in 0.003 seconds.

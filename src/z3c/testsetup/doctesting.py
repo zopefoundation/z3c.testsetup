@@ -47,9 +47,9 @@ class DocTestSetup(BasicTestSetup):
 class SimpleDocTestSetup(DocTestSetup):
     """A unified doctest setup for packages.
     """
-    
+
     extensions = ['.rst', '.txt', '.py']
-    
+
     def getTestSuite(self):
         docfiles = self.getDocTestFiles(package=self.package)
         suite = unittest.TestSuite()
@@ -92,7 +92,7 @@ Please include `zope.app.testing` in your project setup to run this testfile.
 """ % (os.path.join(common_prefix, name),))
                     continue
                 suite_creator = FunctionalDocFileSuite
-                
+
             test = suite_creator(
                 name,
                 package=self.package,
@@ -127,7 +127,8 @@ Please include `zope.app.testing` in your project setup to run this testfile.
             os.path.join(os.path.dirname(filepath), zcml_file),
             DefaultZCMLLayer.__module__,
             '%s [%s]' % (DefaultZCMLLayer.__name__,
-                         os.path.join(os.path.dirname(filepath), zcml_file)))
+                         os.path.join(os.path.dirname(filepath), zcml_file)),
+            allow_teardown=True)
         return layer
 
     def isTestFile(self, filepath):
