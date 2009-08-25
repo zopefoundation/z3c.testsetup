@@ -1,0 +1,12 @@
+A doctest with functional layer
+-------------------------------
+
+We can also define ZCML layers using ``layer``. Then the tests will be
+registered using a functional setup.
+
+:doctest:
+:layer: z3c.testsetup.tests.othercave.testing.FunctionalLayer1
+
+  >>> root = getRootFolder()
+  >>> root
+  <zope.site.folder.Folder object at 0x...>
