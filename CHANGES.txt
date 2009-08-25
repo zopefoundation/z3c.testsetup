@@ -4,6 +4,15 @@ CHANGES
 0.5 (unreleased)
 ================
 
+Bug fixes
+---------
+
+* Normal UnitTest layers are now registered correctly.
+
+* ``:layer:`` now supports also functional ZCML layers. If the defined
+  layer is derived from `zope.testing.functional.ZCMLLayer`, then the
+  test is registered with functional setup.
+
 0.4 (2009-06-11)
 ================
 
