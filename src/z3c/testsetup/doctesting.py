@@ -55,6 +55,8 @@ class SimpleDocTestSetup(DocTestSetup):
         suite = unittest.TestSuite()
         for name in docfiles:
             layerdef = get_marker_from_file('layer', name)
+            if layerdef is not None:
+                layerdef = get_attribute(layerdef)
 
             zcml_layer = self.getZCMLLayer(name, 'zcml-layer')
             if zcml_layer is not None:
@@ -92,7 +94,20 @@ Please include `zope.app.testing` in your project setup to run this testfile.
 """ % (os.path.join(common_prefix, name),))
                     continue
                 suite_creator = FunctionalDocFileSuite
-                
+
+            # If the defined layer is a ZCMLLayer, we also enable the
+            # functional test setup.
+            if layerdef is not None:
+                try:
+                    from zope.app.testing.functional import (
+                        ZCMLLayer, FunctionalDocFileSuite)
+                    if isinstance(layerdef, ZCMLLayer):
+                        suite_creator = FunctionalDocFileSuite
+                except ImportError:
+                    # If zope.app.testing is not available, the layer
+                    # cannot be a ZCML layer.
+                    pass
+                    
             test = suite_creator(
                 name,
                 package=self.package,
