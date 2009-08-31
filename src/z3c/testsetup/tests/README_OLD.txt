@@ -81,7 +81,8 @@ keyword parameters::
    register_all_tests(pkg_or_dotted_name, filter_func, extensions,
                       encoding, checker,
                       globs, setup, teardown, optionflags
-                      zcml_config, layer_name, layer)
+                      zcml_config, layer_name, layer,
+                      allow_teardown)
 
 where all but the first parameter are keyword paramters and all but
 the package parameter are optional.
@@ -437,6 +438,14 @@ be found, the other paramters tell how to setup single tests.
 
     This parameter overrides any ``zcml_config`` and ``layer_name``
     parameter.
+
+- **allow_teardown**:
+
+    True by default.  This allows the testing mechanism to try to tear down
+    ZCML layers.  If set to False, every ZCML layer is run in a separate
+    process for really complete isolation.  Setting it to False leads to
+    incomplete profiling and code coverage data.  It needs to be set to False
+    in rare cases like setting interfaces on classes programmatically.
 
 
 How to mark testfiles/modules

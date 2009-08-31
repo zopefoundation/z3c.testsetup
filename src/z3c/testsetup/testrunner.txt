@@ -50,8 +50,6 @@ testrunner::
 Of the four tests apparently run, there is one 'normal' python test
 and three doctests, of which two are functional doctests.
 
-TODO for Reinout: test with functionallayers WITH the "not supported" message.
-
 Now, we only want to run the doctests in the ``cave`` package. A
 suitable setup is contained in `samplesetup_short1.py`` in the
 ``cave`` package::
@@ -189,14 +187,43 @@ This will result in::
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup.tests.cave.SampleLayer ...
+      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
+    False
+
+Apparently now the custom ZCML file in the ``cave`` package was used.
+
+We can add an allow_teardown=False option, this prevents the test mechanism
+from tearing down the functional layers, they're run in a separate process
+instead:
+
+    >>> setupfile = os.path.join(cavepath, 'samplesetup_teardown.py')
+    >>> print open(setupfile).read()
+    import z3c.testsetup
+    test_suite = z3c.testsetup.register_all_tests(
+        'z3c.testsetup.tests.cave',
+        zcml_config='sampleftesting.zcml',
+        layer_name = 'SampleLayer',
+        allow_teardown=False)
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^samplesetup_teardown$',
+    ...     ]
+    >>> testrunner.run(defaults)
+    Running z3c.testsetup.tests.cave.SampleLayer tests:
+      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Tear down z3c.testsetup.tests.cave.SampleLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
-
-Apparently now the custom ZCML file in the ``cave`` package was used.
 
 
 Setting output checker for functional tests
