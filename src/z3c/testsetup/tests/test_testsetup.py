@@ -1,18 +1,11 @@
 import os
+import re
 import sys
 import gc
 import unittest
 from zope.testing import doctest, cleanup, renormalizing
-from zope.testing.testrunner.tests import checker
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
-
-
-# Begin hack to fix
-# http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html
-# Everything apart from 'xterm' is OK.
-os.environ['TERM'] = 'linux'
-# End hack.
 
 
 TESTFILES = ['basicsetup.txt',
@@ -24,6 +17,15 @@ TESTFILES = ['basicsetup.txt',
              os.path.join('tests', 'setupininit.txt'),
              os.path.join('tests', 'util.txt'),
              ]
+
+
+checker = renormalizing.RENormalizing([
+    # Relevant normalizers from zope.testing.testrunner.tests:
+    (re.compile(r'\d+[.]\d\d\d seconds'), 'N.NNN seconds'),
+    # Our own one to work around
+    # http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html:
+    (re.compile(r'.*1034h'), ''),
+    ])
 
 
 def pnorm(path):
@@ -105,12 +107,12 @@ def testrunner_suite():
         doctest.DocFileSuite(
             'tests/README_OLD.txt', 'testgetter.txt',
             'testrunner.txt', 'README.txt',
-        package='z3c.testsetup',
-        setUp=setUp, tearDown=tearDown,
-        optionflags=(doctest.ELLIPSIS|
-                     doctest.NORMALIZE_WHITESPACE|
-                     doctest.REPORT_NDIFF),
-        checker=checker),
+            package='z3c.testsetup',
+            setUp=setUp, tearDown=tearDown,
+            optionflags=(doctest.ELLIPSIS|
+                         doctest.NORMALIZE_WHITESPACE|
+                         doctest.REPORT_NDIFF),
+            checker=checker),
         ]
 
     suite = unittest.TestSuite(suites)
@@ -146,13 +148,13 @@ def zopeapptestingless_suite():
 
     suites = [
         doctest.DocFileSuite(
-        'nozopeapptesting.txt',
-        package='z3c.testsetup',
-        setUp=setUp, tearDown=tearDown,
-        optionflags=(doctest.ELLIPSIS|
-                     doctest.NORMALIZE_WHITESPACE|
-                     doctest.REPORT_NDIFF),
-        checker=checker),
+            'nozopeapptesting.txt',
+            package='z3c.testsetup',
+            setUp=setUp, tearDown=tearDown,
+            optionflags=(doctest.ELLIPSIS|
+                         doctest.NORMALIZE_WHITESPACE|
+                         doctest.REPORT_NDIFF),
+            checker=checker),
         ]
 
     suite = unittest.TestSuite(suites)
