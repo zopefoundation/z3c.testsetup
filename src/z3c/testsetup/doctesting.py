@@ -33,7 +33,8 @@ class DocTestSetup(BasicTestSetup):
     encoding = 'utf-8'
 
     def __init__(self, package, setup=None, teardown=None, globs=None,
-                 optionflags=None, encoding=None, **kw):
+                 optionflags=None, encoding=None,
+                 allow_teardown=True, **kw):
         BasicTestSetup.__init__(self, package, **kw)
         self.setUp = setup or self.setUp
         self.tearDown = teardown or self.tearDown
@@ -42,14 +43,15 @@ class DocTestSetup(BasicTestSetup):
             self.globs = globs
         if optionflags is not None:
             self.optionflags = optionflags
+        self.allow_teardown = allow_teardown
 
 
 class SimpleDocTestSetup(DocTestSetup):
     """A unified doctest setup for packages.
     """
-    
+
     extensions = ['.rst', '.txt', '.py']
-    
+
     def getTestSuite(self):
         docfiles = self.getDocTestFiles(package=self.package)
         suite = unittest.TestSuite()
@@ -107,7 +109,7 @@ Please include `zope.app.testing` in your project setup to run this testfile.
                     # If zope.app.testing is not available, the layer
                     # cannot be a ZCML layer.
                     pass
-                    
+
             test = suite_creator(
                 name,
                 package=self.package,
@@ -142,7 +144,8 @@ Please include `zope.app.testing` in your project setup to run this testfile.
             os.path.join(os.path.dirname(filepath), zcml_file),
             DefaultZCMLLayer.__module__,
             '%s [%s]' % (DefaultZCMLLayer.__name__,
-                         os.path.join(os.path.dirname(filepath), zcml_file)))
+                         os.path.join(os.path.dirname(filepath), zcml_file)),
+            allow_teardown=self.allow_teardown)
         return layer
 
     def isTestFile(self, filepath):

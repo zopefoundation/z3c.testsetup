@@ -31,14 +31,13 @@ for the testrunner::
     >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup...doctesting.FunctionalLayer in ... seconds.
-      Ran 2 tests with 0 failures and 0 errors in ... seconds.
+      Set up z3c.testsetup.functional.doctesting.FunctionalLayer in 0.040 seconds.
+      Ran 2 tests with 0 failures and 0 errors in 0.004 seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup.functional.doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in ... seconds.
-      Ran 2 tests with 0 failures and 0 errors in ... seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
-    Total: 4 tests, 0 failures, 0 errors in ... seconds.
+      Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+      Ran 2 tests with 0 failures and 0 errors in 0.003 seconds.
+      Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+    Total: 4 tests, 0 failures, 0 errors in 1.854 seconds.
     False
-

@@ -13,6 +13,17 @@ Bug fixes
   layer is derived from `zope.testing.functional.ZCMLLayer`, then the
   test is registered with functional setup.
 
+Feature changes
+---------------
+
+* By default, functional layer tests now use the allow_teardown=True option of
+  the ZCMLLayer.  This prevents the zcml layer from running in a subprocess
+  which throws off profiling and thus code coverage tools.  Running it in a
+  subprocess is only normally needed when you do things like adding an
+  interface to a class after the fact in your code.  You can overrid it in the
+  register_all_tests() call by setting allow_teardown=False.
+
+
 0.4 (2009-06-11)
 ================
 

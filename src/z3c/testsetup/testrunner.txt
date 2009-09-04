@@ -39,7 +39,7 @@ testrunner::
       Set up z3c...functional.doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c...functional.doctesting.FunctionalLayer ... not supported
+      Tear down z3c...functional.doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -73,7 +73,7 @@ string. This is enough information for a testrunner::
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -105,7 +105,7 @@ testrunner with this setup::
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -186,15 +186,44 @@ This will result in::
       Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
+      Tear down z3c.testsetup.tests.cave.SampleLayer ...
+      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
+    False
+
+Apparently now the custom ZCML file in the ``cave`` package was used.
+
+We can add an allow_teardown=False option, this prevents the test mechanism
+from tearing down the functional layers, they're run in a separate process
+instead:
+
+    >>> setupfile = os.path.join(cavepath, 'samplesetup_teardown.py')
+    >>> print open(setupfile).read()
+    import z3c.testsetup
+    test_suite = z3c.testsetup.register_all_tests(
+        'z3c.testsetup.tests.cave',
+        zcml_config='sampleftesting.zcml',
+        layer_name = 'SampleLayer',
+        allow_teardown=False)
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^samplesetup_teardown$',
+    ...     ]
+    >>> testrunner.run(defaults)
+    Running z3c.testsetup.tests.cave.SampleLayer tests:
+      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Tear down z3c.testsetup.tests.cave.SampleLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
-
-Apparently now the custom ZCML file in the ``cave`` package was used.
 
 
 Setting output checker for functional tests
@@ -239,7 +268,7 @@ Running the testrunner with this setup will result in::
       Set up z3c.testsetup....doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ...
     False
 
 The same setup, but without a modified checker will deliver::
@@ -274,7 +303,7 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
       Ran 2 tests with 1 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ...
     True
 
 Note that checkers are currently only supported for functional
@@ -330,7 +359,7 @@ Here the ``os.path.basename`` function is registered under the name
       Set up z3c.testsetup....doctesting.FunctionalLayer in ... seconds.
       Ran 1 tests with 0 failures and 0 errors in ... seconds.
     Tearing down left over layers:
-      Tear down z3c.testsetup....doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup....doctesting.FunctionalLayer ...
     False
 
 The testrunner finished without any error. So the ``basename``
@@ -435,7 +464,7 @@ to return a testsuite::
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -517,22 +546,20 @@ setups will run isolated from each other::
       Set up z3c...DefaultZCMLLayer [/.../bar/ftesting.zcml] in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c...DefaultZCMLLayer [/.../foo/ftesting.zcml] tests:
-      Tear down z3c...efaultZCMLLayer [/.../bar/ftesting.zcml] ... not supported
-      Running in a subprocess.
+      Tear down z3c...efaultZCMLLayer [/.../bar/ftesting.zcml] ...
       Set up z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] ... not supported
     Running z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1 tests:
-      Running in a subprocess.
+      Tear down z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] ...
       Set up z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
     Running z3c.testsetup.tests.layered_cave.layer.UnitLayer1 tests:
-      Running in a subprocess.
+      Tear down z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
       Set up z3c.testsetup.tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
         Running testSetUp of UnitLayer1
         Running testTearDown of UnitLayer1
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
       Tear down z3c...layered_cave.layer.UnitLayer1 in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False

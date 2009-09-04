@@ -55,8 +55,10 @@ class FunctionalDocTestSetup(DocTestSetup):
     checker = None
 
     def __init__(self, package, checker=None, zcml_config = None,
-                 layer_name='FunctionalLayer', layer=None, **kw):
+                 layer_name='FunctionalLayer', layer=None,
+                 allow_teardown=True, **kw):
         DocTestSetup.__init__(self, package, **kw)
+        self.allow_teardown = allow_teardown
         self.checker = checker
         # Setup a new layer if specified in params...
         if zcml_config is not None and layer is None:
@@ -65,20 +67,22 @@ class FunctionalDocTestSetup(DocTestSetup):
                     os.path.dirname(self.package.__file__),
                     zcml_config)
             self.layer = ZCMLLayer(zcml_config, self.package.__name__,
-                                   layer_name)
+                                   layer_name,
+                                   allow_teardown=self.allow_teardown)
         elif layer is None:
             # Look for ftesting.zcml in pkg-root...
             pkg_ftesting_zcml = os.path.join(
                 os.path.dirname(self.package.__file__), 'ftesting.zcml')
             if os.path.isfile(pkg_ftesting_zcml):
                 self.layer = ZCMLLayer(pkg_ftesting_zcml,
-                                       self.package.__name__, layer_name)
+                                       self.package.__name__, layer_name,
+                                       allow_teardown=self.allow_teardown)
         # Passing a ready-for-use layer overrides layer specified by
         # zcml_config...
         if layer is not None:
             self.layer = layer
         return
-        
+
     def setUp(self, test):
         FunctionalTestSetup().setUp()
 
