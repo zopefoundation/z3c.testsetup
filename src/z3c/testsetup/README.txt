@@ -152,16 +152,15 @@ Let's start the testrunner and see what it gives::
       Set up z3c...DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
       Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] tests:
-      Tear down z3c...DefaultZCMLLayer [...ftesting.zcml] ...
+      Tear down z3c...DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
       Set up z3c...DefaultZCMLLayer [...ftesting2.zcml] in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c.testsetup.tests.othercave.testing.FunctionalLayer1 tests:
-      Running in a subprocess.
+      Tear down z3c...DefaultZCMLLayer [...ftesting2.zcml] in N.NNN seconds.
       Set up z3c...tests.othercave.testing.FunctionalLayer1 in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down z3c...tests.othercave.testing.FunctionalLayer1 in N.NNN seconds.
     Running z3c.testsetup.tests.othercave.testing.UnitLayer2 tests:
-      Tear down z3c...DefaultZCMLLayer [...ftesting2.zcml] ...
+      Tear down z3c...tests.othercave.testing.FunctionalLayer1 in N.NNN seconds.
       Set up z3c.testsetup.tests.othercave.testing.UnitLayer1 in N.NNN seconds.
       Set up z3c.testsetup.tests.othercave.testing.UnitLayer2 in N.NNN seconds.
         Running testSetUp of UnitLayer1
