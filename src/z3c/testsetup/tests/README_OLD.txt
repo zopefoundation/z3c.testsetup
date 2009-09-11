@@ -352,8 +352,6 @@ be found, the other paramters tell how to setup single tests.
 
     Please see ``testrunner.txt`` for examples of usage.
 
-    Checkers are applied to functional doctests only!
-
 - **globs**:
 
     A dictionary of things that should be available immediately
