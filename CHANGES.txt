@@ -7,6 +7,9 @@ CHANGES
 Bug fixes
 ---------
 
+* Checkers are now applied to non-functional doctests too. Thanks to
+  Jonathan Ballet for patches.
+
 * Normal UnitTest layers are now registered correctly.
 
 * ``:layer:`` now supports also functional ZCML layers. If the defined
