@@ -32,13 +32,16 @@ class DocTestSetup(BasicTestSetup):
 
     encoding = 'utf-8'
 
+    checker = None
+    
     def __init__(self, package, setup=None, teardown=None, globs=None,
-                 optionflags=None, encoding=None,
+                 optionflags=None, encoding=None, checker=None,
                  allow_teardown=True, **kw):
         BasicTestSetup.__init__(self, package, **kw)
         self.setUp = setup or self.setUp
         self.tearDown = teardown or self.tearDown
         self.encoding = encoding or self.encoding
+        self.checker = checker or self.checker
         if globs is not None:
             self.globs = globs
         if optionflags is not None:
@@ -117,6 +120,7 @@ Please include `zope.app.testing` in your project setup to run this testfile.
                 tearDown=teardown,
                 globs=self.globs,
                 optionflags=self.optionflags,
+                checker=self.checker,
                 **self.additional_options
                 )
             if layerdef is not None:
@@ -230,6 +234,7 @@ class UnitDocTestSetup(DocTestSetup):
                 tearDown=self.tearDown,
                 globs=self.globs,
                 optionflags=self.optionflags,
+                checker=self.checker,
                 **self.additional_options
                 )
             if layerdef is not None:
