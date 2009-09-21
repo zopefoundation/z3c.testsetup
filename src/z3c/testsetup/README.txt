@@ -1,17 +1,11 @@
-Detailed Documentation
+Detailed documentation
 **********************
 
-Easy testsetups for Zope 3 and Python projects.
-
-Setting up tests for Zope 3 projects sometimes tends to be
-cumbersome. ``z3c.testsetup`` jumps in here, to support much flatter
-test setups. The package supports normal Python `unit tests
-<http://docs.python.org/library/unittest.html>`_ and
-`doctests <http://docs.python.org/library/doctest.html>`_.
-
-Note, that if you want integration or functional tests, that you have
-to make sure, that the ``zope.app.testing`` package is available
-during test runs. ``z3c.testsetup`` does **not** depend on it.
+Note, that if you want zope integration or functional tests, that you have to
+make sure, that the ``zope.app.testing`` and ``zope.component`` packages are
+available during test runs. ``z3c.testsetup`` does **not** depend on it.  If
+you want zope integration/functional tests, this is almost always already the
+case, so you don't need to care about this.
 
 The package works in two steps:
 
@@ -31,6 +25,14 @@ This is a general introduction to ``z3c.testsetup``. For setup
 examples you might see the ``othercave`` package contained in the
 `tests/` directory. More details on special topics can be found in the
 appropriate .txt files in this directory.
+
+**Important Note:**
+
+  Between version 0.2 and 0.3 of ``z3c.testsetup`` a new set of testfile
+  markers was introduced. If you are still using `Test-Layer: unit` or
+  similar, please read the README.txt in the source directory carefully to
+  learn how to switch to the new names. (Or see further down this page when
+  reading it on pypi).
 
 
 Basic Example
@@ -470,6 +472,13 @@ configured in doctest files themselves via marker strings.
 
     This is a fallback parameter and has no effect for docfiles
     specifying their own layer or ZCML config.
+
+
+**Note:**
+
+  For more elaborate setups, you can use so-called TestGetters and
+  TestCollectors.  They are explained in ``testgetter.txt`` in the source code
+  (so you'll need to look there if you want to use it).
 
 
 Deprectated/unsupported parameters

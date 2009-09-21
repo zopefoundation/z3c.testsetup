@@ -1,3 +1,20 @@
+Developing on z3c.testsetup itself
+**********************************
+
+Prerequisites
+=============
+
+You need::
+
+- Python 2.4 or 2.5 (status of 2.6 is unknown right now).
+
+- `setuptools`, available from 
+  http://peak.telecommunity.com/DevCenter/setuptools
+
+Other needed packages will be downloaded during installation. Therefore you
+need an internet connection during installation.
+
+
 Installation
 ============
 
