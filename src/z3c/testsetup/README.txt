@@ -1,38 +1,32 @@
 Detailed documentation
 **********************
 
-Note, that if you want zope integration or functional tests, that you have to
-make sure, that the ``zope.app.testing`` and ``zope.component`` packages are
-available during test runs. ``z3c.testsetup`` does **not** depend on it.  If
-you want zope integration/functional tests, this is almost always already the
-case, so you don't need to care about this.
-
 The package works in two steps:
 
 1) It looks for testfiles in a given package.
 
 2) It registers the tests according to your specifications.
 
-.. note: Important note for users of ':Test-Layer:':
 
-  The marker strings of `z3c.testsetup` changed!
+Initial notes
+=============
 
-  Please switch to the new syntax described below, if you are still
-  using the old ':Test-Layer:' marker. It is more powerful and less
-  magic.
-
-This is a general introduction to ``z3c.testsetup``. For setup
-examples you might see the ``othercave`` package contained in the
-`tests/` directory. More details on special topics can be found in the
-appropriate .txt files in this directory.
-
-**Important Note:**
-
-  Between version 0.2 and 0.3 of ``z3c.testsetup`` a new set of testfile
+* Between version 0.2 and 0.3 of ``z3c.testsetup`` a new set of testfile
   markers was introduced. If you are still using `Test-Layer: unit` or
   similar, please read the README.txt in the source directory carefully to
   learn how to switch to the new names. (Or see further down this page when
   reading it on pypi).
+
+* Zope integration note: if you want zope integration or functional tests, you
+  have to make sure, that the ``zope.app.testing`` and ``zope.component``
+  packages are available during test runs. ``z3c.testsetup`` does **not**
+  depend on it to make it usable for plain python packages.  If you want zope
+  integration/functional tests, this is almost always already the case, so you
+  don't need to care about this.
+
+* If you download the source code, you can look at the examples used for
+  testing and at text files that test technical aspects of z3c.testsetup.
+  This can be handy when you want detailed knowledge about specific features.
 
 
 Basic Example
@@ -40,14 +34,14 @@ Basic Example
 
 Before we can find, register and execute tests, we first have to write
 them down. We already have some ready to use tests available, which
-can be found in a subpackage::
+can be found in a subpackage:
 
   >>> import os
   >>> cavepath = os.path.dirname(__file__)
   >>> cavepath = os.path.join(cavepath, 'tests', 'othercave')
 
 In this subpackage there is a simple doctest `doctest01.txt` (please
-ignore the pipes on the left)::
+ignore the pipes on the left):
 
   >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
   |  A doctest
@@ -61,65 +55,66 @@ ignore the pipes on the left)::
   |    2
   |  
 
+Important to note: the doctest is marked by a special marker that tells the
+testsetup machinery that the file contains doctest examples that should be
+registered during test runs.
 
-As we can see, the doctest is marked by a special marker
+   :doctest:
 
-   `:doctest:`. 
-
-This marker tells the testsetup machinery, that this file contains
-doctest examples that should be registered during test runs. Without
-this marker, a testfile won't be registered during tests!
-
-This is the only difference to 'normal' doctests here.
+Without this marker, a testfile won't be registered during tests!  This is the
+only difference compared to 'normal' doctests when you use z3c.testsetup.  If
+you want to disable a test, just turn ``:doctest:`` into ``:nodoctest:`` (or
+something else) and the file will be ignored.
 
 Other markers detected by ``z3c.testsetup`` are:
 
- - ``:unittest:``
+- ``:unittest:``
 
-   A replacement for ``:doctest:``, marking a Python module as
-   containing unittests to run. Replaces old ``Test-Layer: python``
-   marker.
+  A replacement for ``:doctest:``, marking a Python module as
+  containing unittests to run. Replaces old ``Test-Layer: python``
+  marker.
 
- - ``:setup: <dotted.name.of.function>``
+- ``:setup: <dotted.name.of.function>``
 
-   Execute the given setup function before running doctests in this
-   file.
+  Execute the given setup function before running doctests in this
+  file.
 
- - ``:teardown: <dotted.name.of.function>``
+- ``:teardown: <dotted.name.of.function>``
 
-   Execute the given teardown function after running doctests in this
-   file.
+  Execute the given teardown function after running doctests in this
+  file.
 
- - ``:layer: <dotted.name.of.layer.def>``
+- ``:layer: <dotted.name.of.layer.def>``
 
-   Use the given layer definition for tests in this file. If the layer
-   given is derived from `zope.testing.functional.ZCMLLayer`, the test
-   is registered using `zope.app.testing.functional.DocFileSuite`.
+  Use the given layer definition for tests in this file. If the layer
+  given is derived from `zope.testing.functional.ZCMLLayer`, the test
+  is registered using `zope.app.testing.functional.DocFileSuite`.
 
- - ``:zcml-layer: <ZCML_filename>``
+- ``:zcml-layer: <ZCML_filename>``
 
-   Use the given ZCML file and run tests in this file on a ZCML
-   layer. Tests are registered using
-   `zope.testing.doctest.DocFileSuite`.
+  Use the given ZCML file and run tests in this file on a ZCML
+  layer. Tests are registered using
+  `zope.testing.doctest.DocFileSuite`.
 
- - ``:functional-zcml-layer: <ZCML_filename>``
+- ``:functional-zcml-layer: <ZCML_filename>``
 
-   Use the given ZCML file and run tests in this file registered with
-   `zope.app.testing.functional.DocFileSuite`.
+  Use the given ZCML file and run tests in this file registered with
+  `zope.app.testing.functional.DocFileSuite`.
+
+Markers are case-insensitive.
 
 See below for explanations of the respective markers.
 
 .. note:: How to disable markers or make them invisible
 
-   All markers can be written as restructured text comment (two
-   leading dots followed by whitespace) like this::
+   All markers can be written as restructured text comments (two leading dots
+   followed by whitespace) like this::
 
      .. :doctest:
 
   and will still work. This way you can make the markers disappear
-  from autogenerated docs etc. Markers are case-insensitive. If you
-  want to disable a test, just turn ``:doctest:`` into ``:nodoctest:``
-  and the file will be ignored.
+  from autogenerated docs etc.
+
 
 Now, that we have a doctest available, we can write a testsetup
 routine, that collects all tests, registers them and passes them to
