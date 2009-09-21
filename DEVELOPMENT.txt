@@ -1,0 +1,23 @@
+Installation
+============
+
+From the root of the package run::
+
+     $ python bootstrap/bootstrap.py
+
+This will download and install everything to run `buildout` in the
+next step. Afterwards an executable script `buildout` should be
+available in the freshly created `bin/` directory.
+
+Next, fetch all needed packages, install them and create provided
+scripts::
+
+     $ bin/buildout
+
+This should create a `test` script in `bin/`.
+
+Running::
+
+     $ bin/test
+
+you can test the installed package.
