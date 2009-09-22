@@ -313,8 +313,8 @@ configured in doctest files themselves via marker strings.
 
 - **checker**:
 
-    An output checker for doctests. `None` by default. A typical
-    output checker can be created like this::
+    An output normalizer for doctests. `None` by default. A typical output
+    checker can be created like this::
 
       >>> import re
       >>> from zope.testing import renormalizing
@@ -329,9 +329,10 @@ configured in doctest files themselves via marker strings.
 
       <SOME NUBMER OF> seconds
 
-    Please see ``testrunner.txt`` for examples of usage.
-
-    Checkers are applied to functional doctests only!
+    Define this checker in your testrunner .py file and add a
+    ``checker=mychecker`` option to the ``register_all_tests()`` call.  Since
+    version 0.5 checkers are applied to both regular and functional doctests
+    (pre-0.5: only functional ones).
 
 
 - **globs**:
@@ -344,7 +345,8 @@ configured in doctest files themselves via marker strings.
     This parameter is a fallback which can be overriden by testfile
     markers specifying a certain layer (see below).
 
-    The `globs` parameter applies only to doctests.
+    The `globs` parameter applies only to doctests, not to plain python
+    unittests.
 
 
 - **optionflags**:
@@ -384,6 +386,23 @@ configured in doctest files themselves via marker strings.
     way.
 
 
+- **allow_teardown**:
+
+    A boolean whether teardown of zcml layers is allowed (*added in 0.5*).  In
+    rare corner cases (like programmatically slapping an interface on a
+    class), a full safe teardown of the zope component architecture is
+    impossible.  Zope.testing has a default setting for allow_teardown of
+    False, which means it uses the safe default of running every zcml layer in
+    a separate process, which ensures full teardown.
+
+    The drawback is that profiling and coverage tools cannot combine the
+    profile/coverage data from separate processes.  z3c.testsetup has a
+    default of True (since 0.5), which gives you correct coverage/profiling
+    output.  If you do one of the rare things that can trip up a regular
+    teardown of the zope component architecture, you'll have to set
+    ``allow_teardown=False`` in your ``register_all_tests()`` call.
+
+
 - **zcml_config**:
 
     A filepath of a ZCML file which is registered with functional
@@ -410,7 +429,7 @@ configured in doctest files themselves via marker strings.
     given or a docfile specifies its own layer/ZCML config (see
     below).
 
-    This is a fallback parameter. Use of docfile specific layer
+    This is a fallback parameter. Use of per-doctest-file specific layer
     markers is recommended.
 
 - **layer**:
@@ -477,18 +496,17 @@ Markers are case-insensitive.
 See further below for explanations of the respective markers.
 
 
-Setting up a unittest layer: ``:layer:``
-----------------------------------------
+Setting up a self-defined layer: ``:layer:``
+--------------------------------------------
 
-Starting with ``z3c.testsetup`` 0.3 there is first reasonable support
-for setting up layers per testfile. This way you can easily create
-setup-functions that are only run before/after certain tests.
+Starting with ``z3c.testsetup`` 0.3 there is reasonable support for setting up
+layers per testfile. This way you can easily create setup-functions that are
+only run before/after certain sets tests.
 
 Overall, use of layers is the recommended way from now on.
 
-We can tell ``z3c.testsetup`` to use a certain unittest layer using
-the ``:layer:`` marker as in the following example (see
-``tests/othercave/doctest02.txt``)::
+We can tell ``z3c.testsetup`` to use a certain layer using the ``:layer:``
+marker as in the following example (see ``tests/othercave/doctest02.txt``)::
 
     A doctests with layer
     =====================
@@ -499,17 +517,13 @@ the ``:layer:`` marker as in the following example (see
       >>> 1+1
       2
 
-
 The ``:doctest:`` marker was used here as well, because without it the
 file would not have been detected as a registerable doctest file (we
 want developers to be explicit about that).
 
-The 
-
- `:layer: <DOTTED_NAME_OF_LAYER_DEF>`
-
-marker then tells, where the testsetup machinery can
-find the layer definition. It is given in dotted name notation.
+The ``:layer: <DOTTED_NAME_OF_LAYER_DEF>`` marker then tells, where the
+testsetup machinery can find the layer definition. It is given in dotted name
+notation and points to a layer you defined yourself.
 
 How does the layer definition look like? It is defined as regualr
 Python code::
@@ -597,11 +611,11 @@ More about test layers can be found at the documentation of
 Specifying a ZCML file: ``:zcml-layer:``
 ----------------------------------------
 
-When it comes to integration or functional tests, we need to specify a
-ZCML file to which configures the test environment for us. We can do
-that using the
+When it comes to integration tests which use zope's component architecture, we
+need to specify a ZCML file which configures the test environment for us. We
+can do that using the
 
-  `:zcml-layer: <ZCML-file-name>`
+  ``:zcml-layer: <ZCML-file-name>``
 
 marker. It expects a ZCML filename as argument and sets up a
 ZCML-layered testsuite for us. An example setup might look like so (see
@@ -622,13 +636,14 @@ ZCML-layered testsuite for us. An example setup might look like so (see
    be available when running the tests and during test setup. This
    package is not fetched by default by ``z3c.testsetup``.
 
-Here we say, that the the local file ``ftesting.zcml`` should be used
-as ZCML configuration. As we can see in the above output of testruner,
-this file is indeed read during test runs and used by a ZCML layer
-called ``DefaultZCMLLayer``. This layer is in fact only a
+Here we say that the the local file ``ftesting.zcml`` should be used as ZCML
+configuration. As we can see in the above output of testruner, this file is
+indeed read during test runs and used by a ZCML layer called
+``DefaultZCMLLayer``. This layer is in fact only a
 ``zope.app.testing.functional.ZCMLLayer``.
 
-The ZCML file is looked up in the same directory as the doctest file.
+The ZCML file is looked up in the same directory as the doctest file. (You can
+use relative paths like ``../ftesting.zcml`` just fine, btw).
 
 When using the ``:zcml-layer:`` marker, the concerned tests are set up
 via special methods and functions from `zope.app.testing`. This way
@@ -742,3 +757,5 @@ The setup/teardown functions denoted in the example look like this::
 As we can see, there is a function ``myfunc`` pulled into the
 namespace of the doctest. We could, however, do arbitrary other things
 here, set up a relational test database or whatever.
+
+

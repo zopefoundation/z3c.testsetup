@@ -1,4 +1,4 @@
-Setup Examples
+Setup examples
 ==============
 
 Here we discuss complete test setups for the `cave` package contained
@@ -365,7 +365,7 @@ The same setup, but without a modified checker will deliver::
     True
 
 Note that in older versions of `z3c.testsetup` checkers were supported
-for functioanl doctests only.
+for functional doctests only.
 
 
 Setting globals for doctests
@@ -625,8 +625,8 @@ setups will run isolated from each other::
 
 As we can see, the layer `UnitLayer1` was executed here.
 
-Convenience Stuff
-=================
+Convenience stuff for testers of z3c.testsetup
+==============================================
 
 Here we collect some convenience stuff, that might be useful for
 testers. Most people, however, won't need them.
