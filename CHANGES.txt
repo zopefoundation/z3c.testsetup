@@ -1,5 +1,5 @@
-CHANGES
-*******
+Changelog for z3c.testsetup
+***************************
 
 0.5 (unreleased)
 ================
@@ -15,6 +15,8 @@ Bug fixes
 * ``:layer:`` now detects functional ZCML layers. If the defined layer is
   derived from `zope.testing.functional.ZCMLLayer`, then the test is
   set up with the same kind of testcase as ``:functional-zcml-layer:``.
+
+* Reordered and cleaned up the documentation.
 
 Feature changes
 ---------------
