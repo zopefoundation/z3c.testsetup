@@ -61,7 +61,7 @@ ignore the pipes on the left):
 
 Important to note: the doctest is marked by a special marker that tells the
 testsetup machinery that the file contains doctest examples that should be
-registered during test runs.
+registered during test runs::
 
    :doctest:
 
@@ -445,7 +445,7 @@ configured in doctest files themselves via marker strings.
     specifying their own layer or ZCML config.
 
 
-**Note:**
+.. note::
 
   For more elaborate setups, you can use so-called TestGetters and
   TestCollectors.  They are explained in ``testgetter.txt`` in the source code
