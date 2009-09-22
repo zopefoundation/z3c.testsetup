@@ -5,6 +5,10 @@ With the 0.3 release of `z3c.testsetup` the set of valid marker
 strings changed, introducing support for file-dependent setups,
 layers, etc.
 
+
+Deprecated ``:Test-Layer:`` marker
+----------------------------------
+
 If you still mark your testfiles with the ``:Test-Layer:`` marker,
 update your testfiles as follows:
 
@@ -30,5 +34,18 @@ You might also get better structured test suites when using the new
 layer markers ``:layer:``, ``:zcml-layer:`` and
 ``functional-zcml-layer:``.
 
-Try to get rid of all parameters passed to ``register_all_tests``
-except those, mentioned in ``README.txt``.
+
+Deprectated parameters for ``register_all_tests()``
+---------------------------------------------------
+
+The following ``register_all_tests``-parameters are deprecated,
+starting with ``z3c.testsetup`` 0.3:
+
+- **filter_func**
+
+   and related (``ufilter_func``, ``pfilter_func``, etc.)
+
+- All testtype specific parameters
+
+  Support for testfile specific parameters (``uextensions``,
+  ``fextensions``, etc.) is running out and its use deprecated.

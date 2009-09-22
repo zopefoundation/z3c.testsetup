@@ -433,21 +433,6 @@ configured in doctest files themselves via marker strings.
   (so you'll need to look there if you want to use it).
 
 
-Deprectated/unsupported parameters
-----------------------------------
-
-The following ``register_all_tests``-parameters are deprecated,
-starting with ``z3c.testsetup`` 0.3:
-
-- **filter_func**
-
-   and related (``ufilter_func``, ``pfilter_func``, etc.)
-
-- All testtype specific parameters
-
-  Support for testfile specific parameters (``uextensions``,
-  ``fextensions``, etc.) is running out and its use deprecated.
-
 
 Available markers for configuring the tests
 ===========================================
