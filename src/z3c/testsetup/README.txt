@@ -12,7 +12,7 @@ Initial notes
 =============
 
 * Between version 0.2 and 0.3 of ``z3c.testsetup`` a new set of testfile
-  markers was introduced. If you are still using `Test-Layer: unit` or
+  markers was introduced. If you are still using ``Test-Layer: unit`` or
   similar, please read the README.txt in the source directory carefully to
   learn how to switch to the new names. (Or see further down this page when
   reading it on pypi).
@@ -44,7 +44,7 @@ in the ``tests/`` subdirectory if you've downloaded the source code):
 Registering doctests
 --------------------
 
-In this example directory, there is a simple doctest `doctest01.txt` (please
+In this example directory, there is a simple doctest ``doctest01.txt`` (please
 ignore the pipes on the left):
 
   >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
@@ -97,7 +97,7 @@ This is all we need in simple cases. We use
 to look for test files. Note that also files in subpackages will be found,
 registered and executed when they are marked approriately.
 
-Let's start the testrunner and see what it gives::
+Let's start the testrunner and see what it gives:
 
     >>> import sys
     >>> sys.argv = [sys.argv[0],]
@@ -205,7 +205,7 @@ Registering regular python unittests
 ------------------------------------
 
 ``z3c.testsetup`` provides also (limited) support for regular
-`unittest` deployments as usually written in Python. An example file
+``unittest`` deployments as usually written in Python. An example file
 looks like this:
 
   >>> print_file(os.path.join(cavepath, 'pythontest1.py'))
@@ -244,7 +244,7 @@ tests are found and run automatically when they provide the marker.
 Registering the tests: ``register_all_tests()``
 ===============================================
 
-The `register_all_tests` function mentioned above accepts a bunch of
+The ``register_all_tests`` function mentioned above accepts a bunch of
 keyword parameters::
 
    register_all_tests(pkg_or_dotted_name [, extensions] [, encoding]
@@ -255,7 +255,7 @@ keyword parameters::
 where all but the first parameter are keyword paramters and all but
 the package parameter are optional.
 
-While the `extensions` parameter determines the set of testfiles to be
+While the ``extensions`` parameter determines the set of testfiles to be
 found, the other paramters tell how to setup single tests.
 
 The last five parameters are only fallbacks, that should better be
@@ -264,11 +264,11 @@ configured in doctest files themselves via marker strings.
 - **extensions**:
 
     a list of filename extensions to be considered during doctest
-    search. Default value for doctests is `['.txt', '.rst',
-    '.py']`. Python tests are not touched by this (they have to be
+    search. Default value for doctests is ``['.txt', '.rst',
+    '.py']``. Python tests are not touched by this (they have to be
     regular Python modules with '.py' extension).
 
-    If we want to register .foo files, we can do so::
+    If we want to register .foo files, we can do so:
 
       >>> import z3c.testsetup
       >>> test_suite = z3c.testsetup.register_all_tests(
@@ -284,10 +284,10 @@ configured in doctest files themselves via marker strings.
 
 - **encoding**:
 
-    the encoding of testfiles. 'utf-8' by default. Setting this to `None`
+    the encoding of testfiles. 'utf-8' by default. Setting this to ``None``
     means using the default value. We've hidden one doctest file, that
-    contains umlauts. If we set the encoding to `ascii`, we get an
-    error::
+    contains umlauts. If we set the encoding to ``ascii``, we get an
+    error:
 
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
@@ -298,7 +298,7 @@ configured in doctest files themselves via marker strings.
       UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal 
       not in range(128)
 
-    While using 'latin-1' will work::
+    While using 'latin-1' will work:
 
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
@@ -313,8 +313,8 @@ configured in doctest files themselves via marker strings.
 
 - **checker**:
 
-    An output normalizer for doctests. `None` by default. A typical output
-    checker can be created like this::
+    An output normalizer for doctests. ``None`` by default. A typical output
+    checker can be created like this:
 
       >>> import re
       >>> from zope.testing import renormalizing
@@ -324,7 +324,7 @@ configured in doctest files themselves via marker strings.
       ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
       ... ])
 
-    This would match for example output like `0.123 seconds` if you
+    This would match for example output like ``0.123 seconds`` if you
     write in your doctest::
 
       <SOME NUBMER OF> seconds
@@ -345,7 +345,7 @@ configured in doctest files themselves via marker strings.
     This parameter is a fallback which can be overriden by testfile
     markers specifying a certain layer (see below).
 
-    The `globs` parameter applies only to doctests, not to plain python
+    The ``globs`` parameter applies only to doctests, not to plain python
     unittests.
 
 
@@ -361,7 +361,7 @@ configured in doctest files themselves via marker strings.
 
 - **setup**:
 
-    A callable that takes a `test` argument and is executed before
+    A callable that takes a ``test`` argument and is executed before
     every single doctest.
 
     The default function does nothing.
@@ -374,7 +374,7 @@ configured in doctest files themselves via marker strings.
 
 - **teardown**:   
 
-    The equivalent to `setup`.
+    The equivalent to ``setup``.
 
     The default function runs
 
@@ -409,7 +409,7 @@ configured in doctest files themselves via marker strings.
     doctests. In the ZCML file you can for example register principals
     (users) usable by functional doctests.
 
-    By default any `ftesting.zcml` file from the root of the given
+    By default any ``ftesting.zcml`` file from the root of the given
     package is taken. If this does not exist, an empty ZCML file of
     the z3c.testsetup package is used (``ftesting.zcml``).
 
@@ -477,19 +477,19 @@ We already saw the ``:doctest:`` marker above.  Other markers detected by
 - ``:layer: <dotted.name.of.layer.def>``
 
   Use the given layer definition for tests in this file. If the layer
-  given is derived from `zope.testing.functional.ZCMLLayer`, the test
-  is registered using `zope.app.testing.functional.DocFileSuite`.
+  given is derived from ``zope.testing.functional.ZCMLLayer``, the test
+  is registered using ``zope.app.testing.functional.DocFileSuite``.
 
 - ``:zcml-layer: <ZCML_filename>``
 
   Use the given ZCML file and run tests in this file on a ZCML
   layer. Tests are registered using
-  `zope.testing.doctest.DocFileSuite`.
+  ``zope.testing.doctest.DocFileSuite``.
 
 - ``:functional-zcml-layer: <ZCML_filename>``
 
   Use the given ZCML file and run tests in this file registered with
-  `zope.app.testing.functional.DocFileSuite`.
+  ``zope.app.testing.functional.DocFileSuite``.
 
 Markers are case-insensitive.
 
@@ -526,7 +526,7 @@ testsetup machinery can find the layer definition. It is given in dotted name
 notation and points to a layer you defined yourself.
 
 How does the layer definition look like? It is defined as regualr
-Python code::
+Python code:
 
   >>> print open(os.path.join(cavepath, 'testing.py')).read()
   import os
@@ -646,7 +646,7 @@ The ZCML file is looked up in the same directory as the doctest file. (You can
 use relative paths like ``../ftesting.zcml`` just fine, btw).
 
 When using the ``:zcml-layer:`` marker, the concerned tests are set up
-via special methods and functions from `zope.app.testing`. This way
+via special methods and functions from ``zope.app.testing``. This way
 you get 'functional' or 'integration' tests out of the box: in the
 beginning an empty ZODB db is setup, ``getRootFolder``, ``sync`` and
 other functions are pulled into the test namespace and several things
@@ -677,7 +677,7 @@ If a functional ZCML layer is specified in a testfile this way, it
 will override any simple ``:zcml-layer:`` or ``:layer:`` definition.
 
 An example setup might look like this (see
-``tests/othercave/doctest04.txt``)::
+``tests/othercave/doctest04.txt``):
 
   >>> print_file(os.path.join(cavepath, 'doctest04.txt'))
   |  A functional doctest with ZCML-layer
@@ -720,7 +720,7 @@ parameter which will be the whole test suite of examples in the
 current doctest file.  setup/teardown can be used to set up (and remove) a
 temporary directory, to monkeypatch a mailer, etcetera.
 
-An example can be found in ``doctest05.txt``::
+An example can be found in ``doctest05.txt``:
 
   >>> print_file(os.path.join(cavepath, 'doctest05.txt'))
   |  A doctest with custom setup/teardown functions
@@ -739,7 +739,7 @@ An example can be found in ``doctest05.txt``::
   |    4
   |
 
-The setup/teardown functions denoted in the example look like this::
+The setup/teardown functions denoted in the example look like this:
 
   >>> print open(os.path.join(cavepath, 'testing.py'), 'rb').read()
   import os
