@@ -13,6 +13,7 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
+import os
 import sys
 import re
 from inspect import getmro, ismethod, getargspec
@@ -99,3 +100,9 @@ def get_attribute(name):
     obj = import_name(name)
     return getattr(obj, attr)
 
+def emit_deprecation_warning(text, package=None, filename=None):
+    filepath = ''
+    if package is not None and filename is not None:
+        dir = os.path.dirname(package.__file__)
+        filepath = 'file: %s\n' % os.path.join(dir, filename)
+    sys.stderr.write("z3c.testsetup: %s%s\n" % (filepath, text,))
