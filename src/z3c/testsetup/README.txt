@@ -50,14 +50,14 @@ ignore the pipes on the left):
   >>> print_file(os.path.join(cavepath, 'doctest01.txt'))
   |  A doctest
   |  =========
-  |  
+  |
   |  :doctest:
-  |  
+  |
   |  This is a simple doctest.
-  |  
+  |
   |    >>> 1+1
   |    2
-  |  
+  |
 
 Important to note: the doctest is marked by a special marker that tells the
 testsetup machinery that the file contains doctest examples that should be
@@ -157,41 +157,41 @@ Python modules are found just fine as in the following example:
   |  """
   |  Doctests in a Python module
   |  ===========================
-  |  
+  |
   |  We can place doctests also in Python modules.
-  |  
+  |
   |  :doctest:
-  |  
+  |
   |  Here the Cave class is defined::
-  |  
+  |
   |    >>> from z3c.testsetup.tests.othercave.doctest08 import Cave
   |    >>> Cave
   |    <class 'z3c.testsetup...doctest08.Cave'>
-  |  
+  |
   |  """
   |  class Cave(object):
   |      """A Cave.
-  |  
+  |
   |      A cave has a number::
-  |  
+  |
   |        >>> hasattr(Cave, 'number')
   |        True
-  |      
+  |
   |      """
   |      number = None
-  |  
+  |
   |      def __init__(self, number):
   |          """Create a Cave.
-  |  
+  |
   |          We have to give a number if we create a cave::
-  |  
+  |
   |            >>> c = Cave(12)
   |            >>> c.number
   |            12
-  |            
+  |
   |          """
   |          self.number = number
-  |  
+  |
 
 Here we placed the marker string ``:doctest:`` into the docstring of
 the module. Without it, the module would not have been considered a
@@ -211,18 +211,18 @@ looks like this:
   >>> print_file(os.path.join(cavepath, 'pythontest1.py'))
   |  """
   |  Tests with real TestCase objects.
-  |  
+  |
   |  :unittest:
-  |  
+  |
   |  """
-  |  
+  |
   |  import unittest
-  |  
+  |
   |  class TestTest(unittest.TestCase):
-  |  
+  |
   |      def setUp(self):
   |          pass
-  |  
+  |
   |      def testFoo(self):
   |          self.assertEqual(2, 1+1)
   |
@@ -248,7 +248,7 @@ The ``register_all_tests`` function mentioned above accepts a bunch of
 keyword parameters::
 
    register_all_tests(pkg_or_dotted_name [, extensions] [, encoding]
-                      [, checker] [, globs] [, optionflags] 
+                      [, checker] [, globs] [, optionflags]
                       [, setup] [, teardown]
                       [, zcml_config] [, layer_name] [, layer])
 
@@ -295,7 +295,7 @@ configured in doctest files themselves via marker strings.
       >>> suite = test_suite()
       Traceback (most recent call last):
       ...
-      UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal 
+      UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal
       not in range(128)
 
     While using 'latin-1' will work:
@@ -304,7 +304,7 @@ configured in doctest files themselves via marker strings.
       ...     'z3c.testsetup.tests.cave',
       ...     encoding='latin-1')
       >>> suite = test_suite()
-      
+
     No traceback here.
 
     You can always overwrite an encoding setting for a certain file by
@@ -319,7 +319,7 @@ configured in doctest files themselves via marker strings.
       >>> import re
       >>> from zope.testing import renormalizing
       >>> mychecker = renormalizing.RENormalizing([
-      ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+      ...    (re.compile('[0-9]*[.][0-9]* seconds'),
       ...     '<SOME NUMBER OF> seconds'),
       ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
       ... ])
@@ -372,7 +372,7 @@ configured in doctest files themselves via marker strings.
     Specifying setup functions in a layer is also the recommended way.
 
 
-- **teardown**:   
+- **teardown**:
 
     The equivalent to ``setup``.
 
@@ -478,18 +478,17 @@ We already saw the ``:doctest:`` marker above.  Other markers detected by
 
   Use the given layer definition for tests in this file. If the layer
   given is derived from ``zope.testing.functional.ZCMLLayer``, the test
-  is registered using ``zope.app.testing.functional.DocFileSuite``.
+  is registered using ``zope.app.testing.functional.FunctionalDocFileSuite``.
 
 - ``:zcml-layer: <ZCML_filename>``
 
   Use the given ZCML file and run tests in this file on a ZCML
-  layer. Tests are registered using
-  ``zope.testing.doctest.DocFileSuite``.
+  layer. Tests are registered using ``zope.testing.doctest.DocFileSuite``.
 
 - ``:functional-zcml-layer: <ZCML_filename>``
 
   Use the given ZCML file and run tests in this file registered with
-  ``zope.app.testing.functional.DocFileSuite``.
+  ``zope.app.testing.functional.FunctionalDocFileSuite``.
 
 Markers are case-insensitive.
 
@@ -725,16 +724,16 @@ An example can be found in ``doctest05.txt``:
   >>> print_file(os.path.join(cavepath, 'doctest05.txt'))
   |  A doctest with custom setup/teardown functions
   |  ==============================================
-  |  
+  |
   |  :doctest:
   |  :setup: z3c.testsetup.tests.othercave.testing.setUp
   |  :teardown: z3c.testsetup.tests.othercave.testing.tearDown
-  |  
+  |
   |    >>> 1+1
   |    2
-  |  
+  |
   |  We make use of a function registered during custom setup::
-  |  
+  |
   |    >>> myfunc(2)
   |    4
   |
