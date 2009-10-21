@@ -4,6 +4,8 @@ Changelog for z3c.testsetup
 0.6 (unreleased)
 ================
 
+* Reverted allow_teardown default back to False to prevent confusion.
+
 0.5 (2009-09-23)
 ================
 

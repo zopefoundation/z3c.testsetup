@@ -56,7 +56,7 @@ class FunctionalDocTestSetup(DocTestSetup):
 
     def __init__(self, package, checker=None, zcml_config = None,
                  layer_name='FunctionalLayer', layer=None,
-                 allow_teardown=True, **kw):
+                 allow_teardown=False, **kw):
         DocTestSetup.__init__(self, package, **kw)
         self.allow_teardown = allow_teardown
         self.checker = checker

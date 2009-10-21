@@ -186,19 +186,18 @@ This will result in::
       Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup.tests.cave.SampleLayer ...
+      Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
+      Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Tearing down left over layers:
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 Apparently now the custom ZCML file in the ``cave`` package was used.
 
-We can add an allow_teardown=False option, this prevents the test mechanism
-from tearing down the functional layers, they're run in a separate process
-instead:
+We can add an allow_teardown=True option, this allows the test mechanism
+to tear down the functional layers:
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_teardown.py')
     >>> print open(setupfile).read()
@@ -600,28 +599,29 @@ setups will run isolated from each other::
     ...     '--tests-pattern', '^layeredsetup01$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c...DefaultZCMLLayer [/.../bar/ftesting.zcml] tests:
-      Set up z3c...DefaultZCMLLayer [/.../bar/ftesting.zcml] in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running z3c...DefaultZCMLLayer [/.../foo/ftesting.zcml] tests:
-      Tear down z3c...efaultZCMLLayer [/.../bar/ftesting.zcml] ...
-      Set up z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1 tests:
-      Tear down z3c...efaultZCMLLayer [/.../foo/ftesting.zcml] ...
-      Set up z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running z3c.testsetup.tests.layered_cave.layer.UnitLayer1 tests:
-      Tear down z3c...layered_cave.layer.FunctionalLayer1 in N.NNN seconds.
-      Set up z3c.testsetup.tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
+    Running z3c....DefaultZCMLLayer [.../bar/ftesting.zcml] tests:
+      Set up z3c....DefaultZCMLLayer [.../bar/ftesting.zcml] in 0.027 seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.002 seconds.
+    Running z3c....DefaultZCMLLayer [.../foo/ftesting.zcml] tests:
+      Tear down z3c....DefaultZCMLLayer [.../bar/ftesting.zcml] ... not supported
+      Running in a subprocess.
+      Set up z3c....DefaultZCMLLayer [.../foo/ftesting.zcml] in 0.055 seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.015 seconds.
+      Tear down z3c....DefaultZCMLLayer [.../foo/ftesting.zcml] ... not supported
+    Running z3c....FunctionalLayer1 tests:
+      Running in a subprocess.
+      Set up z3c....FunctionalLayer1 in 0.040 seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.011 seconds.
+      Tear down z3c....FunctionalLayer1 in 0.000 seconds.
+    Running z3c....UnitLayer1 tests:
+      Running in a subprocess.
+      Set up z3c....UnitLayer1 in 0.000 seconds.
         Running testSetUp of UnitLayer1
         Running testTearDown of UnitLayer1
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Tearing down left over layers:
-      Tear down z3c...layered_cave.layer.UnitLayer1 in N.NNN seconds.
-    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.010 seconds.
+      Tear down z3c....UnitLayer1 in 0.000 seconds.
+    Total: 4 tests, 0 failures, 0 errors in 6.014 seconds.
     False
-
 
 As we can see, the layer `UnitLayer1` was executed here.
 

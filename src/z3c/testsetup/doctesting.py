@@ -33,10 +33,10 @@ class DocTestSetup(BasicTestSetup):
     encoding = 'utf-8'
 
     checker = None
-    
+
     def __init__(self, package, setup=None, teardown=None, globs=None,
                  optionflags=None, encoding=None, checker=None,
-                 allow_teardown=True, **kw):
+                 allow_teardown=False, **kw):
         BasicTestSetup.__init__(self, package, **kw)
         self.setUp = setup or self.setUp
         self.tearDown = teardown or self.tearDown

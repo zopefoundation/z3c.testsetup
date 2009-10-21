@@ -108,35 +108,38 @@ Let's start the testrunner and see what it gives:
     >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
     Running z3c...layer.DefaultZCMLLayer [...ftesting.zcml] tests:
-      Set up z3c...DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
-      Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
+      Set up z3c...layer.DefaultZCMLLayer [...ftesting.zcml] in 2.146 seconds.
+      Ran 3 tests with 0 failures and 0 errors in 0.009 seconds.
     Running z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] tests:
-      Tear down z3c...DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
-      Set up z3c...DefaultZCMLLayer [...ftesting2.zcml] in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Tear down z3c...layer.DefaultZCMLLayer [...ftesting.zcml] ... not supported
+      Running in a subprocess.
+      Set up z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] in 0.040 seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.011 seconds.
+      Tear down z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] ... not supported
     Running z3c.testsetup.tests.othercave.testing.FunctionalLayer1 tests:
-      Tear down z3c...DefaultZCMLLayer [...ftesting2.zcml] in N.NNN seconds.
-      Set up z3c...tests.othercave.testing.FunctionalLayer1 in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Running in a subprocess.
+      Set up z3c.testsetup.tests.othercave.testing.FunctionalLayer1 in 1.797 seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.013 seconds.
+      Tear down z3c.testsetup.tests.othercave.testing.FunctionalLayer1 in 0.001 seconds.
     Running z3c.testsetup.tests.othercave.testing.UnitLayer2 tests:
-      Tear down z3c...tests.othercave.testing.FunctionalLayer1 in N.NNN seconds.
-      Set up z3c.testsetup.tests.othercave.testing.UnitLayer1 in N.NNN seconds.
-      Set up z3c.testsetup.tests.othercave.testing.UnitLayer2 in N.NNN seconds.
+      Running in a subprocess.
+      Set up z3c.testsetup.tests.othercave.testing.UnitLayer1 in 0.000 seconds.
+      Set up z3c.testsetup.tests.othercave.testing.UnitLayer2 in 0.000 seconds.
         Running testSetUp of UnitLayer1
         Running testSetUp of UnitLayer2
         Running testTearDown of UnitLayer2
         Running testTearDown of UnitLayer1
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in 0.009 seconds.
+      Tear down z3c.testsetup.tests.othercave.testing.UnitLayer2 in 0.000 seconds.
+      Tear down z3c.testsetup.tests.othercave.testing.UnitLayer1 in 0.000 seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c...tests.othercave.testing.UnitLayer2 in N.NNN seconds.
-      Tear down z3c...tests.othercave.testing.UnitLayer1 in N.NNN seconds.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
-        Custom setUp for  <DocTest doctest05.txt from ... (2 examples)>
-        Custom tearDown for  <DocTest doctest05.txt from ... (2 examples)>
-      Ran 7 tests with 0 failures and 0 errors in N.NNN seconds.
-    Tearing down left over layers:
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
-    Total: 13 tests, 0 failures, 0 errors in N.NNN seconds.
+      Running in a subprocess.
+      Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+        Custom setUp for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
+        Custom tearDown for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
+      Ran 7 tests with 0 failures and 0 errors in 0.011 seconds.
+      Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+    Total: 13 tests, 0 failures, 0 errors in 11.798 seconds.
     False
 
 As we can see, there were regular unittests as well as functional tests
@@ -397,9 +400,8 @@ configured in doctest files themselves via marker strings.
 
     The drawback is that profiling and coverage tools cannot combine the
     profile/coverage data from separate processes.  z3c.testsetup has a
-    default of True (since 0.5), which gives you correct coverage/profiling
-    output.  If you do one of the rare things that can trip up a regular
-    teardown of the zope component architecture, you'll have to set
+    default of False (since 0.5.1, True in 0.5).  If you want correct
+    coverage/profiling output and your tests allow it, you'll have to set
     ``allow_teardown=False`` in your ``register_all_tests()`` call.
 
 
