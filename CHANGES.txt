@@ -4,6 +4,28 @@ Changelog for z3c.testsetup
 0.6 (unreleased)
 ================
 
+Bug fixes
+---------
+
+* The ``encoding`` parameter now also accepts ``None`` as a valid
+  value and does not fall back to the default ('utf-8') when passing
+  it in.
+
+* The default of ``allow_teardown`` option was reverted to the default
+  of zope.app.testing (currently: ``False``).
+
+* The ``encoding`` parameter is now used when registering doctests.
+
+
+Feature Changes
+---------------
+
+* Only the new markers are supported from now on.
+
+* Markers ``:functional-zcml-layer::`` and ``:zcml-layer:`` are
+  replaced by one single marker ``:zcml-file:``.
+
+
 0.5 (2009-09-23)
 ================
 
