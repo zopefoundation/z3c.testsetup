@@ -8,6 +8,11 @@ tests_require = [
     'zope.app.testing',
     'zope.app.zcmlfiles',
     'zope.component',
+    'zope.app.authentication',
+    'zope.securitypolicy',
+    'zope.app.zcmlfiles',
+    'zope.app.zptpage',
+    'zope.app.securitypolicy',
     ]
 
 long_description = (
