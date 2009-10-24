@@ -3,8 +3,8 @@ This is a doctest
 
 This doctest will be applied to a layer.
 
-:Test-Layer: unit
-:Test-Layerdef: z3c.testsetup.tests.layered_cave.layer.UnitLayer1
+:doctest:
+:layer: z3c.testsetup.tests.layered_cave.layer.UnitLayer1
 
   >>> 1+1
   2

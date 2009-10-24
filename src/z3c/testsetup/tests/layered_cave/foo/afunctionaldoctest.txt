@@ -1,6 +1,6 @@
 
 :doctest:
-:functional-zcml-layer: ftesting.zcml
+:zcml-file: ftesting.zcml
 
 Only our local ftesting.zcml is considered during test runs:
 
