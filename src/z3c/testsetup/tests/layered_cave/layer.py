@@ -4,6 +4,7 @@ This could also be done in the setup file itself.
 """
 
 import os
+import zope.app.testing
 from zope.app.testing.functional import ZCMLLayer
 
 # We define a ZCML test layer. ZCML layers are special as they define
@@ -11,7 +12,8 @@ from zope.app.testing.functional import ZCMLLayer
 # want some ZCML registrations to be done, you can use it like so:
 FunctionalLayer1 = ZCMLLayer(
     # As first argument we need the absolute path of a ZCML file
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
+    os.path.join(os.path.dirname(zope.app.testing.functional.__file__),
+                 'ftesting.zcml'),
 
     # Second argument is the module, where the layer is defined.
     __name__,
