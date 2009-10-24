@@ -1,4 +1,3 @@
-from z3c.testsetup.doctesting import UnitDocTestSetup
 from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package
 try:
