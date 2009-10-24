@@ -16,11 +16,12 @@ Bug fixes
 
 * The ``encoding`` parameter is now used when registering doctests.
 
-
 Feature Changes
 ---------------
 
-* Only the new markers are supported from now on.
+* Only the new markers (``:doctest:``, ``:unittest:``, ``:setup:``,
+  ``:teardown:``, ``:layer:``, ``:zcml-file:``) are supported from now
+  on.
 
 * Markers ``:functional-zcml-layer::`` and ``:zcml-layer:`` are
   replaced by one single marker ``:zcml-file:``.
