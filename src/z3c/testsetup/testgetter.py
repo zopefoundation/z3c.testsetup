@@ -20,7 +20,7 @@ functions in test setup modules of projects.
 See testgetter.txt to learn more about this stuff.
 """
 import unittest
-from z3c.testsetup.doctesting import UnitDocTestSetup, SimpleDocTestSetup
+from z3c.testsetup.doctesting import SimpleDocTestSetup
 from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package, get_keyword_params
 
@@ -104,13 +104,6 @@ class SimpleDocTestGetter(BasicTestGetter):
     wrapped_class = SimpleDocTestSetup
     special_char = 'd'
 
-class UnitDocTestGetter(BasicTestGetter):
-    """Collect unit doctests.
-    """
-
-    wrapped_class = UnitDocTestSetup
-    special_char = 'u'
-    
 class PythonTestGetter(BasicTestGetter):
     """Collect 'normal' python tests.
     """
@@ -146,11 +139,10 @@ class BasicTestCollector(BasicTestGetter):
 class DocTestCollector(BasicTestCollector):
     """A TestCollector that wraps unit doctests.
     """
-    handled_getters = [UnitDocTestGetter, SimpleDocTestGetter]
+    handled_getters = [SimpleDocTestGetter]
 
 class TestCollector(BasicTestCollector):
     """A TestCollector that wraps doctests and PythonTests.
     """
-    handled_getters = [SimpleDocTestGetter,
-                       UnitDocTestGetter, PythonTestGetter]
+    handled_getters = [SimpleDocTestGetter, PythonTestGetter]
 
