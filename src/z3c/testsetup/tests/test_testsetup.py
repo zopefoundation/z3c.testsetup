@@ -11,10 +11,10 @@ from z3c.testsetup.util import get_package
 TESTFILES = ['basicsetup.txt',
              os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt',
-             'unitdoctestsetup.txt',
+             #'unitdoctestsetup.txt',
              'util.txt',
-             'unittestsetup.txt',
-             os.path.join('tests', 'setupininit.txt'),
+             #'unittestsetup.txt',
+             #os.path.join('tests', 'setupininit.txt'),
              os.path.join('tests', 'util.txt'),
              ]
 
@@ -25,6 +25,10 @@ checker = renormalizing.RENormalizing([
     # Our own one to work around
     # http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html:
     (re.compile(r'.*1034h'), ''),
+    # Our sample package should appear as filesystem root...
+    (re.compile(r'/.*/sample/'), '/sample/'),
+    # The same applies to output from the layered_cave...
+    (re.compile(r'/.*/layered_cave/'), '/layered_cave/'),
     ])
 
 
@@ -105,8 +109,11 @@ def testrunner_suite():
 
     suites = [
         doctest.DocFileSuite(
-            'tests/README_OLD.txt', 'testgetter.txt',
-            'testrunner.txt', 'README.txt',
+            #'tests/README_OLD.txt', 'testgetter.txt',
+            #'testrunner.txt', 'README.txt',
+            'layered_setups.txt',
+            'README_NEW.txt',
+
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
             optionflags=(doctest.ELLIPSIS|
@@ -148,7 +155,7 @@ def zopeapptestingless_suite():
 
     suites = [
         doctest.DocFileSuite(
-            'nozopeapptesting.txt',
+            #'nozopeapptesting.txt',
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
             optionflags=(doctest.ELLIPSIS|
