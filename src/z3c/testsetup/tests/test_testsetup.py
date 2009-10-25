@@ -154,7 +154,7 @@ def zopeapptestingless_suite():
 
     suites = [
         doctest.DocFileSuite(
-            #'nozopeapptesting.txt',
+            'nozopeapptesting.txt',
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
             optionflags=(doctest.ELLIPSIS|
