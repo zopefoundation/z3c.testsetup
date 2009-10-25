@@ -7,15 +7,14 @@ wanted. This is important for ``z3c.testsetup`` because functional
 tests require that package for setup, etc. For example when it comes
 to plain Python packages. 
 
-The ``z3c.testsetup`` package in this case should provide us reduced
-sets of test collectors automatically and run all but the functional
-tests.
+The ``z3c.testsetup`` package in this case should work as usual,
+except naturally, support for functional test setups (i.e. such which
+require ZCML layers).
 
 To simulate this, we removed ``zope.app.testing`` from the registered
 modules in ``sys.modules`` before running this testfile and reloaded
-the z3c.testsetup package. The latter is necessary, because
-z3c.testsetup decides on import time, whether zope.app.testing is
-available and then provides different testgetters and -collectors.
+the z3c.testsetup package. The latter is necessary to make sure, that
+no hidden pieces of functional tests remain somewhere.
 
 We can see this when we do a testsetup, that would normally include
 functional tests. Consider the example given in the
@@ -45,12 +44,9 @@ collector::
     >>> from pprint import pprint
     >>> pprint(sorted([str(x) for x in tc]))
     ["<class 'z3c.testsetup.testgetter.PythonTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.SimpleDocTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.UnitDocTestGetter'>"]
+     "<class 'z3c.testsetup.testgetter.SimpleDocTestGetter'>"]
 
-What is missing here, is the FunctionalDocTestGetter that normally
-appears here. As a result there will be less tests found and run by
-the testrunner::
+As a result there will be less tests found and run by the testrunner::
 
     >>> import sys
     >>> defaults = [
@@ -69,17 +65,3 @@ the testrunner::
 
 As we can see, only unit test were run and no functional ones anymore.
 
-After making zope.app.testing available again, we should get a
-different result::
-
-    >>> sys.path[:] = globals()['saved-sys-info'][0]
-    >>> sys.modules.update(globals()['saved-sys-info'][2])
-    >>> z3c.testsetup = __import__('z3c.testsetup')
-    >>> from z3c.testsetup import TestCollector
-    >>> tc = TestCollector.handled_getters
-    >>> from pprint import pprint
-    >>> pprint(sorted([str(x) for x in tc]))
-    ["<class 'z3c.testsetup.functional.testgetter.FunctionalDocTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.PythonTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.SimpleDocTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.UnitDocTestGetter'>"]
