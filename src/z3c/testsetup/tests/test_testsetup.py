@@ -9,7 +9,6 @@ from z3c.testsetup.util import get_package
 
 
 TESTFILES = ['basicsetup.txt',
-             os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt',
              #'unitdoctestsetup.txt',
              'util.txt',
