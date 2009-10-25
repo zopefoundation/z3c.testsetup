@@ -102,22 +102,31 @@ Please include `zope.app.testing` in your project setup to run this testfile.
                 if isinstance(layerdef, ZCMLLayer):
                     suite_creator = FunctionalDocFileSuite
 
-            test = suite_creator(
-                name,
-                package=self.package,
-                setUp=setup,
-                tearDown=teardown,
-                globs=self.globs,
-                optionflags=self.optionflags,
-                checker=self.checker,
-                encoding=self.encoding,
-                **self.additional_options
-                )
-            if layerdef is not None:
-                test.layer = layerdef
+            test = self.setupTestfile(
+                suite_creator, name, self.package, setup, teardown,
+                self.globs, self.optionflags, self.checker, self.encoding,
+                layerdef, **self.additional_options)
             suite.addTest(test)
         return suite
 
+    def setupTestfile(self, suite_creator, name, package, setup, teardown,
+                      globs, optionflags, checker, encoding, layerdef,
+                  **additional_options):
+        test = suite_creator(
+            name,
+            package=package,
+            setUp=setup,
+            tearDown=teardown,
+            globs=globs,
+            optionflags=optionflags,
+            checker=checker,
+            encoding=encoding,
+            **additional_options)
+        if layerdef is not None:
+            test.layer = layerdef
+        return test
+        
+    
     def getZCMLLayer(self, filepath, marker):
         """Create a ZCML layer out of a test marker.
         """
