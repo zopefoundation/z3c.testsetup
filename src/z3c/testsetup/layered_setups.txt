@@ -81,7 +81,7 @@ setups will run isolated from each other::
       Set up z3c...Layer [/layered_cave/foo/ftesting.zcml] in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down z3c...Layer [/layered_cave/foo/ftesting.zcml] ... not supported
-    Running z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1 tests:
+    Running z3c.testsetup.tests.layered_cave.flayer.FunctionalLayer1 tests:
       Running in a subprocess.
       Set up z3c...layer.FunctionalLayer1 in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -91,9 +91,11 @@ setups will run isolated from each other::
       Set up z3c...tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
         Running testSetUp of UnitLayer1
         Running testTearDown of UnitLayer1
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+        Running testSetUp of UnitLayer1
+        Running testTearDown of UnitLayer1
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down z3c...tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
-    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
+    Total: 5 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 As we can see, the layer `UnitLayer1` was executed here.
