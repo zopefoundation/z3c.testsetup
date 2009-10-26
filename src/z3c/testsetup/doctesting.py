@@ -22,6 +22,7 @@ from z3c.testsetup.util import (get_package, get_marker_from_file, warn,
                                 get_attribute)
 
 marker = object()
+error_marker = object()
 
 class DocTestSetup(BasicTestSetup):
     """A test setup for doctests."""
@@ -68,6 +69,8 @@ class SimpleDocTestSetup(DocTestSetup):
                 
             zcml_layer = self.getZCMLLayer(
                 name, 'zcml-file')
+            if zcml_layer is error_marker:
+                continue
             if zcml_layer is not None:
                 layerdef = zcml_layer
 
@@ -91,6 +94,8 @@ class SimpleDocTestSetup(DocTestSetup):
                 try:
                     from zope.app.testing.functional import (
                         FunctionalDocFileSuite, ZCMLLayer)
+                    if isinstance(layerdef, ZCMLLayer):
+                        suite_creator = FunctionalDocFileSuite
                 except ImportError:
                     if zcml_layer is not None:
                         warn("""You specified `:zcml-file:` in
@@ -98,9 +103,7 @@ class SimpleDocTestSetup(DocTestSetup):
 but there seems to be no `zope.app.testing` package available.
 Please include `zope.app.testing` in your project setup to run this testfile.
 """ % (os.path.join(common_prefix, name),))
-                    continue
-                if isinstance(layerdef, ZCMLLayer):
-                    suite_creator = FunctionalDocFileSuite
+
 
             test = self.setupTestfile(
                 suite_creator, name, self.package, setup, teardown,
@@ -138,16 +141,19 @@ Please include `zope.app.testing` in your project setup to run this testfile.
             # ``zope.app.testing`` available.
             from z3c.testsetup.functional.layer import DefaultZCMLLayer
         except ImportError:
-            warn("""You specified `%s` in
+            warn("""You specified `:%s:` in
+
     %s
+
 but there seems to be no `zope.app.testing` package available.
 Please include `zope.app.testing` in your project setup to run this testfile.
-""" % (marker, name))
+""" % (marker, filepath))
+            return error_marker
+        zcml_filepath = os.path.join(os.path.dirname(filepath), zcml_file)
         layer = DefaultZCMLLayer(
-            os.path.join(os.path.dirname(filepath), zcml_file),
+            zcml_filepath,
             DefaultZCMLLayer.__module__,
-            '%s [%s]' % (DefaultZCMLLayer.__name__,
-                         os.path.join(os.path.dirname(filepath), zcml_file)),
+            '%s [%s]' % (DefaultZCMLLayer.__name__, zcml_filepath),
             allow_teardown=self.allow_teardown)
         return layer
 
