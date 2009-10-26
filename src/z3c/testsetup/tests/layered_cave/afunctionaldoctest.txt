@@ -4,7 +4,7 @@ This is a function doctest
 This doctest will be applied to a ZCML layer.
 
 :doctest:
-:layer: z3c.testsetup.tests.layered_cave.layer.FunctionalLayer1
+:layer: z3c.testsetup.tests.layered_cave.flayer.FunctionalLayer1
 
   >>> getRootFolder()
   <zope.site.folder.Folder object at 0x...>
