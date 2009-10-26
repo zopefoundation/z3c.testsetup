@@ -1,0 +1,10 @@
+A simple unittest-layered doctest
+*********************************
+
+:doctest:
+:layer: z3c.testsetup.tests.layered_cave.layer.UnitLayer1
+
+This test should be run even if no zope.app.testing is available.
+
+    >>> 1+1
+    2
