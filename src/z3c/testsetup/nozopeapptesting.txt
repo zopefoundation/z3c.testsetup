@@ -65,3 +65,35 @@ As a result there will be less tests found and run by the testrunner::
 
 As we can see, only unit test were run and no functional ones anymore.
 
+When we specify ``:zcml-layer:`` although there is no
+`zope.app.testing` available, we will get a warning while the non
+functional tests should still be registered correctly:
+
+    >>> import sys
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 
+    ...   'tests', 'layered_cave')
+    >>> defaults = [
+    ...     '--path', cavepath,
+    ...     '--tests-pattern', '^layeredsetup02$',
+    ...     ]
+    >>> sys.argv = 'test -vv'.split()
+    >>> from z3c.testsetup import testrunner
+    >>> testrunner.run(defaults)
+    Warning:  You specified `:zcml-file:` in
+    <BLANKLINE>
+        /layered_cave/foo/afunctionaldoctest.txt
+    <BLANKLINE>
+    but there seems to be no `zope.app.testing` package available.
+    Please include `zope.app.testing` in your project setup to run this testfile.
+    <BLANKLINE>
+    Running tests at level 1
+    Running z3c.testsetup.tests.layered_cave.layer.UnitLayer1 tests:
+      Set up z3c.testsetup.tests.layered_cave.layer.UnitLayer1 in N.NNN seconds.
+      Running:
+        Running testSetUp of UnitLayer1
+     /layered_cave/foo/simpledoctest.txt    Running testTearDown of UnitLayer1
+    <BLANKLINE>
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup...layered_cave.layer.UnitLayer1 in N.NNN seconds.
+    False
