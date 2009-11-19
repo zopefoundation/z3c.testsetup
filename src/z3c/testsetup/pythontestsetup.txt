@@ -218,6 +218,7 @@ Let's see, how this works. The notatest2 module contains a string::
 and we want its tests to be registered::
 
     >>> setup.regexp_list = ['^\\s*:(T|t)est-(L|l)ayer:\\s*(F|false)\\s*']
+    >>> setup._regexs = None # Zap internal regex cache
 
 Now we fetch the module list again::
 

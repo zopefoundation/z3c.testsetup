@@ -216,20 +216,14 @@ here::
     >>> setup.isTestFile(testfile_list[0])
     True
 
-The file file1.txt does not contain a unit test marker::
-
-    >>> import os.path
-    >>> path = os.path.join(os.path.dirname(cave.__file__),
-    ...                     'test1.txt')
-    >>> setup.isTestFile(path)
-    False
-
 The `regexp_list` attribute of a ``UnitDocTestSetup`` contains a
 list of regular expressions, of which each one must at least match one
 line of a searched file to be accepted. If you want to include files
 with different marker-strings, just change this attribute. The value
 will influence behaviour of the `isTestFile()``, ``getDocTestFiles()``
 and ``getTestSuite()`` methods.
+
+Note: in practice in the current code, it is always only one regex...
 
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isTestFile()``.

@@ -124,15 +124,6 @@ filename extension and compares it with the instance-attribute
    >>> basic_setup.isTestFile('')
    False
 
-   >>> basic_setup.isTestFile('cave.txt')
-   True
-
-   >>> basic_setup.isTestFile('cave.rst')
-   True
-
-   >>> basic_setup.isTestFile('cave.RsT')
-   True
-
    >>> basic_setup.isTestFile('cave.foo')
    False
 
@@ -215,11 +206,14 @@ standalone function), to enable developers to replace it with a more
 complex implementation that also accesses other instance attributes
 like the package or similar.
 
-File paths, that cannot be found, are silently ignored::
+File paths, that cannot be found, are treated as real errors as they signal an
+error in the way we set everything up:
 
    >>> basic_setup4 = BasicTestSetup(cave, extensions=['.foo'])
-   >>> basic_setup4.fileContains('blah', ['FOO'])
-   False
+   >>> basic_setup4.fileContains('blah')
+   Traceback (most recent call last):
+   ...
+   IOError: [Errno 2] No such file or directory: 'blah'
 
 We pick up an existing file path::
 
@@ -234,40 +228,54 @@ We pick up an existing file path::
 This file contains a string 'ME GROK SMASH ZCML!!', which we can
 search for::
 
-   >>> basic_setup4.fileContains(filepath, ['ME GROK'])
+   >>> basic_setup4.regexp_list = ['ME GROK']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    True
 
-   >>> basic_setup4.fileContains(filepath, ['ME GROK IS DUMB'])
+   >>> basic_setup4.regexp_list = ['ME GROK IS DUMB']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    False
 
 The terms to search are handled as real regular expressions as
 provided by the ``re`` package::
 
-   >>> basic_setup4.fileContains(filepath, ['^ME (G|g)ROK.*'])
+   >>> basic_setup4.regexp_list = ['^ME (G|g)ROK.*']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    True
 
-We can also search for several matches::
+We can also search for several matches (which ALL have to be present):
 
-   >>> basic_setup4.fileContains(filepath, ['.*SMASH.*', '.*GROK.*'])
+   >>> basic_setup4.regexp_list = ['.*SMASH.*', '.*GROK.*']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    True
 
 If one of the searched terms is not found, the whole thing fails::
 
-   >>> basic_setup4.fileContains(filepath, ['.*DUMB.*', '.*GROK.*'])
+   >>> basic_setup4.regexp_list = ['.*DUMB.*', '.*GROK.*']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    False
 
 It does not matter, whether matches occur in the same line or in
 different ones. In the example file there is also a heading stating
 'This is not a test'. Let's check this::
 
-   >>> basic_setup4.fileContains(filepath, ['ME GROK', 'This is not'])
+   >>> basic_setup4.regexp_list = ['ME GROK', 'This is not']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    True
 
 
 Note: The evaluation of regular expressions is done without any
 modifiers. Namely the matching is case sensitive::
 
-   >>> basic_setup4.fileContains(filepath, ['me grok'])
+   >>> basic_setup4.regexp_list = ['me grok']
+   >>> basic_setup4._regexs = None # Zap regex cache
+   >>> basic_setup4.fileContains(filepath)
    False
 
 Furthermore, matches are only done against one line at a time.

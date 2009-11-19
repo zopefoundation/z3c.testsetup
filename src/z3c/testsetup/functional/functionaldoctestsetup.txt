@@ -262,14 +262,6 @@ here::
     >>> setup.isTestFile(testfile_list[0])
     True
 
-The file file1.rst does not contain a functional test marker::
-
-    >>> import os.path
-    >>> path = os.path.join(os.path.dirname(cave.__file__),
-    ...                     'test1.rst')
-    >>> setup.isTestFile(path)
-    False
-
 The `regexp_list` attribute of a ``FunctionalTestSetup`` contains a
 list of regular expressions, of which each one must at least match one
 line of a searched file to be accepted. If you want to include files
@@ -277,6 +269,12 @@ with different marker-strings, just change this attribute. The value
 will influence behaviour of the `isTestFile()``, ``getDocTestFiles()``
 and ``getTestSuite()`` methods.
 
+Note that the code uses self.regexs, which returns a cached compiled version
+of the regexs.
+
+    >>> setup.regexs
+    [<_sre.SRE_Pattern object at ...>]
+    
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isTestFile()``.
 
@@ -464,6 +462,7 @@ value with a ready-to-use ZCML layer. If this happens, the
 To show this, we first create a custom layer::
 
    >>> from zope.app.testing.functional import ZCMLLayer
+   >>> import os.path
    >>> mylayer = ZCMLLayer(
    ...     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
    ...     __name__,

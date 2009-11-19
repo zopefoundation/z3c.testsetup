@@ -45,7 +45,7 @@ class UnitTestSetup(BasicTestSetup):
         self.pfilter_func = pfilter_func or self.isTestModule
         self.filter_func = self.pfilter_func
 
-    def docstrContains(self, docstr, regexp_list):
+    def docstrContains(self, docstr):
         """Does a docstring contain lines matching every of the regular
         expressions?
         """
@@ -54,14 +54,7 @@ class UnitTestSetup(BasicTestSetup):
             return False
         if get_marker_from_string('unittest', docstr) is not None:
             return True
-        for line in docstr.split('\n'):
-            for regexp in regexp_list:
-                if re.compile(regexp).match(line) and (
-                    regexp not in found_list):
-                    found_list.append(regexp)
-            if len(regexp_list) == len(found_list):
-                break
-        return len(regexp_list) == len(found_list)
+        return self.textContains(docstr)
 
     def isTestModule(self, module_info):
         """Return ``True`` if a module matches our expectations for a
@@ -71,8 +64,7 @@ class UnitTestSetup(BasicTestSetup):
         each of our regular expressions.
         """
         # Do not even try to load modules, that have no marker string.
-        if not self.fileContains(
-            module_info.path, self.regexp_list):
+        if not self.fileContains(module_info.path):
             # No ":test-layer: python" marker, so check for :unittest:.
             if get_marker_from_file('unittest', module_info.path) is None:
                 # Neither the old nor the new marker: this is no test module.
@@ -85,7 +77,7 @@ class UnitTestSetup(BasicTestSetup):
             # warn about this!
             print "Import error in", module_info.path
         docstr = getattr(module, '__doc__', '')
-        if not self.docstrContains(docstr, self.regexp_list):
+        if not self.docstrContains(docstr):
             return False
         return True
 

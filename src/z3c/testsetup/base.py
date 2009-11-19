@@ -29,9 +29,7 @@ class BasicTestSetup(object):
     """
 
     extensions = ['.rst', '.txt']
-
     regexp_list = []
-
     additional_options = {}
 
     param_list = ['filter_func', 'extensions']
@@ -41,7 +39,8 @@ class BasicTestSetup(object):
         self.package = get_package(package)
         self.filter_func = filter_func or self.isTestFile
         self.extensions = extensions or self.extensions
-        self.regexp_list = regexp_list or self.regexp_list
+        if regexp_list is not None:
+            self.regexp_list = regexp_list
         self.additional_options = kw
         self._init(package, filter_func, extensions, **kw)
         return
@@ -52,29 +51,39 @@ class BasicTestSetup(object):
         """
         pass
 
+    @property
+    def regexs(self):
+        """Return compiled regexs (cached version, if possible)"""
+        cached = getattr(self, '_regexs', None)
+        if cached is not None:
+            return cached
+        self._regexs = [re.compile(regex) for regex in self.regexp_list]
+        return self._regexs
+
     def setUp(self, test):
         pass
 
     def tearDown(self, test):
         pass
 
-    def fileContains(self, filename, regexp_list):
+    def fileContains(self, filename):
         """Does a file contain lines matching every of the regular
         expressions?
         """
         found_list = []
-        try:
-            for line in open(filename):
-                for regexp in regexp_list:
-                    if re.compile(regexp).match(line) and (
-                        regexp not in found_list):
-                        found_list.append(regexp)
-                if len(regexp_list) == len(found_list):
-                    break
-        except IOError:
-            # be gentle
-            pass
-        return len(regexp_list) == len(found_list)
+        content = open(filename).read()
+        return self.textContains(content)
+
+    def textContains(self, text):
+        lines = text.split('\n')
+        for regexp in self.regexs:
+            found = [True for line in lines if regexp.match(line)]
+            if len(found):
+                # Yeah, found a match, continue to the next regex.
+                continue
+            else:
+                return False
+        return True
 
     def isTestFile(self, filepath):
         """Return ``True`` if a file matches our expectations for a
@@ -85,7 +94,7 @@ class BasicTestSetup(object):
         if os.path.basename(filepath).startswith('.'):
             # Ignore *nix hidden files
             return False
-        if not self.fileContains(filepath, self.regexp_list):
+        if not self.fileContains(filepath):
             return False
         return True
 

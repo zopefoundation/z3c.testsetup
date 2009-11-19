@@ -15,8 +15,10 @@
 """
 import sys
 import re
+
 from inspect import getmro, ismethod, getargspec
 from martian.scan import resolve
+
 
 def get_package(pkg_or_dotted_name):
     """Get a package denoted by the given argument.
@@ -31,6 +33,7 @@ def get_package(pkg_or_dotted_name):
     if isinstance(pkg, basestring):
         pkg = resolve(pkg)
     return pkg
+
 
 def get_keyword_params(cls, method_name):
     """Get a list of args of a method of a class.
@@ -54,6 +57,9 @@ def get_keyword_params(cls, method_name):
             break
     return list(result)
 
+marker_regexs = {}
+
+
 def get_marker_from_string(marker, text):
     """Looks for a markerstring  in a string.
 
@@ -64,18 +70,21 @@ def get_marker_from_string(marker, text):
     or
 
      .. :<Tag>: <Value>
-    
+
     """
     marker = ":%s:" % marker.lower()
-    rexp = re.compile('^(\.\.\s+)?%s(.*)$' % (marker,), re.IGNORECASE)
+    if marker not in marker_regexs:
+        marker_regexs[marker] = re.compile('^(\.\.\s+)?%s(.*)$' % (marker,),
+                                           re.IGNORECASE)
     for line in text.split('\n'):
         line = line.strip()
-        result = rexp.match(line)
+        result = marker_regexs[marker].match(line)
         if result is None:
             continue
         result = result.groups()[1].strip()
         return unicode(result)
     return None
+
 
 def get_marker_from_file(marker, filepath):
     """Looks for a markerstring  in a file.
@@ -87,15 +96,17 @@ def get_marker_from_file(marker, filepath):
     """
     return get_marker_from_string(marker, open(filepath, 'rb').read())
 
+
 def warn(text):
     print "Warning: ", text
+
 
 def import_name(name):
     __import__(name)
     return sys.modules[name]
 
+
 def get_attribute(name):
     name, attr = name.rsplit('.', 1)
     obj = import_name(name)
     return getattr(obj, attr)
-
