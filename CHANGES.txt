@@ -4,7 +4,13 @@ Changelog for z3c.testsetup
 0.6 (unreleased)
 ================
 
-- Nothing changed yet.
+- Python unittest modules with an import error now result in a visible
+  warning.  Previously, such problems would be hidden.  Also the python
+  testrunner could not report them as broken as we did not pass those test
+  files to the testrunner.
+
+- Fixed regex for detecting the old ":test-layer: python" marker: it did not
+  work when prefixed with restructuredtext's ".." comment marker.
 
 
 0.5.1 (2009-10-22)

@@ -37,9 +37,9 @@ class UnitTestSetup(BasicTestSetup):
     """
 
     regexp_list = [
-        '^\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
+        r'^\.{0,2}\s*:(T|t)est-(L|l)ayer:\s*(python)\s*',
         ]
-    
+
     def __init__(self, package, pfilter_func=None, regexp_list=None):
         BasicTestSetup.__init__(self, package, regexp_list=regexp_list)
         self.pfilter_func = pfilter_func or self.isTestModule
@@ -73,15 +73,17 @@ class UnitTestSetup(BasicTestSetup):
         # Do not even try to load modules, that have no marker string.
         if not self.fileContains(
             module_info.path, self.regexp_list):
+            # No ":test-layer: python" marker, so check for :unittest:.
             if get_marker_from_file('unittest', module_info.path) is None:
+                # Neither the old nor the new marker: this is no test module.
                 return False
-        module = None        
+        module = None
         try:
             module = module_info.getModule()
         except ImportError:
-            # Broken modules cannot provide executable tests.
-            # We might throw out a warning here...
-            return False
+            # Broken module that is probably a test.  We absolutely have to
+            # warn about this!
+            print "Import error in", module_info.path
         docstr = getattr(module, '__doc__', '')
         if not self.docstrContains(docstr, self.regexp_list):
             return False
@@ -101,7 +103,7 @@ class UnitTestSetup(BasicTestSetup):
             module = submod_info.getModule()
             result.append(module)
         return result
-        
+
 
     def getTestSuite(self):
         modules = self.getModules(package=self.package)

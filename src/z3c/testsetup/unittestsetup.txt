@@ -43,22 +43,22 @@ Setting up a simple test suite
 
 We want to register the tests contained in the local ``cave``
 package. This has to be imported first, because we need the package as
-a parameter for the testseupt constructor::
+a parameter for the testsetup constructor::
 
-   >>> from z3c.testsetup.tests import cave
+    >>> from z3c.testsetup.tests import cave
 
 Using the ``UnitTestSetup`` then is easy::
 
-   >>> from z3c.testsetup import UnitTestSetup
-   >>> setup = UnitTestSetup(cave)
-   >>> setup
-   <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
+    >>> from z3c.testsetup import UnitTestSetup
+    >>> setup = UnitTestSetup(cave)
+    >>> setup
+    <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
 
 This setup is ready for use::
 
-   >>> suite = setup.getTestSuite()
-   >>> suite
-   <unittest.TestSuite tests=[...]>
+    >>> suite = setup.getTestSuite()
+    >>> suite
+    <unittest.TestSuite tests=[...]>
 
 To sum it up, writing a test setup for a zope 3 project now can be that
 short::
@@ -187,5 +187,24 @@ If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isTestModule()``.
 
 
+Import errors
+-------------
+
+Python unittest files with an import error should not ever fail silently.  Due
+to our internal handling, z3c.testsetup cannot pass the broken modules to the
+actual testrunner (which would report them just fine as broken).  Instead, we
+have to print a warning ourselves.
+
+    >>> from z3c.testsetup.tests import importerrorcave
+    >>> setup = UnitTestSetup(importerrorcave)
+    >>> setup
+    <z3c.testsetup.testing.UnitTestSetup object at 0x...>   
+    >>> setup.getModules()
+    Import error in .../importerrorcave/broken_test_mod.py
+    Import error in .../importerrorcave/broken_test_mod2.py
+    []
+
+Note that this visible warning was added in z3c.testsetup 0.6 and higher,
+tests import error failures were effectively hidden in older versions.
 
 """

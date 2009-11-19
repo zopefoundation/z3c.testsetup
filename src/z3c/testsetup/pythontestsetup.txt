@@ -172,11 +172,11 @@ mentioned ReStructured Text meta-marker::
 
     `:unittest:`
 
-This marker is determined by a list of regular expressions, which is
-also available as an object attribute::
+The old ":TestLayer: python" marker is determined by a list of regular
+expressions, which is also available as an object attribute::
 
     >>> setup.regexp_list
-    ['^\\s*:(T|t)est-(L|l)ayer:\\s*(python)\\s*']
+    ['^\\.{0,2}\\s*:(T|t)est-(L|l)ayer:\\s*(python)\\s*']
 
 This is the default value of Python unit test setups.
 
