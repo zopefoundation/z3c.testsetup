@@ -1,8 +1,8 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.7 (unreleased)
-================
+0.6.1 (2009-11-19)
+==================
 
 - Test files that we attempt to read but that do not exist raise an error
   instead of passing silently.
