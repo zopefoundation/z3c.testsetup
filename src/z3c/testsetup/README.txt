@@ -284,10 +284,9 @@ configured in doctest files themselves via marker strings.
 
 - **encoding**:
 
-    the encoding of testfiles. 'utf-8' by default. Setting this to ``None``
-    means using the default value. We've hidden one doctest file, that
-    contains umlauts. If we set the encoding to ``ascii``, we get an
-    error:
+    the encoding of testfiles. 'utf-8' by default. We've hidden one
+    doctest file, that contains umlauts. If we set the encoding to
+    ``ascii``, we get an error:
 
       >>> test_suite = z3c.testsetup.register_all_tests(
       ...     'z3c.testsetup.tests.cave',
@@ -304,8 +303,25 @@ configured in doctest files themselves via marker strings.
       ...     'z3c.testsetup.tests.cave',
       ...     encoding='latin-1')
       >>> suite = test_suite()
+      >>> import unittest
+      >>> result = unittest.TestResult()
+      >>> suite.run(result)
 
     No traceback here.
+
+    Setting ``encoding`` explicitly to ``None`` will prevent any
+    encoding/decoding action by the test parsers. In our case this
+    will lead to problems:
+
+      >>> test_suite = z3c.testsetup.register_all_tests(
+      ...     'z3c.testsetup.tests.cave',
+      ...     encoding=None)
+      >>> suite = test_suite()
+
+      Traceback (most recent call last):
+      ...
+      UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal
+      not in range(128)
 
     You can always overwrite an encoding setting for a certain file by
     following PEP 0263 ( http://www.python.org/dev/peps/pep-0263/ ).
