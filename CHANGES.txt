@@ -4,8 +4,9 @@ Changelog for z3c.testsetup
 0.7 (unreleased)
 ================
 
-- Nothing changed yet.
-
+- Fix NameError bug in the warning message in case zope.app.testing is not
+  availble when trying to run a functional doc test. This error presented
+  itself as a highly cryptic ImportError when actually running tests.
 
 0.6.1 (2009-11-19)
 ==================
@@ -14,7 +15,6 @@ Changelog for z3c.testsetup
   instead of passing silently.
 
 - Internal refactoring: regex caching.
-
 
 0.6 (2009-11-19)
 ================
@@ -26,7 +26,6 @@ Changelog for z3c.testsetup
 
 - Fixed regex for detecting the old ":test-layer: python" marker: it did not
   work when prefixed with restructuredtext's ".." comment marker.
-
 
 0.5.1 (2009-10-22)
 ==================
