@@ -143,7 +143,8 @@ Please include `zope.app.testing` in your project setup to run this testfile.
     %s
 but there seems to be no `zope.app.testing` package available.
 Please include `zope.app.testing` in your project setup to run this testfile.
-""" % (marker, name))
+""" % (marker, filepath))
+
         layer = DefaultZCMLLayer(
             os.path.join(os.path.dirname(filepath), zcml_file),
             DefaultZCMLLayer.__module__,
