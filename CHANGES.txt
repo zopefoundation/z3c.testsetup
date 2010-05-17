@@ -1,6 +1,12 @@
 Changelog for z3c.testsetup
 ***************************
 
+0.8 (unreleased)
+================
+
+- Nothing changed yet.
+
+
 0.7 (2010-05-17)
 ================
 
