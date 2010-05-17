@@ -1,7 +1,7 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.7 (unreleased)
+0.7 (2010-05-17)
 ================
 
 - Fix NameError bug in the warning message in case zope.app.testing is not
