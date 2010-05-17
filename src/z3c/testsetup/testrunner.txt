@@ -265,22 +265,22 @@ The doctestfile looks like this:
     | ============
     | Checker test
     | ============
-    | 
+    |
     | :Test-Layer: checker
     |
     | First we check, whether the <SOME NUMBER OF> term is matched by the
     | modified checker::
-    | 
+    |
     |   >>> print "%s seconds" % 0.123
     |   <SOME NUMBER OF> seconds
-    | 
+    |
     | Then we check the <SOME ADDRESS> term::
-    | 
+    |
     |   >>> print "A memory address at 0x1a0322ff"
     |   A memory address at <SOME ADDRESS>
-    | 
+    |
     | That's it.
-    | 
+    |
 
 
 Running the testrunner with this setup will result in::
@@ -290,11 +290,11 @@ Running the testrunner with this setup will result in::
     ...     '--tests-pattern', '^samplesetup_short5$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup....doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup....doctesting.FunctionalLayer in N.NNN seconds.
+    Running z3c.testsetup...doctesting.FunctionalLayer tests:
+      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup....doctesting.FunctionalLayer ...
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
@@ -380,7 +380,7 @@ their names in tests out-of-the-box.
 
 You can pass the globals for a testsetup by passing the ``globs``
 keyword parameter or ``fglobs``/``uglobs``, if you only want them to
-be applied to either functional or unit doctests. 
+be applied to either functional or unit doctests.
 
 If you specify a `globs` parameter and a `fglobs` or `uglobs`
 parameter, the latter will shadow the `globs` values. So `globs` will
@@ -505,7 +505,7 @@ Let's have a look at the test setup module `samplesetup1` in the
 As we see, there is a unittest setup and a functional test setup
 initialized. Both collect one kind of tests and feed their collection
 in the same testsuite (where each kind of tests is setup differently,
-of course). 
+of course).
 
 Now let's run a testrunner and see the result. The testrunner will be
 configured such, that all files named 'samplesetup1.py' will be asked
@@ -552,7 +552,7 @@ Using z3c.testsetup, we can define quite complex testsetups with only
 two lines of code::
 
     >>> import os
-    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests', 
+    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests',
     ...   'layered_cave')
     >>> setupfile = os.path.join(cavepath, 'layeredsetup01.py')
     >>> print open(setupfile).read()
@@ -636,7 +636,7 @@ testers. Most people, however, won't need them.
 
 With `zope.testing`_ 3.7.3 the behaviour of
 `zope.testing.testrunner.run()` changed and now exits always with
-status. See http://svn.zope.org/zope.testing/?rev=99366&view=rev 
+status. See http://svn.zope.org/zope.testing/?rev=99366&view=rev
 
 To run testrunners as part of tests, one now has to use
 `testrunner.run_internal()` instead of `testrunner.run()`. This makes
@@ -658,7 +658,7 @@ call ``testrunner.run()`` afterwards and it will work, regardless of
 what version of `zope.testing` you are using.
 
 This is only interesting for people that run tests, which itself run
-testrunners (like `z3c.testsetup` itself in self-tests). 
+testrunners (like `z3c.testsetup` itself in self-tests).
 
 The functions provided by the faked testrunners of z3c.testsetup refer
 to the same thing:
