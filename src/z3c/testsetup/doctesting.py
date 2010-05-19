@@ -13,10 +13,11 @@
 ##############################################################################
 """Test setup helpers for doctests.
 """
+import doctest
 import unittest
 import os.path
 from os import listdir
-from zope.testing import doctest, cleanup
+from zope.testing import cleanup
 from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import (get_package, get_marker_from_file, warn,
                                 get_attribute)

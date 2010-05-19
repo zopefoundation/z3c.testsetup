@@ -14,6 +14,8 @@ Changelog for z3c.testsetup
   availble when trying to run a functional doc test. This error presented
   itself as a highly cryptic ImportError when actually running tests.
 
+- Use standard lib doctest instead of zope.testing.doctest.
+
 0.6.1 (2009-11-19)
 ==================
 

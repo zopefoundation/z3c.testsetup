@@ -37,8 +37,9 @@ down.  z3c.testsetup includes examples used for testing (you can find them all
 in the ``tests/`` subdirectory if you've downloaded the source code):
 
   >>> import os
-  >>> cavepath = os.path.dirname(__file__)
-  >>> cavepath = os.path.join(cavepath, 'tests', 'othercave')
+  >>> import z3c.testsetup
+  >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
+  >>> cavepath = os.path.join(pkgpath, 'tests', 'othercave')
 
 
 Registering doctests
@@ -137,9 +138,9 @@ Let's start the testrunner and see what it gives:
       Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
         Custom setUp for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
         Custom tearDown for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
-      Ran 7 tests with 0 failures and 0 errors in 0.011 seconds.
+      Ran 4 tests with 0 failures and 0 errors in 0.011 seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
-    Total: 13 tests, 0 failures, 0 errors in 11.798 seconds.
+    Total: 10 tests, 0 failures, 0 errors in 11.798 seconds.
     False
 
 As we can see, there were regular unittests as well as functional tests
@@ -485,7 +486,7 @@ We already saw the ``:doctest:`` marker above.  Other markers detected by
 - ``:zcml-layer: <ZCML_filename>``
 
   Use the given ZCML file and run tests in this file on a ZCML
-  layer. Tests are registered using ``zope.testing.doctest.DocFileSuite``.
+  layer. Tests are registered using ``doctest.DocFileSuite``.
 
 - ``:functional-zcml-layer: <ZCML_filename>``
 
@@ -663,7 +664,7 @@ Setting up a functional ZCML layer: ``:functional-zcml-layer:``
 Sometimes we want tests to be registered using the
 ``FunctionalDocFileSuite`` function from
 ``zope.app.testing.functional`` (other tests are set up using
-``zope.testing.doctest.DocFileSuite``). This function pulls in even
+``doctest.DocFileSuite``). This function pulls in even
 more functions into ``globs``, like ``http`` (a ``HTTPCaller``
 instance), wraps your ``setUp`` and ``tearDown`` methods into
 ZODB-setups and several things more. See the definition in

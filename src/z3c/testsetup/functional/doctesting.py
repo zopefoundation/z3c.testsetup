@@ -13,9 +13,10 @@
 ##############################################################################
 """Test setup helpers for functional doctests.
 """
+import doctest
 import unittest
 import os.path
-from zope.testing import doctest, cleanup
+from zope.testing import cleanup
 from zope.app.testing.functional import (
     HTTPCaller, getRootFolder, sync, ZCMLLayer, FunctionalDocFileSuite,
     FunctionalTestSetup)

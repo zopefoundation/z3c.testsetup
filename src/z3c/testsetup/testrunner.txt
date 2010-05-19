@@ -12,7 +12,9 @@ Using z3c.testsetup, we can define quite complex testsetups with only
 two lines of code::
 
     >>> import os
-    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests', 'cave')
+    >>> import z3c.testsetup
+    >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
+    >>> cavepath = os.path.join(pkgpath, 'tests', 'cave')
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short0.py')
     >>> print open(setupfile).read()
     import z3c.testsetup
@@ -297,9 +299,9 @@ Running the testrunner with this setup will result in::
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
-    Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
+    Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 The same setup, but without a modified checker will deliver::
@@ -340,7 +342,9 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
     <BLANKLINE>
     Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
-    Failed doctest test for checkertest.chk
+    Traceback (most recent call last):
+    ...
+    AssertionError: Failed doctest test for checkertest.chk
       File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
@@ -358,9 +362,9 @@ The same setup, but without a modified checker will deliver::
         - A memory address at <SOME ADDRESS>
         + A memory address at 0x1a0322ff
     <BLANKLINE>
-      Ran 2 tests with 1 failures and 0 errors in ... seconds.
+      Ran 1 tests with 1 failures and 0 errors in ... seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
-    Total: 4 tests, 2 failures, 0 errors in ... seconds.
+    Total: 3 tests, 2 failures, 0 errors in ... seconds.
     True
 
 Note that in older versions of `z3c.testsetup` checkers were supported
@@ -552,8 +556,9 @@ Using z3c.testsetup, we can define quite complex testsetups with only
 two lines of code::
 
     >>> import os
-    >>> cavepath = os.path.join(os.path.dirname(__file__), 'tests',
-    ...   'layered_cave')
+    >>> import z3c.testsetup
+    >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
+    >>> cavepath = os.path.join(pkgpath, 'tests', 'layered_cave')
     >>> setupfile = os.path.join(cavepath, 'layeredsetup01.py')
     >>> print open(setupfile).read()
     from z3c.testsetup import register_all_tests

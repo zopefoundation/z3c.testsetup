@@ -1,9 +1,10 @@
+import doctest
 import os
 import re
 import sys
 import gc
 import unittest
-from zope.testing import doctest, cleanup, renormalizing
+from zope.testing import cleanup, renormalizing
 import zope.component.eventtesting
 from z3c.testsetup.util import get_package
 

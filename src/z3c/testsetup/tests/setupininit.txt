@@ -5,7 +5,9 @@ We can also setup tests in packages' __init__ modules. We defined such
 a test setup in the cave package::
 
     >>> import os
-    >>> cavepath = os.path.join(os.path.dirname(__file__), 'cave')
+    >>> import z3c.testsetup
+    >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
+    >>> cavepath = os.path.join(pkgpath, 'tests', 'cave')
 
 The setup looks like this::
 

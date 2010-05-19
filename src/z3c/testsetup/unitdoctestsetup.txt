@@ -153,7 +153,7 @@ the default set of options, the following values are set::
 * The setup-instance's `optionsflags` attribute is passed. It
   includes by default the following doctest constants:
 
-     >>> from zope.testing import doctest
+     >>> import doctest
      >>> setup.optionflags == (doctest.ELLIPSIS+
      ...                       doctest.NORMALIZE_WHITESPACE |
      ...                       doctest.REPORT_NDIFF)
