@@ -4,8 +4,7 @@ Changelog for z3c.testsetup
 0.8 (unreleased)
 ================
 
-- Nothing changed yet.
-
+- Use standard lib doctest instead of zope.testing.doctest.
 
 0.7 (2010-05-17)
 ================
@@ -13,8 +12,6 @@ Changelog for z3c.testsetup
 - Fix NameError bug in the warning message in case zope.app.testing is not
   availble when trying to run a functional doc test. This error presented
   itself as a highly cryptic ImportError when actually running tests.
-
-- Use standard lib doctest instead of zope.testing.doctest.
 
 0.6.1 (2009-11-19)
 ==================
