@@ -294,14 +294,14 @@ Running the testrunner with this setup will result in::
     >>> testrunner.run(defaults)
     Running z3c.testsetup...doctesting.FunctionalLayer tests:
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
       Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
-    Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
+    Total: 2 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
 The same setup, but without a modified checker will deliver::
@@ -316,7 +316,9 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
     <BLANKLINE>
     Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
-    Failed doctest test for checkertest.chk
+    Traceback (most recent call last):
+    ...
+    AssertionError: Failed doctest test for checkertest.chk
       File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
@@ -334,7 +336,7 @@ The same setup, but without a modified checker will deliver::
         - A memory address at <SOME ADDRESS>
         + A memory address at 0x1a0322ff
     <BLANKLINE>
-      Ran 2 tests with 1 failures and 0 errors in ... seconds.
+      Ran 1 tests with 1 failures and 0 errors in ... seconds.
     Running zope.testing.testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
       Running in a subprocess.
@@ -364,7 +366,7 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
       Ran 1 tests with 1 failures and 0 errors in ... seconds.
       Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
-    Total: 3 tests, 2 failures, 0 errors in ... seconds.
+    Total: 2 tests, 2 failures, 0 errors in ... seconds.
     True
 
 Note that in older versions of `z3c.testsetup` checkers were supported
