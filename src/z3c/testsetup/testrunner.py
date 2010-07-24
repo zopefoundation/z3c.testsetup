@@ -13,8 +13,13 @@
 ##############################################################################
 """Testrunner convenience stuff.
 """
-from zope.testing import testrunner
-from zope.testing.testrunner import run
+try:
+    from zope import testrunner
+    from zope.testrunner import run
+except ImportError:
+    # BBB: for backward compatibility
+    from zope.testing import testrunner
+    from zope.testing.testrunner import run
 
 # Convenience mapping to have run_internal() and run() always
 # available and refering to the same function from zope.testing. See
