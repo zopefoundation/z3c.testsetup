@@ -40,12 +40,12 @@ testrunner::
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Set up z3c...functional.doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c...functional.doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -74,12 +74,12 @@ string. This is enough information for a testrunner::
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -106,12 +106,12 @@ testrunner with this setup::
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -137,13 +137,13 @@ information from the run::
     ...     ]
     >>> testrunner.run(defaults)
     Running tests at level 1
-    Running zope.testing.testrunner.layer.UnitTests tests:
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    Running zope...testrunner.layer.UnitTests tests:
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Running:
      testFoo (z3c.testsetup.tests.cave.file1.TestTest)
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
     Tearing down left over layers:
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     False
 
 
@@ -187,12 +187,12 @@ This will result in::
     Running z3c.testsetup.tests.cave.SampleLayer tests:
       Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -217,12 +217,12 @@ to tear down the functional layers:
     Running z3c.testsetup.tests.cave.SampleLayer tests:
       Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup.tests.cave.SampleLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -295,12 +295,12 @@ Running the testrunner with this setup will result in::
     Running z3c.testsetup...doctesting.FunctionalLayer tests:
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+      Set up zope...testrunner.layer.UnitTests in 0.000 seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+      Tear down zope...testrunner.layer.UnitTests in 0.000 seconds.
     Total: 2 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -316,9 +316,7 @@ The same setup, but without a modified checker will deliver::
     <BLANKLINE>
     <BLANKLINE>
     Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
-    Traceback (most recent call last):
-    ...
-    AssertionError: Failed doctest test for checkertest.chk
+    ...Failed doctest test for checkertest.chk
       File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
@@ -337,16 +335,14 @@ The same setup, but without a modified checker will deliver::
         + A memory address at 0x1a0322ff
     <BLANKLINE>
       Ran 1 tests with 1 failures and 0 errors in ... seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in ... seconds.
+      Set up zope...testrunner.layer.UnitTests in ... seconds.
     <BLANKLINE>
     <BLANKLINE>
     Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
-    Traceback (most recent call last):
-    ...
-    AssertionError: Failed doctest test for checkertest.chk
+    ...Failed doctest test for checkertest.chk
       File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
@@ -365,7 +361,7 @@ The same setup, but without a modified checker will deliver::
         + A memory address at 0x1a0322ff
     <BLANKLINE>
       Ran 1 tests with 1 failures and 0 errors in ... seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in ... seconds.
+      Tear down zope...testrunner.layer.UnitTests in ... seconds.
     Total: 2 tests, 2 failures, 0 errors in ... seconds.
     True
 
@@ -477,11 +473,11 @@ making sure, that also unit doctests globals can be set, using the
     ...     '--tests-pattern', '^samplesetup_short9$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running zope.testing.testrunner.layer.UnitTests tests:
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    Running zope...testrunner.layer.UnitTests tests:
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Tearing down left over layers:
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     False
 
 
@@ -526,12 +522,12 @@ to return a testsuite::
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ...
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -650,19 +646,24 @@ To run testrunners as part of tests, one now has to use
 it hard to test with packages, that sometimes use `zope.testing`_
 >= 3.7.3 but are also used with `zope.testing`_ < 3.7.3.
 
+Furthermore the whole testrunner was moved from
+`zope.testing.testrunner` to an own package `zope.testrunner`.
+
 For those cases (i.e. where testrunners are run as part of tests
 themselves) `z3c.testsetup` now offers the convenience functions
 `testrunner.run()` and `testrunner.run_internal()` that are wrappers
 guaranteed to be aliases for the same function of `zope.testing`:
 ``zope.testing.testrunner.run_internal()`` if it exists or
-``zope.testing.testrunner.run()`` otherwise.
+``zope.testing.testrunner.run()`` otherwise. If `zope.testrunner` is
+available, the respective functions are imported from there.
 
 In doctests you now can use
 
    >>> from z3c.testsetup import testrunner
 
 call ``testrunner.run()`` afterwards and it will work, regardless of
-what version of `zope.testing` you are using.
+what version of `zope.testing` you are using and regardleff of if you
+are using `zope.testunner` or not.
 
 This is only interesting for people that run tests, which itself run
 testrunners (like `z3c.testsetup` itself in self-tests).
@@ -679,10 +680,14 @@ refer to `zope.testing.testrunner.run_internal`:
 
     >>> import pkg_resources
     >>> info = pkg_resources.get_distribution('zope.testing')
-    >>> version = tuple(info.version.split('.'))
-    >>> new_version = (version > ('3', '7', '2'))
+    >>> version = info.version.split('.')
+    >>> version = tuple([int(x) for x in version])
+    >>> new_version = (version > (3, 7, 2))
 
-    >>> from zope.testing.testrunner import run
+    >>> try:
+    ...   from zope.testing.testrunner import run
+    ... except ImportError:
+    ...   from zope.testrunner import run
     >>> not new_version or (testrunner.run is not run)
     True
 

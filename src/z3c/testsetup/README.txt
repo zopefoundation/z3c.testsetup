@@ -133,13 +133,13 @@ Let's start the testrunner and see what it gives:
       Ran 1 tests with 0 failures and 0 errors in 0.009 seconds.
       Tear down z3c.testsetup.tests.othercave.testing.UnitLayer2 in 0.000 seconds.
       Tear down z3c.testsetup.tests.othercave.testing.UnitLayer1 in 0.000 seconds.
-    Running zope.testing.testrunner.layer.UnitTests tests:
+    Running zope...testrunner.layer.UnitTests tests:
       Running in a subprocess.
-      Set up zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+      Set up zope...testrunner.layer.UnitTests in 0.000 seconds.
         Custom setUp for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
         Custom tearDown for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
       Ran 4 tests with 0 failures and 0 errors in 0.011 seconds.
-      Tear down zope.testing.testrunner.layer.UnitTests in 0.000 seconds.
+      Tear down zope...testrunner.layer.UnitTests in 0.000 seconds.
     Total: 10 tests, 0 failures, 0 errors in 11.798 seconds.
     False
 
