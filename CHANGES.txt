@@ -1,7 +1,7 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.8 (unreleased)
+0.8 (2010-07-24)
 ================
 
 - Use standard lib doctest instead of zope.testing.doctest.
