@@ -6,6 +6,14 @@ Changelog for z3c.testsetup
 
 - Use standard lib doctest instead of zope.testing.doctest.
 
+- `z3c.testsetup` now looks in `zope.testrunner` for testrunner first
+  (which was ripped out of `zope.testing`). Using testrunner from
+  `zope.testing` is still supported. See bottom of ``testrunner.txt``
+  in sources for details.
+
+- Fix tests to stay compatible with more recent zope testrunners. This
+  should us keep compatible with ZTK 1.0a2.
+
 0.7 (2010-05-17)
 ================
 
