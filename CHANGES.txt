@@ -4,7 +4,9 @@ Changelog for z3c.testsetup
 0.8.1 (unreleased)
 ==================
 
-- No changes yet.
+- The ``encoding`` parameter is ignored under Python 2.4. This was
+  already true for the 0.8 release, but now we silently ignore it
+  instead of raising exceptions. For Python >= 2.5 nothing changed.
 
 0.8 (2010-07-24)
 ================
