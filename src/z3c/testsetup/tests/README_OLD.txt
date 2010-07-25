@@ -302,36 +302,6 @@ be found, the other paramters tell how to setup single tests.
     Here the .foo file was registered as unit doctest and the .txt
     files as functional ones.
 
-
-- **encoding**:   
-
-    the encoding of testfiles. 'utf-8' by default. Setting this to `None`
-    means using the default value. We've hidden one doctest file, that
-    contains umlauts. If we set the encoding to `ascii`, we get an
-    error::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     encoding='ascii')
-      >>> suite = test_suite()
-      Traceback (most recent call last):
-      ...
-      UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal 
-      not in range(128)
-
-    While using 'latin-1' will work::
-
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     encoding='latin-1')
-      >>> suite = test_suite()
-      
-    No traceback here.
-
-    You can always overwrite an encoding setting for a certain file by
-    following PEP 0263 ( http://www.python.org/dev/peps/pep-0263/ ).
-
-
 - **checker**:
 
     An output checker for functional doctests. `None` by default. A
