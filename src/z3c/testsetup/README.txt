@@ -290,13 +290,25 @@ configured in doctest files themselves via marker strings.
 
     the encoding of testfiles. 'utf-8' by default. Setting this to ``None``
     means using the default value. We've hidden one doctest file, that
-    contains umlauts. If we set the encoding to ``ascii``, we get an
-    error:
+    contains umlauts. If we set the encoding to ``ascii``, we will get
+    some `UnicodeDecodeError`.
 
-      >>> test_suite = z3c.testsetup.register_all_tests(
-      ...     'z3c.testsetup.tests.cave',
-      ...     encoding='ascii')
-      >>> suite = test_suite()
+
+    We cannot easily show that here, as this parameter is not
+    supported for Python 2.4 and all examples in here have to work
+    for each supported Python version.
+
+    .. note:: `encoding` parameter is not supported for Python 2.4.
+
+              You can pass the encoding parameter, but it will be
+              ignored when building test suites.
+
+    For Python >= 2.5 the result would look like this::
+
+      test_suite = z3c.testsetup.register_all_tests(
+          'z3c.testsetup.tests.cave',
+          encoding='ascii')
+      suite = test_suite()
       Traceback (most recent call last):
       ...
       UnicodeDecodeError: 'ascii' codec can't decode ...: ordinal
