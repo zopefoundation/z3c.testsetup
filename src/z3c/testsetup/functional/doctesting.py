@@ -14,6 +14,7 @@
 """Test setup helpers for functional doctests.
 """
 import doctest
+import sys
 import unittest
 import os.path
 from zope.testing import cleanup
@@ -97,12 +98,14 @@ class FunctionalDocTestSetup(DocTestSetup):
             # We get absolute pathnames, but we need relative ones...
             common_prefix = os.path.commonprefix([self.package.__file__, name])
             name = name[len(common_prefix):]
+        if sys.version_info[:2] > (2,4): 
+            self.additional_options.update(
+                encoding = self.encoding)
         test = FunctionalDocFileSuite(
             name, package=self.package,
             setUp=self.setUp, tearDown=self.tearDown,
             globs=self.globs,
             optionflags=self.optionflags,
-            encoding=self.encoding,
             checker=self.checker,
             **self.additional_options
             )
