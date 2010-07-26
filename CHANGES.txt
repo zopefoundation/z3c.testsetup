@@ -7,6 +7,8 @@ Changelog for z3c.testsetup
 - Fixed tests not to fail when some buildbot takes minutes to run the
   tests.
 
+- Fix tests to work also under Python 2.7.
+
 0.8.1 (2010-07-25)
 ==================
 

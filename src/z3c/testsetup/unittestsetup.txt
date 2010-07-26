@@ -30,7 +30,8 @@ The work is done mainly in two stages:
    settings of instcance attributes.
 
 2) The tests contained in the found modules are setup as unit tests
-   and added to a ``unittest.TestSuite`` instance.
+   and added to a ``unittest.TestSuite`` (or
+   ``unittest.suite.TestSuite`` for Python 2.7) instance.
 
 There are some default values active, if you use instances of
 this class without further modifications. Therefore we will first
@@ -58,7 +59,7 @@ This setup is ready for use::
 
     >>> suite = setup.getTestSuite()
     >>> suite
-    <unittest.TestSuite tests=[...]>
+    <unittest...TestSuite tests=[...]>
 
 To sum it up, writing a test setup for a zope 3 project now can be that
 short::
@@ -72,7 +73,8 @@ short::
 
 This will find all modules in the package that provide a
 certain signature (see below), register the contained tests as unit
-tests and run them as part of a `unittest.TestSuite`.
+tests and run them as part of a `unittest.TestSuite` (or
+`unittest.suite.TestSuite` for Python 2.7).
 
 Note: in many test setups you will find a code fragment like the
       following at the end of file::

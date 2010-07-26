@@ -38,7 +38,8 @@ The work is done mainly in two stages:
    settings of instance attributes.
 
 2) The tests contained in the found docfiles are setup as functional
-   tests and added to a ``unittest.TestSuite`` instance.
+   tests and added to a ``unittest.TestSuite`` (or
+   ``unittest.suite.TestSuite`` for Python 2.7)instance.
 
 There are plenty of default values active, if you use instances of
 this class without further modifications. Therefore we will first
@@ -70,7 +71,7 @@ This setup is ready for use::
 
    >>> suite = setup.getTestSuite()
    >>> suite
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
 To sum it up, writing a test setup for a project now can be that
 short::
@@ -82,7 +83,8 @@ short::
 
 This will find all .rst and .txt files in the package that provide a
 certain signature (see below), register the contained tests as
-functional tests and run them as part of a `unittest.TestSuite`.
+functional tests and run them as part of a `unittest.TestSuite` (or
+``unittest.suite.TestSuite`` for Python 2.7).
 
 Note: in many test setups you will find a code fragment like the
       following at the end of file::

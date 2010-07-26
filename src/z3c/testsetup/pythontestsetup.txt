@@ -21,8 +21,9 @@ The work is done mainly in two stages:
 1) A given package is searched for appropriate modules, based on the
    settings of instance attributes.
 
-2) The tests contained in the found modules are added to one
-   `unittest.TestSuite`, which can be passed to a testrunner.
+2) The tests contained in the found modules are added to a
+   `unittest.TestSuite` (or ``unittest.suite.TestSuite`` for Python
+   2.7) instance, which can be passed to a testrunner.
 
 
 Setting up a simple test suite
@@ -50,7 +51,7 @@ This setup is ready for use::
 
    >>> suite = setup.getTestSuite()
    >>> suite
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
 To sum it up, writing a test setup for a project now can be that
 short::
@@ -62,7 +63,8 @@ short::
 
 This will find all modules in the given package that provide a certain
 signature (see below), register the contained tests cases and run them
-as part of a `unittest.TestSuite`.
+as part of a `unittest.TestSuite` (or ``unittest.suite.TestSuite`` for
+Python 2.7).
 
 Note: in many test setups you will find a code fragment like the
       following at the end of file::

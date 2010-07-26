@@ -9,13 +9,15 @@ What are TestGetters/TestCollectors?
 
 TestGetters are wrappers for TestSetups, that filter any keyword
 parameters passed to the constructor and return a
-``unittest.TestSuite`` if called::
+``unittest.TestSuite`` (or `unittest.suite.TestSuite` for Python 2.7)
+if called. In the following, when ``unittest.TestSuite`` is mentioned,
+please read ``unittest.suite.TestSuite`` if you use Python 2.7.
 
    >>> import z3c.testsetup
    >>> from z3c.testsetup.tests import cave
    >>> getter = z3c.testsetup.PythonTestGetter(cave)
    >>> getter()
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
    >>> get_basenames_from_suite(getter())
    ['file1.py']
@@ -32,7 +34,7 @@ your own customized type of TestSetup. TestCollectors too return a
 
    >>> collector = z3c.testsetup.TestCollector(cave)
    >>> collector()
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
    >>> get_basenames_from_suite(collector())
    ['file1.py', 'file1.rst', 'file1.txt', 'subdirfile.txt']
@@ -318,7 +320,7 @@ This collector can be called like any TestGetter::
    >>> collector = CustomTestCollector(cave)
    >>> suite = collector()
    >>> suite
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
 The tests delivered are determined by the involved
 TestGetters. Because we are wrapping the CustomGetter, we should get a
@@ -410,7 +412,7 @@ for the ``test_suite`` callable and call it to get a
 ``unittest.TestSuite``::
 
    >>> test_suite()
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
 To tweak the tests run, we can pass keyword parameters to the
 ``register_all_tests`` function. But what, if we maintain a package,
@@ -442,7 +444,7 @@ If we call that getter, we should get a ``unittest.TestSuite``::
 
    >>> suite = collector()
    >>> suite
-   <unittest.TestSuite tests=[...]>
+   <unittest...TestSuite tests=[...]>
 
 This standard suite does not include the functional doctest file
 ``notatest1.foo`` which is in the cave package::
