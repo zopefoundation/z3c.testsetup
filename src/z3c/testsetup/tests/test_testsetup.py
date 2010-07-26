@@ -22,7 +22,7 @@ TESTFILES = ['basicsetup.txt',
 
 checker = renormalizing.RENormalizing([
     # Relevant normalizers from zope.testing.testrunner.tests:
-    (re.compile(r'\d+[.]\d\d\d seconds'), 'N.NNN seconds'),
+    (re.compile(r'(\d minutes )?\d+[.]\d\d\d seconds'), 'N.NNN seconds'),
     # Our own one to work around
     # http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html:
     (re.compile(r'.*1034h'), ''),
