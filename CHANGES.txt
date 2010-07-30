@@ -1,7 +1,7 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.8.2 (unreleased)
+0.8.2 (2010-07-30)
 ==================
 
 - Fixed tests not to fail when some buildbot takes minutes to run the
