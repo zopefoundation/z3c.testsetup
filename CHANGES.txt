@@ -4,7 +4,7 @@ Changelog for z3c.testsetup
 0.8.3 (unreleased)
 ==================
 
-- No changes yet.
+- Fixed some tests on windows, mostly because of path separator issues
 
 
 0.8.2 (2010-07-30)

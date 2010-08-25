@@ -26,14 +26,14 @@ checker = renormalizing.RENormalizing([
     # Our own one to work around
     # http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html:
     (re.compile(r'.*1034h'), ''),
+    #windows line endings:
+    (re.compile('\r\n'), '\n'),
+    #windows drive root:
+    (re.compile(r'[a-zA-Z]:\\'), '/'),
+    #windows path separator:
+    (re.compile(r'\\\\'), '/'),
+    (re.compile(r'\\'), '/'),
     ])
-
-
-def pnorm(path):
-    """Normalization of paths to use forward slashes. This is needed
-    to make sure the tests work on windows.
-    """
-    return path.replace(os.sep, '/')
 
 
 def get_testcases_from_suite(suite):
@@ -168,8 +168,7 @@ def suiteFromFile(filename):
                                 package = 'z3c.testsetup',
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
-                                globs={'pnorm': pnorm,
-                                       'get_basenames_from_suite':
+                                globs={'get_basenames_from_suite':
                                        get_basenames_from_suite,
                                        'print_file': print_file},
                                 checker=checker,

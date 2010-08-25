@@ -65,7 +65,7 @@ loaded before::
    >>> from z3c.testsetup.tests import cave
    >>> setup = FunctionalDocTestSetup(cave)
    >>> setup
-   <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>   
+   <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>
 
 This setup is ready for use::
 
@@ -144,7 +144,7 @@ using the default set of options, the following values are set::
 
 * The setup-instance's ``tearDown``-method is set as the ``tearDown``
   function.
-  
+
      >>> setup.setUp
      <bound method FunctionalDocTestSetup.setUp of
       <z3c.testsetup....doctesting.FunctionalDocTestSetup object at 0x...>>
@@ -187,7 +187,7 @@ using the default set of options, the following values are set::
      >>> import re
      >>> from zope.testing import renormalizing
      >>> mychecker = renormalizing.RENormalizing([
-     ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+     ...    (re.compile('[0-9]*[.][0-9]* seconds'),
      ...     '<SOME NUMBER OF> seconds'),
      ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
      ... ])
@@ -276,7 +276,7 @@ of the regexs.
 
     >>> setup.regexs
     [<_sre.SRE_Pattern object at ...>]
-    
+
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isTestFile()``.
 
@@ -347,13 +347,13 @@ attributes mentioned above are settable at creation time, namely:
        >>> import re
        >>> from zope.testing import renormalizing
        >>> mychecker = renormalizing.RENormalizing([
-       ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+       ...    (re.compile('[0-9]*[.][0-9]* seconds'),
        ...     '<SOME NUMBER OF> seconds'),
        ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>') ])
 
     Then, a setup with this checker can be created::
 
-       >>> mysetup = FunctionalDocTestSetup(cave, checker = mychecker) 
+       >>> mysetup = FunctionalDocTestSetup(cave, checker = mychecker)
        >>> mysetup.checker
        <zope.testing.renormalizing.RENormalizing instance at 0x...>
 
@@ -401,14 +401,14 @@ available:
 
        >>> from z3c.testsetup.tests import cave_to_let
        >>> setup = FunctionalDocTestSetup(cave_to_let)
-       >>> pnorm(setup.layer.config_file)
+       >>> setup.layer.config_file
        '.../tests/cave_to_let/ftesting.zcml'
 
     The fallback-solution is to take the layer from the
     `z3c.testsetup` package::
 
        >>> setup = FunctionalDocTestSetup(cave)
-       >>> pnorm(setup.layer.config_file)
+       >>> setup.layer.config_file
        '...z3c/testsetup/functional/ftesting.zcml'
 
     Now the fallback `ftesting.zcml` was taken, because the cave got
@@ -454,12 +454,12 @@ instead of the dummy ZCML contained in ``z3c.testsetup``.
    >>> setup_w_custom_layer = FunctionalDocTestSetup(
    ...     cave,
    ...     zcml_config = 'sampleftesting.zcml')
-   >>> pnorm(setup_w_custom_layer.layer.config_file)
+   >>> setup_w_custom_layer.layer.config_file
    '.../tests/cave/sampleftesting.zcml'
 
 You can also pass a keyword parameter `layer`, which should provide a
 value with a ready-to-use ZCML layer. If this happens, the
-`zcml_config` and `layer_name` parameter will have no effect. 
+`zcml_config` and `layer_name` parameter will have no effect.
 
 To show this, we first create a custom layer::
 
@@ -478,7 +478,7 @@ and create a functional doctest setup with it::
    ...     cave,
    ...     zcml_config = 'sampleftesting.zcml',
    ...     layer = mylayer)
-   >>> pnorm(setup_w_custom_layer.layer.config_file)
+   >>> setup_w_custom_layer.layer.config_file
    '.../testsetup/functional/ftesting.zcml'
 
 As we can see, the `mylayer` config file is registered and the
