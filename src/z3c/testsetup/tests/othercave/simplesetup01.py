@@ -1,3 +1,4 @@
 import z3c.testsetup
 test_suite = z3c.testsetup.register_all_tests(
-    'z3c.testsetup.tests.othercave')
+    'z3c.testsetup.tests.othercave',
+    allow_teardown=True)
