@@ -1,7 +1,7 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.8.3 (unreleased)
+0.8.3 (2010-09-15)
 ==================
 
 - Fixed tests on windows related to testrunner problems with multiple
