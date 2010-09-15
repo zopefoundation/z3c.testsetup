@@ -4,6 +4,9 @@ Changelog for z3c.testsetup
 0.8.3 (unreleased)
 ==================
 
+- Fixed tests on windows related to testrunner problems with multiple
+  layers run in subprocesses.
+
 - Fixed some tests on windows, mostly because of path separator issues
 
 
