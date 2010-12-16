@@ -129,6 +129,7 @@ Please include `zope.app.testing` in your project setup to run this testfile.
                 globs=self.globs,
                 optionflags=self.optionflags,
                 checker=self.checker,
+                encoding=self.encoding,
                 **self.additional_options
                 )
             if layerdef is not None:
@@ -248,6 +249,7 @@ class UnitDocTestSetup(DocTestSetup):
                 globs=self.globs,
                 optionflags=self.optionflags,
                 checker=self.checker,
+                encoding=self.encoding,
                 **self.additional_options
                 )
             if layerdef is not None:

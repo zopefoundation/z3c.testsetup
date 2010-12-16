@@ -57,3 +57,25 @@ Be sure to launch the tests which are in a ``__init__.py`` file:
     Tearing down left over layers:
       Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
     False
+
+
+Encoding
+========
+
+The default encoding supported by z3c.testsetup is utf-8:
+
+    >>> path = os.path.join(REG_TESTS, 'encoding')
+    >>> defaults = [
+    ...     '--path', path,
+    ...     '--tests-pattern', '^init_encoding$', '-vvvv',
+    ...     ]
+    >>> testrunner.run(defaults)
+    Running tests at level 1
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Running:
+     /COMPONENT/tests/regressions/encoding/utf8.py (... s)
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    False
