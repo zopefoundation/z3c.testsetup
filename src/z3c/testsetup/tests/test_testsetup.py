@@ -33,6 +33,10 @@ checker = renormalizing.RENormalizing([
     #windows path separator:
     (re.compile(r'\\\\'), '/'),
     (re.compile(r'\\'), '/'),
+    # The component directory, to make test more readable
+    (re.compile(
+        os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))),
+        '/COMPONENT'),
     ])
 
 

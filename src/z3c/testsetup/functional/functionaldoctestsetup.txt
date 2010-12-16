@@ -402,14 +402,14 @@ available:
        >>> from z3c.testsetup.tests import cave_to_let
        >>> setup = FunctionalDocTestSetup(cave_to_let)
        >>> setup.layer.config_file
-       '.../tests/cave_to_let/ftesting.zcml'
+       '/COMPONENT/tests/cave_to_let/ftesting.zcml'
 
     The fallback-solution is to take the layer from the
     `z3c.testsetup` package::
 
        >>> setup = FunctionalDocTestSetup(cave)
        >>> setup.layer.config_file
-       '...z3c/testsetup/functional/ftesting.zcml'
+       '/COMPONENT/functional/ftesting.zcml'
 
     Now the fallback `ftesting.zcml` was taken, because the cave got
     no own ftesting.zcml.
@@ -455,7 +455,7 @@ instead of the dummy ZCML contained in ``z3c.testsetup``.
    ...     cave,
    ...     zcml_config = 'sampleftesting.zcml')
    >>> setup_w_custom_layer.layer.config_file
-   '.../tests/cave/sampleftesting.zcml'
+   '/COMPONENT/tests/cave/sampleftesting.zcml'
 
 You can also pass a keyword parameter `layer`, which should provide a
 value with a ready-to-use ZCML layer. If this happens, the
@@ -479,7 +479,7 @@ and create a functional doctest setup with it::
    ...     zcml_config = 'sampleftesting.zcml',
    ...     layer = mylayer)
    >>> setup_w_custom_layer.layer.config_file
-   '.../testsetup/functional/ftesting.zcml'
+   '/COMPONENT/functional/ftesting.zcml'
 
 As we can see, the `mylayer` config file is registered and the
 `zcml_config` parameter was skipped.

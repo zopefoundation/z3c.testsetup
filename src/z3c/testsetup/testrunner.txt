@@ -315,19 +315,19 @@ The same setup, but without a modified checker will deliver::
       Set up z3c.testsetup...doctesting.FunctionalLayer in ... seconds.
     <BLANKLINE>
     <BLANKLINE>
-    Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
+    Failure in test /COMPONENT/tests/cave/checkertest.chk
     ...Failed doctest test for checkertest.chk
-      File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
+      File "/COMPONENT/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
+    File "/COMPONENT/tests/cave/checkertest.chk", line 10, in checkertest.chk
     Failed example:
         print "%s seconds" % 0.123
     Differences (ndiff with -expected +actual):
         - <SOME NUMBER OF> seconds
         + 0.123 seconds
     ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
+    File "/COMPONENT/tests/cave/checkertest.chk", line 15, in checkertest.chk
     Failed example:
         print "A memory address at 0x1a0322ff"
     Differences (ndiff with -expected +actual):
@@ -341,19 +341,19 @@ The same setup, but without a modified checker will deliver::
       Set up zope...testrunner.layer.UnitTests in ... seconds.
     <BLANKLINE>
     <BLANKLINE>
-    Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
+    Failure in test /COMPONENT/tests/cave/checkertest.chk
     ...Failed doctest test for checkertest.chk
-      File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
+      File "/COMPONENT/tests/cave/checkertest.chk", line 0
     <BLANKLINE>
     ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
+    File "/COMPONENT/tests/cave/checkertest.chk", line 10, in checkertest.chk
     Failed example:
         print "%s seconds" % 0.123
     Differences (ndiff with -expected +actual):
         - <SOME NUMBER OF> seconds
         + 0.123 seconds
     ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
+    File "/COMPONENT/tests/cave/checkertest.chk", line 15, in checkertest.chk
     Failed example:
         print "A memory address at 0x1a0322ff"
     Differences (ndiff with -expected +actual):
