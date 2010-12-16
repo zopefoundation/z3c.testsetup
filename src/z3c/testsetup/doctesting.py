@@ -83,9 +83,16 @@ class SimpleDocTestSetup(DocTestSetup):
 
             if os.path.isabs(name):
                 # We get absolute pathnames, but we need relative ones...
-                common_prefix = os.path.commonprefix([self.package.__file__,
+
+                if os.path.basename(name).startswith('__init__.py'):
+                    # The file we are currently trying to test is the
+                    # __init__.py of package. Don't try tp reduce its name
+                    # further than '__init__.py', or we will get an empty name.
+                    name = '__init__.py'
+                else:
+                    common_prefix = os.path.commonprefix([self.package.__file__,
                                                       name])
-                name = name[len(common_prefix):]
+                    name = name[len(common_prefix):]
 
             suite_creator = doctest.DocFileSuite
             if functional_zcml_layer is not None:

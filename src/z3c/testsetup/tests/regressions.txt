@@ -35,3 +35,25 @@ both tests in the same layer context, and not to create several contexts:
     Tearing down left over layers:
       Tear down z3c.testsetup.functional.layer.DefaultZCMLLayer [/COMPONENT/tests/regressions/norm_zcml_layers/layer.zcml] ... not supported
     False
+
+
+__init__.py tests
+=================
+
+Be sure to launch the tests which are in a ``__init__.py`` file:
+
+    >>> path = os.path.join(REG_TESTS, 'tests_in_init')
+    >>> defaults = [
+    ...     '--path', path,
+    ...     '--tests-pattern', '^initsetup01$', '-vvvv',
+    ...     ]
+    >>> testrunner.run(defaults)
+    Running tests at level 1
+    Running zope.testing.testrunner.layer.UnitTests tests:
+      Set up zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+      Running:
+     /COMPONENT/tests/regressions/tests_in_init/__init__.py (... s)
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down zope.testing.testrunner.layer.UnitTests in N.NNN seconds.
+    False

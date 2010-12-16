@@ -1,0 +1,8 @@
+"""
+
+.. :doctest:
+
+>>> print "foo"
+foo
+
+"""
