@@ -15,6 +15,7 @@ TESTFILES = ['basicsetup.txt',
              'unitdoctestsetup.txt',
              'util.txt',
              'unittestsetup.txt',
+             os.path.join('tests', 'regressions.txt'),
              os.path.join('tests', 'setupininit.txt'),
              os.path.join('tests', 'util.txt'),
              ]

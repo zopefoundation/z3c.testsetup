@@ -135,6 +135,11 @@ Please include `zope.app.testing` in your project setup to run this testfile.
         zcml_file = get_marker_from_file(marker, filepath)
         if zcml_file is None:
             return
+
+        file_path = os.path.realpath(
+            os.path.join(os.path.dirname(filepath), zcml_file)
+        )
+
         try:
             # Late import. Some environments don't have
             # ``zope.app.testing`` available.
@@ -147,10 +152,9 @@ Please include `zope.app.testing` in your project setup to run this testfile.
 """ % (marker, filepath))
 
         layer = DefaultZCMLLayer(
-            os.path.join(os.path.dirname(filepath), zcml_file),
+            file_path,
             DefaultZCMLLayer.__module__,
-            '%s [%s]' % (DefaultZCMLLayer.__name__,
-                         os.path.join(os.path.dirname(filepath), zcml_file)),
+            '%s [%s]' % (DefaultZCMLLayer.__name__, file_path),
             allow_teardown=self.allow_teardown)
         return layer
 

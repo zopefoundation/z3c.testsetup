@@ -1,0 +1,37 @@
+================
+Regression tests
+================
+
+This file contains various regression tests
+
+    >>> from z3c.testsetup import testrunner
+    >>> import os
+    >>> import sys
+    >>> sys.argv = [sys.argv[0]] # Strip options from external testrunner
+    >>> HERE = os.path.dirname(__file__)
+    >>> REG_TESTS = os.path.join(HERE, 'regressions')
+
+
+Normalizing ZCML layer paths
+============================
+
+If tests are referring to the same ZCML layer file, but from a different paths
+(for example ``/foo/../layer.zcml`` and ``/bar/../layer.zcml``), be sure launch
+both tests in the same layer context, and not to create several contexts:
+
+    >>> path = os.path.join(REG_TESTS, 'norm_zcml_layers')
+    >>> defaults = [
+    ...     '--path', path,
+    ...     '--tests-pattern', '^init_test$', '-vvvv',
+    ...     ]
+    >>> testrunner.run(defaults)
+    Running tests at level 1
+    Running z3c.testsetup.functional.layer.DefaultZCMLLayer [/COMPONENT/tests/regressions/norm_zcml_layers/layer.zcml] tests:
+      Set up z3c.testsetup.functional.layer.DefaultZCMLLayer [/COMPONENT/tests/regressions/norm_zcml_layers/layer.zcml] in N.NNN seconds.
+      Running:
+     /COMPONENT/tests/regressions/norm_zcml_layers/bar/bar.py (0.001 s)
+     /COMPONENT/tests/regressions/norm_zcml_layers/foo/foo.py (0.001 s)
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.functional.layer.DefaultZCMLLayer [/COMPONENT/tests/regressions/norm_zcml_layers/layer.zcml] ... not supported
+    False
