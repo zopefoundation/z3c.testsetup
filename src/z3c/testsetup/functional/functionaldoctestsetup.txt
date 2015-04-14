@@ -353,9 +353,9 @@ attributes mentioned above are settable at creation time, namely:
 
     Then, a setup with this checker can be created::
 
-       >>> mysetup = FunctionalDocTestSetup(cave, checker = mychecker)
-       >>> mysetup.checker
-       <zope.testing.renormalizing.RENormalizing instance at 0x...>
+       >>> mysetup = FunctionalDocTestSetup(cave, checker=mychecker)
+       >>> mysetup.checker is mychecker
+       True
 
     Let's see, whether we got the wanted checker, by passing an
     example string, which should match the first of the terms defined
