@@ -153,10 +153,11 @@ using the default set of options, the following values are set::
   parameter. By default `globs` is a dictionary of functions, that
   should be'globally' available during testruns and it contains::
 
-     >>> setup.globs
-     {'http': <zope.app.testing.functional.HTTPCaller object at 0x...>,
-      'sync': <function sync at 0x...>,
-      'getRootFolder': <function getRootFolder at 0x...>}
+     >>> import pprint
+     >>> pprint.pprint(setup.globs)
+     {'getRootFolder': <function getRootFolder at 0x...>,
+      'http': <zope.app.testing.functional.HTTPCaller object at 0x...>,
+      'sync': <function sync at 0x...>}
 
   The functions `sync` and `getRootFolder` are provided by
   `zope.app.testing.functional`.
