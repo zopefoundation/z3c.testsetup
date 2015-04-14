@@ -1,0 +1,10 @@
+include *.py
+include *.rst
+include buildout.cfg
+include tox.ini
+recursive-include src *.TXT
+recursive-include src *.chk
+recursive-include src *.foo
+recursive-include src *.rst
+recursive-include src *.txt
+recursive-include src *.zcml
