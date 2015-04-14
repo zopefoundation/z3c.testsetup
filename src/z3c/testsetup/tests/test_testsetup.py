@@ -23,6 +23,9 @@ TESTFILES = ['basicsetup.txt',
 checker = renormalizing.RENormalizing([
     # Relevant normalizers from zope.testing.testrunner.tests:
     (re.compile(r'(\d minutes )?\d+[.]\d\d\d seconds'), 'N.NNN seconds'),
+    # zope.testrunner changed its output format in 4.4.0:
+    (re.compile(r'(Ran .*), (\d) errors and 0 skipped'), r'\1 and \2 errors'),
+    (re.compile(r'(Total: .*), (\d) errors and 0 skipped'), r'\1, \2 errors'),
     # Our own one to work around
     # http://reinout.vanrees.org/weblog/2009/07/16/invisible-test-diff.html:
     (re.compile(r'.*1034h'), ''),
