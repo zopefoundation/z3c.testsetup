@@ -11,13 +11,13 @@ tests_require = [
     ]
 
 long_description = (
-    read('README.txt')
+    read('README.rst')
     + '\n\n'
     + read('src', 'z3c', 'testsetup', 'README.txt')
     + '\n\n'
     + read('src', 'z3c', 'testsetup', 'HOWTO_UPGRADE.txt')
     + '\n\n'
-    + read('CHANGES.txt')
+    + read('CHANGES.rst')
     + '\n\n'
     + 'Download\n'
     + '********\n'
