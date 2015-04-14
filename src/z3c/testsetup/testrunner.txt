@@ -37,15 +37,15 @@ testrunner::
     ...     ]
     >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
+    Running zope.testrunner.layer.UnitTests tests:
+      Set up zope.testrunner.layer.UnitTests in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
-      Set up z3c...functional.doctesting.FunctionalLayer in N.NNN seconds.
+      Tear down zope.testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup.functional.doctesting.FunctionalLayer in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c...functional.doctesting.FunctionalLayer ...
-      Running in a subprocess.
-      Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
-      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.functional.doctesting.FunctionalLayer ...
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -71,15 +71,15 @@ string. This is enough information for a testrunner::
     ...     '--tests-pattern', '^samplesetup_short1$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -103,15 +103,15 @@ testrunner with this setup::
     ...     '--tests-pattern', '^samplesetup_short2$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -184,15 +184,15 @@ This will result in::
     ...     '--tests-pattern', '^samplesetup_short4$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.tests.cave.SampleLayer tests:
-      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup.tests.cave.SampleLayer tests:
       Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.tests.cave.SampleLayer ... not supported
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -214,15 +214,15 @@ to tear down the functional layers:
     ...     '--tests-pattern', '^samplesetup_teardown$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.tests.cave.SampleLayer tests:
-      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup.tests.cave.SampleLayer ...
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup.tests.cave.SampleLayer tests:
       Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup.tests.cave.SampleLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup.tests.cave.SampleLayer ...
     Total: 4 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -292,15 +292,15 @@ Running the testrunner with this setup will result in::
     ...     '--tests-pattern', '^samplesetup_short5$',
     ...     ]
     >>> testrunner.run(defaults)
-    Running z3c.testsetup...doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
-      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in 0.000 seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup...doctesting.FunctionalLayer tests:
       Tear down zope...testrunner.layer.UnitTests in 0.000 seconds.
+      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
+      Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
     Total: 2 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
@@ -311,7 +311,32 @@ The same setup, but without a modified checker will deliver::
     ...     '--tests-pattern', '^samplesetup_short6$',
     ...     ]
     >>> testrunner.run(defaults)
+    Running zope.testrunner.layer.UnitTests tests:
+      Set up zope.testrunner.layer.UnitTests in N.NNN seconds.
+    <BLANKLINE>
+    <BLANKLINE>
+    Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
+    ...Failed doctest test for checkertest.chk
+      File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
+    <BLANKLINE>
+    ----------------------------------------------------------------------
+    File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
+    Failed example:
+        print "%s seconds" % 0.123
+    Differences (ndiff with -expected +actual):
+        - <SOME NUMBER OF> seconds
+        + 0.123 seconds
+    ----------------------------------------------------------------------
+    File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
+    Failed example:
+        print "A memory address at 0x1a0322ff"
+    Differences (ndiff with -expected +actual):
+        - A memory address at <SOME ADDRESS>
+        + A memory address at 0x1a0322ff
+    <BLANKLINE>
+      Ran 1 tests with 1 failures and 0 errors in ... seconds.
     Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
+      Tear down zope...testrunner.layer.UnitTests in ... seconds.
       Set up z3c.testsetup...doctesting.FunctionalLayer in ... seconds.
     <BLANKLINE>
     <BLANKLINE>
@@ -334,34 +359,9 @@ The same setup, but without a modified checker will deliver::
         - A memory address at <SOME ADDRESS>
         + A memory address at 0x1a0322ff
     <BLANKLINE>
-      Ran 1 tests with 1 failures and 0 errors in ... seconds.
-    Running zope...testrunner.layer.UnitTests tests:
+      Ran 1 tests with 2 failures and 0 errors in ... seconds.
+    Tearing down left over layers:
       Tear down z3c.testsetup...doctesting.FunctionalLayer ... not supported
-      Running in a subprocess.
-      Set up zope...testrunner.layer.UnitTests in ... seconds.
-    <BLANKLINE>
-    <BLANKLINE>
-    Failure in test /.../z3c/testsetup/tests/cave/checkertest.chk
-    ...Failed doctest test for checkertest.chk
-      File "/.../z3c/testsetup/tests/cave/checkertest.chk", line 0
-    <BLANKLINE>
-    ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
-    Failed example:
-        print "%s seconds" % 0.123
-    Differences (ndiff with -expected +actual):
-        - <SOME NUMBER OF> seconds
-        + 0.123 seconds
-    ----------------------------------------------------------------------
-    File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
-    Failed example:
-        print "A memory address at 0x1a0322ff"
-    Differences (ndiff with -expected +actual):
-        - A memory address at <SOME ADDRESS>
-        + A memory address at 0x1a0322ff
-    <BLANKLINE>
-      Ran 1 tests with 1 failures and 0 errors in ... seconds.
-      Tear down zope...testrunner.layer.UnitTests in ... seconds.
     Total: 2 tests, 2 failures, 0 errors in ... seconds.
     True
 
@@ -519,15 +519,15 @@ to return a testsuite::
     ...     ]
     >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
-    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
-      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
-      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
     Running zope...testrunner.layer.UnitTests tests:
-      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
-      Running in a subprocess.
       Set up zope...testrunner.layer.UnitTests in N.NNN seconds.
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
+    Running z3c.testsetup.functional.doctesting.FunctionalLayer tests:
       Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
+      Set up z3c.testsetup...doctesting.FunctionalLayer in N.NNN seconds.
+      Ran 2 tests with 0 failures and 0 errors in N.NNN seconds.
+    Tearing down left over layers:
+      Tear down z3c.testsetup...doctesting.FunctionalLayer ...
     Total: 3 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 

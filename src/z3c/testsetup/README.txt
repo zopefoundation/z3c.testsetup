@@ -112,7 +112,13 @@ Let's start the testrunner and see what it gives:
     ...     ]
     >>> from z3c.testsetup import testrunner
     >>> testrunner.run(defaults)
+    Running zope...testrunner.layer.UnitTests tests:
+      Set up zope...testrunner.layer.UnitTests in 0.000 seconds.
+        Custom setUp for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
+        Custom tearDown for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
+      Ran 4 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c...layer.DefaultZCMLLayer [...ftesting.zcml] tests:
+      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
       Set up z3c...layer.DefaultZCMLLayer [...ftesting.zcml] in N.NNN seconds.
       Ran 3 tests with 0 failures and 0 errors in N.NNN seconds.
     Running z3c...layer.DefaultZCMLLayer [...ftesting2.zcml] tests:
@@ -132,15 +138,9 @@ Let's start the testrunner and see what it gives:
         Running testTearDown of UnitLayer2
         Running testTearDown of UnitLayer1
       Ran 1 tests with 0 failures and 0 errors in N.NNN seconds.
-    Running zope...testrunner.layer.UnitTests tests:
+    Tearing down left over layers:
       Tear down z3c...othercave.testing.UnitLayer2 in N.NNN seconds.
       Tear down z3c...othercave.testing.UnitLayer1 in N.NNN seconds.
-      Set up zope...testrunner.layer.UnitTests in 0.000 seconds.
-        Custom setUp for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
-        Custom tearDown for  <DocTest doctest05.txt from ...doctest05.txt:0 (2 examples)>
-      Ran 4 tests with 0 failures and 0 errors in N.NNN seconds.
-    Tearing down left over layers:
-      Tear down zope...testrunner.layer.UnitTests in N.NNN seconds.
     Total: 10 tests, 0 failures, 0 errors in N.NNN seconds.
     False
 
