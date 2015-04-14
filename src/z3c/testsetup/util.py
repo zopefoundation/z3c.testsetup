@@ -13,6 +13,8 @@
 ##############################################################################
 """Helper functions for testsetup.
 """
+from __future__ import print_function
+
 import sys
 import re
 
@@ -98,7 +100,7 @@ def get_marker_from_file(marker, filepath):
 
 
 def warn(text):
-    print "Warning: ", text
+    print("Warning: ", text)
 
 
 def import_name(name):
