@@ -20,6 +20,7 @@ import re
 
 from inspect import getmro, ismethod, getargspec
 from martian.scan import resolve
+from six import string_types
 
 
 def get_package(pkg_or_dotted_name):
@@ -32,7 +33,7 @@ def get_package(pkg_or_dotted_name):
     returned as-is.
     """
     pkg = pkg_or_dotted_name
-    if isinstance(pkg, basestring):
+    if isinstance(pkg, string_types):
         pkg = resolve(pkg)
     elif isinstance(pkg, bytes):
         pkg = resolve(pkg.decode('utf-8'))
@@ -86,7 +87,7 @@ def get_marker_from_string(marker, text):
         if result is None:
             continue
         result = result.groups()[1].strip()
-        return unicode(result)
+        return result
     return None
 
 
@@ -98,7 +99,7 @@ def get_marker_from_file(marker, filepath):
      :<Tag>: <Value>
 
     """
-    return get_marker_from_string(marker, open(filepath, 'rb').read())
+    return get_marker_from_string(marker, open(filepath, 'r').read())
 
 
 def warn(text):

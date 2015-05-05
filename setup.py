@@ -54,6 +54,7 @@ setup(
     install_requires=['setuptools',
                       'zope.testing',
                       'martian',
+                      'six',
                       ],
     tests_require = tests_require,
     extras_require = dict(test=tests_require),

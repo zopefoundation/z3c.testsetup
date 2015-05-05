@@ -12,7 +12,7 @@ a test setup in the cave package::
 The setup looks like this::
 
     >>> setupfile = os.path.join(cavepath, 'tests', '__init__.py')
-    >>> print open(setupfile).read()
+    >>> print(open(setupfile).read())
     # this is a package that contains a testsetup.
     #
     # To let it be found by the testrunner, you must call the testrunner

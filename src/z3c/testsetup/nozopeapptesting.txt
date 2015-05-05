@@ -27,7 +27,7 @@ package of the ``tests``::
     >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
     >>> cavepath = os.path.join(pkgpath, 'tests', 'cave')
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short0.py')
-    >>> print open(setupfile).read()
+    >>> print(open(setupfile).read())
     import z3c.testsetup
     test_suite = z3c.testsetup.register_all_tests('z3c.testsetup.tests.cave')
 

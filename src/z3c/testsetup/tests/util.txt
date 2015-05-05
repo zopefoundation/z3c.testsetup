@@ -16,13 +16,13 @@ a marker string ``marker``::
   ... :mymarker:  blah
   ... """
   >>> get_marker_from_string('mymarker', text)
-  u'blah'
+  'blah'
 
 The marker is also found in the first line::
 
   >>> text = """:mymarker: blah"""
   >>> get_marker_from_string('mymarker', text)
-  u'blah'
+  'blah'
 
 When several same-named markers occur, the first one is picked::
 
@@ -31,7 +31,7 @@ When several same-named markers occur, the first one is picked::
   ... :mymarker: blubb
   ... """
   >>> get_marker_from_string('mymarker', text)
-  u'blah'
+  'blah'
 
 The lookup is case insensitive while the result is not::
 
@@ -39,7 +39,7 @@ The lookup is case insensitive while the result is not::
   ... :MyMarker: Blah
   ... """
   >>> get_marker_from_string('mymarker', text)
-  u'Blah'
+  'Blah'
 
 We also accept marker strings preceeded by two dot followed by
 whitespaces (a comment in restructured text)::
@@ -48,7 +48,7 @@ whitespaces (a comment in restructured text)::
   ... .. :MyMarker: Blah
   ... """
   >>> get_marker_from_string('mymarker', text)
-  u'Blah'
+  'Blah'
 
 When the marker string cannot be found, ``None`` is returned::
 

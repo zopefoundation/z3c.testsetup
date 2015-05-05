@@ -75,7 +75,7 @@ class UnitTestSetup(BasicTestSetup):
         except ImportError:
             # Broken module that is probably a test.  We absolutely have to
             # warn about this!
-            print "Import error in", module_info.path
+            print("Import error in %s" % module_info.path)
         docstr = getattr(module, '__doc__', '')
         if not self.docstrContains(docstr):
             return False

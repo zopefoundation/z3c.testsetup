@@ -210,10 +210,12 @@ File paths, that cannot be found, are treated as real errors as they signal an
 error in the way we set everything up:
 
    >>> basic_setup4 = BasicTestSetup(cave, extensions=['.foo'])
-   >>> basic_setup4.fileContains('blah')
-   Traceback (most recent call last):
-   ...
-   IOError: [Errno 2] No such file or directory: 'blah'
+   >>> try:
+   ...     basic_setup4.fileContains('blah')
+   ... except Exception as exc:
+   ...     # exceptions raised are different in Python2/3.
+   ...     print(exc)
+   [Errno 2] No such file or directory: 'blah'
 
 We pick up an existing file path::
 

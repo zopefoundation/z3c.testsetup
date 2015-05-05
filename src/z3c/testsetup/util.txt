@@ -125,7 +125,7 @@ Now let's lookup the value of the marker `Test-Layer`::
 
    >>> from z3c.testsetup.util import get_marker_from_string
    >>> get_marker_from_string('Test-Layer', markerstring)
-   u'foo'
+   'foo'
 
 Another marker cannot be found::
 
@@ -144,7 +144,7 @@ upper or lower case letters or both in a wild mix::
    ... Some other text
    ... """
    >>> get_marker_from_string('test-Layer', markerstring)
-   u'foo'
+   'foo'
 
 
 get_marker_from_file
@@ -173,7 +173,7 @@ Now we lookup the marker string from this file::
 
    >>> from z3c.testsetup.util import get_marker_from_file
    >>> get_marker_from_file('tEsT-LaYeR', 'tempfile')
-   u'foo'
+   'foo'
 
 If the string does not exist, we get `None`::
 
