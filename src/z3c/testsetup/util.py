@@ -34,6 +34,8 @@ def get_package(pkg_or_dotted_name):
     pkg = pkg_or_dotted_name
     if isinstance(pkg, basestring):
         pkg = resolve(pkg)
+    elif isinstance(pkg, bytes):
+        pkg = resolve(pkg.decode('utf-8'))
     return pkg
 
 
