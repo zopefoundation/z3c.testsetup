@@ -77,17 +77,16 @@ class BasicTestGetter(object):
         """
         new_kws = self.defaults.copy()
         new_kws.update(self.settings)
-        self.settings = new_kws
+        self.settings = dict(new_kws)
         if not getattr(self, 'wrapped_class', None):
             return
         supported_kws = get_keyword_params(self.wrapped_class, '__init__')
         for kw, val in new_kws.items():
             if (kw.startswith(self.special_char) and
                 kw[1:] in supported_kws):
-                new_kws[kw[1:]] = val
+                self.settings[kw[1:]] = val
             if kw not in supported_kws:
-                del new_kws[kw]
-        self.settings = new_kws
+                del self.settings[kw]
         return
 
     def getTestSuite(self):
