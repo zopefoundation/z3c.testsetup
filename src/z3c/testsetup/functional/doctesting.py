@@ -24,6 +24,7 @@ from zope.app.testing.functional import (
 from z3c.testsetup.doctesting import DocTestSetup
 from z3c.testsetup.util import get_package, get_marker_from_file
 
+
 class FunctionalDocTestSetup(DocTestSetup):
     """A functional test setup for packages.
 
@@ -41,13 +42,12 @@ class FunctionalDocTestSetup(DocTestSetup):
     layer = ZCMLLayer(ftesting_zcml, __name__,
                       'FunctionalLayer')
 
-    globs=dict(http=HTTPCaller(),
-               getRootFolder=getRootFolder,
-               sync=sync
-               )
+    globs = dict(http=HTTPCaller(),
+                 getRootFolder=getRootFolder,
+                 sync=sync)
 
-    optionflags = (doctest.ELLIPSIS+
-                   doctest.NORMALIZE_WHITESPACE+
+    optionflags = (doctest.ELLIPSIS +
+                   doctest.NORMALIZE_WHITESPACE +
                    doctest.REPORT_NDIFF)
 
     regexp_list = [
@@ -56,7 +56,7 @@ class FunctionalDocTestSetup(DocTestSetup):
 
     checker = None
 
-    def __init__(self, package, checker=None, zcml_config = None,
+    def __init__(self, package, checker=None, zcml_config=None,
                  layer_name='FunctionalLayer', layer=None,
                  allow_teardown=False, **kw):
         DocTestSetup.__init__(self, package, **kw)
@@ -98,9 +98,8 @@ class FunctionalDocTestSetup(DocTestSetup):
             # We get absolute pathnames, but we need relative ones...
             common_prefix = os.path.commonprefix([self.package.__file__, name])
             name = name[len(common_prefix):]
-        if sys.version_info[:2] > (2,4): 
-            self.additional_options.update(
-                encoding = self.encoding)
+        if sys.version_info[:2] > (2, 4):
+            self.additional_options.update(encoding=self.encoding)
         test = FunctionalDocFileSuite(
             name, package=self.package,
             setUp=self.setUp, tearDown=self.tearDown,
@@ -121,4 +120,3 @@ class FunctionalDocTestSetup(DocTestSetup):
         for name in docfiles:
             suite.addTest(self.suiteFromFile(name))
         return suite
-

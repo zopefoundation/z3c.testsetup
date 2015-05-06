@@ -2,6 +2,7 @@
 """
 import zope.interface
 
+
 class IFoo(zope.interface.Interface):
     def do_foo():
         pass

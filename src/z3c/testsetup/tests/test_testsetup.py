@@ -40,7 +40,7 @@ checker = renormalizing.RENormalizing([
 
 
 def get_testcases_from_suite(suite):
-    result=[]
+    result = []
     for elem in list(suite):
         if isinstance(elem, unittest.TestCase):
             result.append(elem)
@@ -113,8 +113,8 @@ def testrunner_suite():
             'testrunner.txt', 'README.txt',
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
-            optionflags=(doctest.ELLIPSIS|
-                         doctest.NORMALIZE_WHITESPACE|
+            optionflags=(doctest.ELLIPSIS |
+                         doctest.NORMALIZE_WHITESPACE |
                          doctest.REPORT_NDIFF),
             checker=checker),
         ]
@@ -155,8 +155,8 @@ def zopeapptestingless_suite():
             'nozopeapptesting.txt',
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
-            optionflags=(doctest.ELLIPSIS|
-                         doctest.NORMALIZE_WHITESPACE|
+            optionflags=(doctest.ELLIPSIS |
+                         doctest.NORMALIZE_WHITESPACE |
                          doctest.REPORT_NDIFF),
             checker=checker),
         ]
@@ -168,15 +168,15 @@ def zopeapptestingless_suite():
 def suiteFromFile(filename):
     suite = unittest.TestSuite()
     test = doctest.DocFileSuite(filename,
-                                package = 'z3c.testsetup',
+                                package='z3c.testsetup',
                                 setUp=setUpZope,
                                 tearDown=cleanUpZope,
                                 globs={'get_basenames_from_suite':
                                        get_basenames_from_suite,
                                        'print_file': print_file},
                                 checker=checker,
-                                optionflags=(doctest.ELLIPSIS|
-                                             doctest.NORMALIZE_WHITESPACE|
+                                optionflags=(doctest.ELLIPSIS |
+                                             doctest.NORMALIZE_WHITESPACE |
                                              doctest.REPORT_NDIFF))
 
     suite.addTest(test)

@@ -24,6 +24,7 @@ from z3c.testsetup.doctesting import UnitDocTestSetup, SimpleDocTestSetup
 from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package, get_keyword_params
 
+
 class BasicTestGetter(object):
     """Abstract base for TestGetters.
 
@@ -69,7 +70,7 @@ class BasicTestGetter(object):
                 self.package, **self.settings).getTestSuite()
             )
         return suite
-    
+
     def filterKeywords(self):
         """Filter keywords passed to the constructor.
 
@@ -83,7 +84,7 @@ class BasicTestGetter(object):
         supported_kws = get_keyword_params(self.wrapped_class, '__init__')
         for kw, val in new_kws.items():
             if (kw.startswith(self.special_char) and
-                kw[1:] in supported_kws):
+                    kw[1:] in supported_kws):
                 self.settings[kw[1:]] = val
             if kw not in supported_kws:
                 del self.settings[kw]
@@ -103,13 +104,15 @@ class SimpleDocTestGetter(BasicTestGetter):
     wrapped_class = SimpleDocTestSetup
     special_char = 'd'
 
+
 class UnitDocTestGetter(BasicTestGetter):
     """Collect unit doctests.
     """
 
     wrapped_class = UnitDocTestSetup
     special_char = 'u'
-    
+
+
 class PythonTestGetter(BasicTestGetter):
     """Collect 'normal' python tests.
     """
@@ -124,8 +127,8 @@ class BasicTestCollector(BasicTestGetter):
     TestCollectors are TestGetters, that can handle several TestGetter
     types at once.
     """
-    
     handled_getters = []
+
     def __call__(self):
         """Return a test suite.
         """
@@ -142,14 +145,15 @@ class BasicTestCollector(BasicTestGetter):
             suite.addTest(getter.getTestSuite())
         return suite
 
+
 class DocTestCollector(BasicTestCollector):
     """A TestCollector that wraps unit doctests.
     """
     handled_getters = [UnitDocTestGetter, SimpleDocTestGetter]
+
 
 class TestCollector(BasicTestCollector):
     """A TestCollector that wraps doctests and PythonTests.
     """
     handled_getters = [SimpleDocTestGetter,
                        UnitDocTestGetter, PythonTestGetter]
-

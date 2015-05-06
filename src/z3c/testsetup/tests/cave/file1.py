@@ -4,8 +4,8 @@ Tests with real TestCase objects.
 :Test-Layer: python
 
 """
-
 import unittest
+
 
 class TestTest(unittest.TestCase):
 
@@ -13,5 +13,4 @@ class TestTest(unittest.TestCase):
         pass
 
     def testFoo(self):
-        self.assertEqual(2, 1+1)
-
+        self.assertEqual(2, 1 + 1)

@@ -19,6 +19,7 @@ import os.path
 import re
 from z3c.testsetup.util import get_package
 
+
 class BasicTestSetup(object):
     """A basic test setup for a package.
 
@@ -124,4 +125,3 @@ class BasicTestSetup(object):
             subdir_files = self.getDocTestFiles(dirpath=abs_path, **kw)
             dirlist.extend(subdir_files)
         return dirlist
-

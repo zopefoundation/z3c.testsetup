@@ -20,6 +20,7 @@ from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import (get_package, get_marker_from_string,
                                 get_marker_from_file)
 
+
 class UnitTestSetup(BasicTestSetup):
     """A unit test setup for packages.
 
@@ -95,7 +96,6 @@ class UnitTestSetup(BasicTestSetup):
             module = submod_info.getModule()
             result.append(module)
         return result
-
 
     def getTestSuite(self):
         modules = self.getModules(package=self.package)

@@ -28,11 +28,13 @@ from z3c.testsetup.testgetter import (BasicTestGetter, UnitDocTestGetter,
 from z3c.testsetup.testing import UnitTestSetup
 from z3c.testsetup.util import get_package, get_keyword_params
 
+
 class FunctionalDocTestGetter(BasicTestGetter):
     """Collect functional doctests.
     """
     wrapped_class = FunctionalDocTestSetup
     special_char = 'f'
+
 
 class DocTestCollector(BasicTestCollector):
     """A TestCollector that wraps functional doctests and unit doctests.
@@ -40,9 +42,9 @@ class DocTestCollector(BasicTestCollector):
     handled_getters = [FunctionalDocTestGetter, UnitDocTestGetter,
                        SimpleDocTestGetter]
 
+
 class TestCollector(BasicTestCollector):
     """A TestCollector that wraps doctests and PythonTests.
     """
     handled_getters = [FunctionalDocTestGetter, UnitDocTestGetter,
                        PythonTestGetter, SimpleDocTestGetter]
-

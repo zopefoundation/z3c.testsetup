@@ -4,8 +4,8 @@ Tests with real TestCase objects.
 :unittest:
 
 """
-
 import unittest
+
 
 class TestTest(unittest.TestCase):
 
@@ -14,4 +14,3 @@ class TestTest(unittest.TestCase):
 
     def testFoo(self):
         self.assertEqual(2, 1+1)
-

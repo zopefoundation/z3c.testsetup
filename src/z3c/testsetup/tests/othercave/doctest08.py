@@ -13,6 +13,8 @@ Here the Cave class is defined::
   <class 'z3c.testsetup...doctest08.Cave'>
 
 """
+
+
 class Cave(object):
     """A Cave.
 
@@ -20,7 +22,7 @@ class Cave(object):
 
       >>> hasattr(Cave, 'number')
       True
-    
+
     """
     number = None
 
@@ -32,6 +34,6 @@ class Cave(object):
           >>> c = Cave(12)
           >>> c.number
           12
-          
+
         """
         self.number = number

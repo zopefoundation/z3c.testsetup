@@ -22,13 +22,14 @@ from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import (get_package, get_marker_from_file, warn,
                                 get_attribute)
 
+
 class DocTestSetup(BasicTestSetup):
     """A test setup for doctests."""
 
     globs = {}
 
-    optionflags = (doctest.ELLIPSIS+
-                   doctest.NORMALIZE_WHITESPACE+
+    optionflags = (doctest.ELLIPSIS +
+                   doctest.NORMALIZE_WHITESPACE +
                    doctest.REPORT_NDIFF)
 
     encoding = 'utf-8'
@@ -203,8 +204,8 @@ class UnitDocTestSetup(DocTestSetup):
     learn more about ``UnitTestSetup``.
     """
 
-    optionflags = (doctest.ELLIPSIS+
-                   doctest.NORMALIZE_WHITESPACE+
+    optionflags = (doctest.ELLIPSIS +
+                   doctest.NORMALIZE_WHITESPACE +
                    doctest.REPORT_NDIFF)
 
     regexp_list = [
