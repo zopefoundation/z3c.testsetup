@@ -3,14 +3,14 @@ import os
 import re
 import sys
 import gc
+import warnings
 import unittest
 from zope.testing import cleanup, renormalizing
 import zope.component.eventtesting
-from z3c.testsetup.util import get_package
+from z3c.testsetup.util import get_package, got_working_zope_app_testing
 
 
 TESTFILES = ['basicsetup.txt',
-             os.path.join('functional', 'functionaldoctestsetup.txt'),
              'pythontestsetup.txt',
              'unitdoctestsetup.txt',
              'util.txt',
@@ -18,6 +18,12 @@ TESTFILES = ['basicsetup.txt',
              os.path.join('tests', 'setupininit.txt'),
              os.path.join('tests', 'util.txt'),
              ]
+
+
+FUNCTIONAL_TESTFILES = [
+    # These tests make only sense with a working zope.app.testing installed
+    os.path.join('functional', 'functionaldoctestsetup.txt'),
+    ]
 
 
 checker = renormalizing.RENormalizing([
@@ -187,6 +193,15 @@ def test_suite():
     suite = unittest.TestSuite()
     for name in TESTFILES:
         suite.addTest(suiteFromFile(name))
+    if got_working_zope_app_testing():
+        for name in FUNCTIONAL_TESTFILES:
+            suite.addTest(suiteFromFile(name))
+    else:
+        message = (
+            "Skipped the following tests due to missing "
+            "usable `zope.app.testing` package: %s" % FUNCTIONAL_TESTFILES
+            )
+        warnings.warn(message)
     suite.addTest(testrunner_suite())
     suite.addTest(zopeapptestingless_suite())
     return suite
