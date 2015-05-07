@@ -175,7 +175,7 @@ but give a ZCML file path and a layer name as arguments::
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
         zcml_config='sampleftesting.zcml',
-        layer_name = 'SampleLayer')
+        layer_name='SampleLayer')
 
 This will result in::
 
@@ -207,7 +207,7 @@ to tear down the functional layers:
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
         zcml_config='sampleftesting.zcml',
-        layer_name = 'SampleLayer',
+        layer_name='SampleLayer',
         allow_teardown=False)
     >>> defaults = [
     ...     '--path', cavepath,
@@ -249,9 +249,9 @@ acceptable? Easy: use a checker::
         ])
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
-        checker = mychecker,
-        extensions = ['.chk',],
-        regexp_list = ['.*checker.*',],
+        checker=mychecker,
+        extensions=['.chk', ],
+        regexp_list=['.*checker.*', ],
         )
 
 This setup will find exactly one testfile, the file
@@ -398,10 +398,10 @@ An example of the ``globs`` usage can be found in
     import z3c.testsetup
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
-        extensions = ['.chk',],
-        fregexp_list = [':Test-Layer:.*globs.*',],
-        globs = {
-            'basename' : os.path.basename
+        extensions=['.chk', ],
+        fregexp_list=[':Test-Layer:.*globs.*', ],
+        globs={
+            'basename': os.path.basename
         }
         )
 
@@ -433,10 +433,10 @@ The same should happen, if we use the ``fglobs`` argument instead of
     ...
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
-        extensions = ['.chk',],
-        fregexp_list = [':Test-Layer:.*globs.*',],
-        fglobs = {
-            'basename' : os.path.basename
+        extensions=['.chk', ],
+        fregexp_list=[':Test-Layer:.*globs.*', ],
+        fglobs={
+            'basename': os.path.basename
         }
         )
 
@@ -461,10 +461,10 @@ making sure, that also unit doctests globals can be set, using the
     ...
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.cave',
-        extensions = ['.chk',],
-        uregexp_list = [':Test-Layer:.*globs.*',],
-        uglobs = {
-            'basename' : os.path.basename
+        extensions=['.chk', ],
+        uregexp_list=[':Test-Layer:.*globs.*', ],
+        uglobs={
+            'basename': os.path.basename
         }
         )
 

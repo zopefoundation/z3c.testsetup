@@ -174,6 +174,8 @@ Python modules are found just fine as in the following example:
   |    <class 'z3c.testsetup...doctest08.Cave'>
   |
   |  """
+  |
+  |
   |  class Cave(object):
   |      """A Cave.
   |
@@ -220,8 +222,8 @@ looks like this:
   |  :unittest:
   |
   |  """
-  |
   |  import unittest
+  |
   |
   |  class TestTest(unittest.TestCase):
   |
@@ -230,7 +232,6 @@ looks like this:
   |
   |      def testFoo(self):
   |          self.assertEqual(2, 1+1)
-  |
   |
 
 The module contains a marker ``:unittest:`` in its module docstring instead of
