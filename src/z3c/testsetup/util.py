@@ -115,3 +115,21 @@ def get_attribute(name):
     name, attr = name.rsplit('.', 1)
     obj = import_name(name)
     return getattr(obj, attr)
+
+
+def got_working_zope_app_testing():
+    """Determine whether we have a working `zope.app.testing` installed.
+
+    Please do not make any assumptions about how the "workingness" of
+    `zope.app.testing` in an environment is determined.
+    """
+    try:
+        from zope.app.testing.functional import (
+            HTTPCaller, getRootFolder, sync, ZCMLLayer,
+            FunctionalDocFileSuite, FunctionalTestSetup)
+        return True
+    except:
+        # any problem here (not only ImportError) is an indicator for
+        # serious trouble with zope.app.testing.
+        pass
+    return False
