@@ -18,7 +18,7 @@ from __future__ import print_function
 import sys
 import re
 
-from inspect import getmro, ismethod, getargspec
+from inspect import getmro, ismethod, isfunction, getargspec
 from martian.scan import resolve
 from six import string_types
 
@@ -50,8 +50,8 @@ def get_keyword_params(cls, method_name):
     result = set()
     for cls in getmro(cls):
         init = getattr(cls, method_name, None)
-        if not ismethod(init):
-            # skip 'object'...
+        if (not ismethod(init)) and (not isfunction(init)):
+            # py2 methods are functions in py3, it seems.
             continue
         # Add all keywords, omitting parameters, for which no default
         # exists.
