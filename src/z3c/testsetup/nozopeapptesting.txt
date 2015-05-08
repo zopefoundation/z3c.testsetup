@@ -5,7 +5,7 @@ Testsetups without zope.app.testing
 In some packages zope.app.testing might not be available or it is not
 wanted. This is important for ``z3c.testsetup`` because functional
 tests require that package for setup, etc. For example when it comes
-to plain Python packages. 
+to plain Python packages.
 
 The ``z3c.testsetup`` package in this case should provide us reduced
 sets of test collectors automatically and run all but the functional
