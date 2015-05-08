@@ -4,7 +4,9 @@ Changelog for z3c.testsetup
 0.8.4 (unreleased)
 ==================
 
-- No changes yet.
+- Added util.got_working_zope_app_testing() to determine whether we
+  have not only zope.app.testing installed, but it is also in a
+  usable state.
 
 
 0.8.3 (2010-09-15)
