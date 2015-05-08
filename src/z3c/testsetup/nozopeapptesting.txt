@@ -72,16 +72,16 @@ the testrunner::
 As we can see, only unit test were run and no functional ones anymore.
 
 After making zope.app.testing available again, we should get a
-different result::
+different result, if zope.app.testing is also in a usable state.::
 
     >>> sys.path[:] = globals()['saved-sys-info'][0]
     >>> sys.modules.update(globals()['saved-sys-info'][2])
     >>> z3c.testsetup = __import__('z3c.testsetup')
     >>> from z3c.testsetup import TestCollector
     >>> tc = TestCollector.handled_getters
-    >>> from pprint import pprint
-    >>> pprint(sorted([str(x) for x in tc]))
-    ["<class 'z3c.testsetup.functional.testgetter.FunctionalDocTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.PythonTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.SimpleDocTestGetter'>",
-     "<class 'z3c.testsetup.testgetter.UnitDocTestGetter'>"]
+    >>> from z3c.testsetup.util import got_working_zope_app_testing
+    >>> if got_working_zope_app_testing():
+    ...     len(tc) == 4  # Additionl FunctionalDocTestGetter incl.
+    ... else:
+    ...     len(tc) == 3  # Same list as above
+    True
