@@ -15,13 +15,19 @@ TESTFILES = ['basicsetup.txt',
              'unitdoctestsetup.txt',
              'util.txt',
              'unittestsetup.txt',
-             os.path.join('tests', 'setupininit.txt'),
              os.path.join('tests', 'util.txt'),
              ]
 
 
+NON_FUNCTIONAL_TESTFILES = [
+    # These tests work only _without_ a working zope.app.testing installed
+    os.path.join('tests', 'setupininit_nonfunctional.txt'),
+    ]
+
+
 FUNCTIONAL_TESTFILES = [
     # These tests make only sense with a working zope.app.testing installed
+    os.path.join('tests', 'setupininit.txt'),
     os.path.join('functional', 'functionaldoctestsetup.txt'),
     ]
 
@@ -202,6 +208,8 @@ def test_suite():
             "usable `zope.app.testing` package: %s" % FUNCTIONAL_TESTFILES
             )
         warnings.warn(message)
+        for name in NON_FUNCTIONAL_TESTFILES:
+            suite.addTest(suiteFromFile(name))
     suite.addTest(testrunner_suite())
     suite.addTest(zopeapptestingless_suite())
     return suite
