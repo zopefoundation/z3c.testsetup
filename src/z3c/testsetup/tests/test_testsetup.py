@@ -10,13 +10,14 @@ import zope.component.eventtesting
 from z3c.testsetup.util import get_package, got_working_zope_app_testing
 
 
-TESTFILES = ['basicsetup.txt',
-             'pythontestsetup.txt',
-             'unitdoctestsetup.txt',
-             'util.txt',
-             'unittestsetup.txt',
-             os.path.join('tests', 'util.txt'),
-             ]
+TESTFILES = [
+    'basicsetup.txt',
+    'pythontestsetup.txt',
+    'unitdoctestsetup.txt',
+    'util.txt',
+    'unittestsetup.txt',
+    os.path.join('tests', 'util.txt'),
+    ]
 
 
 NON_FUNCTIONAL_TESTFILES = [
@@ -30,6 +31,13 @@ FUNCTIONAL_TESTFILES = [
     os.path.join('tests', 'setupininit.txt'),
     os.path.join('functional', 'functionaldoctestsetup.txt'),
     ]
+
+
+if got_working_zope_app_testing():
+    TESTFILES_FILTERED = (TESTFILES + FUNCTIONAL_TESTFILES, [])
+else:
+    TESTFILES_FILTERED = (TESTFILES + NON_FUNCTIONAL_TESTFILES,
+                          FUNCTIONAL_TESTFILES)
 
 
 checker = renormalizing.RENormalizing([
@@ -200,19 +208,14 @@ def suiteFromFile(filename):
 
 def test_suite():
     suite = unittest.TestSuite()
-    for name in TESTFILES:
-        suite.addTest(suiteFromFile(name))
-    if got_working_zope_app_testing():
-        for name in FUNCTIONAL_TESTFILES:
-            suite.addTest(suiteFromFile(name))
-    else:
+    if TESTFILES_FILTERED[1]:
         message = (
             "Skipped the following tests due to missing "
-            "usable `zope.app.testing` package: %s" % FUNCTIONAL_TESTFILES
+            "usable `zope.app.testing` package: %s" % TESTFILES_FILTERED[1]
             )
         warnings.warn(message)
-        for name in NON_FUNCTIONAL_TESTFILES:
-            suite.addTest(suiteFromFile(name))
+    for name in TESTFILES_FILTERED[0]:
+        suite.addTest(suiteFromFile(name))
     suite.addTest(testrunner_suite())
     suite.addTest(zopeapptestingless_suite())
     return suite
