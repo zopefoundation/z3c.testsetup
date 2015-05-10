@@ -127,23 +127,19 @@ def testrunner_suite():
         sys.modules.clear()
         sys.modules.update(test.globs['saved-sys-info'][2])
 
-    suites = [
-        doctest.DocFileSuite(
-            'tests/README_OLD.txt',
-            'testgetter.txt',
-            'testrunner.txt',
-            'README.txt',
-            os.path.join('tests', 'util.txt'),
-            package='z3c.testsetup',
-            setUp=setUp, tearDown=tearDown,
-            optionflags=(doctest.ELLIPSIS |
-                         doctest.NORMALIZE_WHITESPACE |
-                         doctest.REPORT_NDIFF),
-            checker=checker),
-        ]
-
-    suite = unittest.TestSuite(suites)
-    return suite
+    return doctest.DocFileSuite(
+        'tests/README_OLD.txt',
+        'testgetter.txt',
+        'testrunner.txt',
+        'README.txt',
+        os.path.join('tests', 'util.txt'),
+        package='z3c.testsetup',
+        setUp=setUp, tearDown=tearDown,
+        optionflags=(
+            doctest.ELLIPSIS |
+            doctest.NORMALIZE_WHITESPACE |
+            doctest.REPORT_NDIFF),
+        checker=checker,)
 
 
 def zopeapptestingless_suite():
