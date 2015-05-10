@@ -26,7 +26,7 @@ NON_FUNCTIONAL_TESTFILES = [
 
 
 FUNCTIONAL_TESTFILES = [
-    # These tests make only sense with a working zope.app.testing installed
+    # These tests make only sense _with_ a working zope.app.testing installed
     os.path.join('tests', 'setupininit.txt'),
     os.path.join('functional', 'functionaldoctestsetup.txt'),
     ]
@@ -108,12 +108,12 @@ def testrunner_suite():
             sys.modules.copy(),
             gc.get_threshold(),
             )
-        test.globs['this_directory'] = os.path.split(__file__)[0]
-        test.globs['testrunner_script'] = __file__
         test.globs['get_basenames_from_suite'] = get_basenames_from_suite
         test.globs['print_file'] = print_file
+        zope.component.eventtesting.setUp(test)
 
     def tearDown(test):
+        cleanup.cleanUp()
         sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
         gc.set_threshold(*test.globs['saved-sys-info'][3])
         sys.modules.clear()
@@ -121,8 +121,11 @@ def testrunner_suite():
 
     suites = [
         doctest.DocFileSuite(
-            'tests/README_OLD.txt', 'testgetter.txt',
-            'testrunner.txt', 'README.txt',
+            'tests/README_OLD.txt',
+            'testgetter.txt',
+            'testrunner.txt',
+            'README.txt',
+            os.path.join('tests', 'util.txt'),
             package='z3c.testsetup',
             setUp=setUp, tearDown=tearDown,
             optionflags=(doctest.ELLIPSIS |
@@ -178,20 +181,20 @@ def zopeapptestingless_suite():
 
 
 def suiteFromFile(filename):
-    suite = unittest.TestSuite()
-    test = doctest.DocFileSuite(filename,
-                                package='z3c.testsetup',
-                                setUp=setUpZope,
-                                tearDown=cleanUpZope,
-                                globs={'get_basenames_from_suite':
-                                       get_basenames_from_suite,
-                                       'print_file': print_file},
-                                checker=checker,
-                                optionflags=(doctest.ELLIPSIS |
-                                             doctest.NORMALIZE_WHITESPACE |
-                                             doctest.REPORT_NDIFF))
-
-    suite.addTest(test)
+    suite = doctest.DocFileSuite(
+        filename,
+        package='z3c.testsetup',
+        setUp=setUpZope,
+        tearDown=cleanUpZope,
+        globs={
+            'get_basenames_from_suite': get_basenames_from_suite,
+            'print_file': print_file},
+        checker=checker,
+        optionflags=(
+            doctest.ELLIPSIS |
+            doctest.NORMALIZE_WHITESPACE |
+            doctest.REPORT_NDIFF)
+        )
     return suite
 
 
