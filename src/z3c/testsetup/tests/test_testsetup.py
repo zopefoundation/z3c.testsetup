@@ -132,7 +132,6 @@ def testrunner_suite():
         'testgetter.txt',
         'testrunner.txt',
         'README.txt',
-        os.path.join('tests', 'util.txt'),
         package='z3c.testsetup',
         setUp=setUp, tearDown=tearDown,
         optionflags=(
