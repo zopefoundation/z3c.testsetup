@@ -193,7 +193,7 @@ be found, the other paramters tell how to setup single tests.
 
       >>> suite = test_suite()
       >>> get_basenames_from_suite(suite)
-      ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt', 
+      ['file1.py', 'file1.txt', 'file1.txt', 'subdirfile.txt',
        'subdirfile.txt']
 
 
@@ -235,7 +235,7 @@ be found, the other paramters tell how to setup single tests.
       ['file1.rst', 'file1.txt', 'subdirfile.txt']
 
     All Python modules vanished from the list.
-   
+
     In case you wonder, why not all the other Python files of the
     `cave` package (`__init__.py`, for example) appear in one of the
     lists: we get only the result list, which contains only such
@@ -257,7 +257,7 @@ be found, the other paramters tell how to setup single tests.
     Note, that the `extensions` attribute is used by the default
     filter function. If you pass your own filter function using
     `[u|f]filter_func`, then the extensions filtering won't work any
-    more. 
+    more.
 
     If we want to register .foo files, we can do so::
 
@@ -310,7 +310,7 @@ be found, the other paramters tell how to setup single tests.
       >>> import re
       >>> from zope.testing import renormalizing
       >>> mychecker = renormalizing.RENormalizing([
-      ...    (re.compile('[0-9]*[.][0-9]* seconds'), 
+      ...    (re.compile('[0-9]*[.][0-9]* seconds'),
       ...     '<SOME NUMBER OF> seconds'),
       ...    (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
       ... ])
@@ -355,7 +355,7 @@ be found, the other paramters tell how to setup single tests.
     functional or unit doctests, then you can pass keyword parameters
     `fsetup` or `usetup` respectively.
 
-- **teardown**:   
+- **teardown**:
 
     The equivalent to `setup`. Runs by default::
 
@@ -512,5 +512,3 @@ mark your wanted test files/modules with a special string explicitly:
 
         >>> 1+1
         2
-
-
