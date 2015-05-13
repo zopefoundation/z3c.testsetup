@@ -1,8 +1,6 @@
 import doctest
 import os
 import re
-import sys
-import gc
 import warnings
 import unittest
 from zope.testing import cleanup, renormalizing
@@ -17,6 +15,10 @@ TESTFILES = [
     'util.txt',
     'unittestsetup.txt',
     os.path.join('tests', 'util.txt'),
+    'tests/README_OLD.txt',
+    'testgetter.txt',
+    'testrunner.txt',
+    'README.txt',
     ]
 
 
@@ -107,40 +109,6 @@ def cleanUpZope(test):
     cleanup.cleanUp()
 
 
-def testrunner_suite():
-
-    def setUp(test):
-        test.globs['saved-sys-info'] = (
-            sys.path[:],
-            sys.argv[:],
-            sys.modules.copy(),
-            gc.get_threshold(),
-            )
-        test.globs['get_basenames_from_suite'] = get_basenames_from_suite
-        test.globs['print_file'] = print_file
-        zope.component.eventtesting.setUp(test)
-
-    def tearDown(test):
-        cleanup.cleanUp()
-        sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
-        gc.set_threshold(*test.globs['saved-sys-info'][3])
-        sys.modules.clear()
-        sys.modules.update(test.globs['saved-sys-info'][2])
-
-    return doctest.DocFileSuite(
-        'tests/README_OLD.txt',
-        'testgetter.txt',
-        'testrunner.txt',
-        'README.txt',
-        package='z3c.testsetup',
-        setUp=setUp, tearDown=tearDown,
-        optionflags=(
-            doctest.ELLIPSIS |
-            doctest.NORMALIZE_WHITESPACE |
-            doctest.REPORT_NDIFF),
-        checker=checker,)
-
-
 def suiteFromFile(filename):
     suite = doctest.DocFileSuite(
         filename,
@@ -169,5 +137,4 @@ def test_suite():
         warnings.warn(message)
     for name in TESTFILES_FILTERED[0]:
         suite.addTest(suiteFromFile(name))
-    suite.addTest(testrunner_suite())
     return suite
