@@ -141,48 +141,6 @@ def testrunner_suite():
         checker=checker,)
 
 
-def zopeapptestingless_suite():
-
-    def setUp(test):
-        test.globs['saved-sys-info'] = (
-            sys.path[:],
-            sys.argv[:],
-            sys.modules.copy(),
-            gc.get_threshold(),
-            )
-        mlist = [x for x in sys.modules.keys()
-                 if 'zope.app' in x or 'z3c.testsetup' in x]
-        for m in mlist:
-            del sys.modules[m]
-        plist = [x for x in sys.path if 'zope.app' in x]
-        for p in plist:
-            del sys.path[sys.path.index(p)]
-
-        test.globs['this_directory'] = os.path.split(__file__)[0]
-        test.globs['testrunner_script'] = __file__
-        test.globs['get_basenames_from_suite'] = get_basenames_from_suite
-
-    def tearDown(test):
-        sys.path[:], sys.argv[:] = test.globs['saved-sys-info'][:2]
-        gc.set_threshold(*test.globs['saved-sys-info'][3])
-        sys.modules.clear()
-        sys.modules.update(test.globs['saved-sys-info'][2])
-
-    suites = [
-        doctest.DocFileSuite(
-            'nozopeapptesting.txt',
-            package='z3c.testsetup',
-            setUp=setUp, tearDown=tearDown,
-            optionflags=(doctest.ELLIPSIS |
-                         doctest.NORMALIZE_WHITESPACE |
-                         doctest.REPORT_NDIFF),
-            checker=checker),
-        ]
-
-    suite = unittest.TestSuite(suites)
-    return suite
-
-
 def suiteFromFile(filename):
     suite = doctest.DocFileSuite(
         filename,
@@ -212,5 +170,4 @@ def test_suite():
     for name in TESTFILES_FILTERED[0]:
         suite.addTest(suiteFromFile(name))
     suite.addTest(testrunner_suite())
-    suite.addTest(zopeapptestingless_suite())
     return suite
