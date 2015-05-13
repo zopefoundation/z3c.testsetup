@@ -35,13 +35,6 @@ FUNCTIONAL_TESTFILES = [
     ]
 
 
-if got_working_zope_app_testing():
-    TESTFILES_FILTERED = (TESTFILES + FUNCTIONAL_TESTFILES, [])
-else:
-    TESTFILES_FILTERED = (TESTFILES + NON_FUNCTIONAL_TESTFILES,
-                          FUNCTIONAL_TESTFILES)
-
-
 checker = renormalizing.RENormalizing([
     # Relevant normalizers from zope.testing.testrunner.tests:
     (re.compile(r'(\d minutes )?\d+[.]\d\d\d seconds'), 'N.NNN seconds'),
@@ -129,12 +122,16 @@ def suiteFromFile(filename):
 
 def test_suite():
     suite = unittest.TestSuite()
-    if TESTFILES_FILTERED[1]:
+
+    if got_working_zope_app_testing():
+        to_test = TESTFILES + FUNCTIONAL_TESTFILES
+    else:
+        to_test = TESTFILES + NON_FUNCTIONAL_TESTFILES
         message = (
             "Skipped the following tests due to missing "
-            "usable `zope.app.testing` package: %s" % TESTFILES_FILTERED[1]
+            "usable `zope.app.testing` package: %s" % FUNCTIONAL_TESTFILES
             )
         warnings.warn(message)
-    for name in TESTFILES_FILTERED[0]:
+    for name in to_test:
         suite.addTest(suiteFromFile(name))
     return suite
