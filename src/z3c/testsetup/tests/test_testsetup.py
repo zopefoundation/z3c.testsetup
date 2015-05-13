@@ -15,7 +15,6 @@ TESTFILES = [
     'util.txt',
     'unittestsetup.txt',
     os.path.join('tests', 'util.txt'),
-    'tests/README_OLD.txt',
     'testgetter.txt',
     'testrunner.txt',
     'README.txt',
@@ -32,6 +31,7 @@ FUNCTIONAL_TESTFILES = [
     # These tests make only sense _with_ a working zope.app.testing installed
     os.path.join('tests', 'setupininit.txt'),
     os.path.join('functional', 'functionaldoctestsetup.txt'),
+    'tests/README_OLD.txt',
     ]
 
 
