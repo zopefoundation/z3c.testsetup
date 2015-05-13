@@ -17,6 +17,7 @@ import doctest
 import unittest
 import os.path
 from os import listdir
+from six import string_types
 from zope.testing import cleanup
 from z3c.testsetup.base import BasicTestSetup
 from z3c.testsetup.util import (get_package, get_marker_from_file, warn,
@@ -75,11 +76,11 @@ class SimpleDocTestSetup(DocTestSetup):
                 layerdef = functional_zcml_layer
 
             setup = get_marker_from_file('setup', name) or self.setUp
-            if setup is not None and isinstance(setup, basestring):
+            if setup is not None and isinstance(setup, string_types):
                 setup = get_attribute(setup)
 
             teardown = get_marker_from_file('teardown', name) or self.tearDown
-            if teardown is not None and isinstance(teardown, basestring):
+            if teardown is not None and isinstance(teardown, string_types):
                 teardown = get_attribute(teardown)
 
             if os.path.isabs(name):
