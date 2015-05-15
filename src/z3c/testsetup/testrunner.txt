@@ -279,12 +279,12 @@ The doctestfile looks like this:
     |  First we check, whether the <SOME NUMBER OF> term is matched by the
     |  modified checker::
     |  
-    |     >>> print "%s seconds" % 0.123
+    |     >>> print("%s seconds" % 0.123)
     |     <SOME NUMBER OF> seconds
     |  
     |  Then we check the <SOME ADDRESS> term::
     |  
-    |     >>> print "A memory address at 0x1a0322ff"
+    |     >>> print("A memory address at 0x1a0322ff")
     |     A memory address at <SOME ADDRESS>
     |  
     |  That's it.
@@ -328,14 +328,14 @@ The same setup, but without a modified checker will deliver::
     ----------------------------------------------------------------------
     File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
     Failed example:
-        print "%s seconds" % 0.123
+        print("%s seconds" % 0.123)
     Differences (ndiff with -expected +actual):
         - <SOME NUMBER OF> seconds
         + 0.123 seconds
     ----------------------------------------------------------------------
     File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
     Failed example:
-        print "A memory address at 0x1a0322ff"
+        print("A memory address at 0x1a0322ff")
     Differences (ndiff with -expected +actual):
         - A memory address at <SOME ADDRESS>
         + A memory address at 0x1a0322ff
@@ -353,14 +353,14 @@ The same setup, but without a modified checker will deliver::
     ----------------------------------------------------------------------
     File "/.../tests/cave/checkertest.chk", line 10, in checkertest.chk
     Failed example:
-        print "%s seconds" % 0.123
+        print("%s seconds" % 0.123)
     Differences (ndiff with -expected +actual):
         - <SOME NUMBER OF> seconds
         + 0.123 seconds
     ----------------------------------------------------------------------
     File "/.../tests/cave/checkertest.chk", line 15, in checkertest.chk
     Failed example:
-        print "A memory address at 0x1a0322ff"
+        print("A memory address at 0x1a0322ff")
     Differences (ndiff with -expected +actual):
         - A memory address at <SOME ADDRESS>
         + A memory address at 0x1a0322ff
