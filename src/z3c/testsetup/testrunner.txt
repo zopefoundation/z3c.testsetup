@@ -16,9 +16,10 @@ two lines of code::
     >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
     >>> cavepath = os.path.join(pkgpath, 'tests', 'cave')
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short0.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    test_suite = z3c.testsetup.register_all_tests('z3c.testsetup.tests.cave')
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  test_suite = z3c.testsetup.register_all_tests('z3c.testsetup.tests.cave')
+    |  
 
 We clear the commandline, because all parameters passed to the
 commandline would otherwise be applied to the examples herein::
@@ -57,10 +58,11 @@ suitable setup is contained in `samplesetup_short1.py`` in the
 ``cave`` package::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short1.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    <BLANKLINE>
-    test_suite = z3c.testsetup.register_doctests('z3c.testsetup.tests.cave')
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  
+    |  test_suite = z3c.testsetup.register_doctests('z3c.testsetup.tests.cave')
+    |
 
 This means, that we want to register all doctests from the ``cave``
 package, whose name we passed in dotted name notation as a
@@ -88,11 +90,12 @@ dotted name notation. We can instead also pass the package itself, if
 it was loaded before. This results in a slight longer example::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short2.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    from z3c.testsetup.tests import cave
-    <BLANKLINE>
-    test_suite = z3c.testsetup.register_doctests(cave)
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  from z3c.testsetup.tests import cave
+    |  
+    |  test_suite = z3c.testsetup.register_doctests(cave)
+    |  
 
 
 Here we register all doctests from the ``cave`` module. Let's start a
@@ -119,11 +122,12 @@ Now let's run a suite of 'normal' python unit tests, i.e. tests, that
 are not doctests. An appropriate setup file might look like this::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short3.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    from z3c.testsetup.tests import cave
-    <BLANKLINE>
-    test_suite = z3c.testsetup.register_pytests(cave)
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  from z3c.testsetup.tests import cave
+    |  
+    |  test_suite = z3c.testsetup.register_pytests(cave)
+    |  
 
 The only difference to the example before is, that we use
 `register_pytests` instead of `register_doctests`. If we run this
@@ -170,12 +174,13 @@ do that, we use the now well-known ``register_all_tests`` function,
 but give a ZCML file path and a layer name as arguments::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short4.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        zcml_config='sampleftesting.zcml',
-        layer_name='SampleLayer')
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      zcml_config='sampleftesting.zcml',
+    |      layer_name='SampleLayer')
+    |  
 
 This will result in::
 
@@ -202,13 +207,14 @@ We can add an allow_teardown=True option, this allows the test mechanism
 to tear down the functional layers:
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_teardown.py')
-    >>> print open(setupfile).read()
-    import z3c.testsetup
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        zcml_config='sampleftesting.zcml',
-        layer_name='SampleLayer',
-        allow_teardown=False)
+    >>> print_file(setupfile)
+    |  import z3c.testsetup
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      zcml_config='sampleftesting.zcml',
+    |      layer_name='SampleLayer',
+    |      allow_teardown=False)
+    |  
     >>> defaults = [
     ...     '--path', cavepath,
     ...     '--tests-pattern', '^samplesetup_teardown$',
@@ -238,21 +244,22 @@ testrunner, that all timestamps of the form 'N.NNN seconds' are
 acceptable? Easy: use a checker::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short5.py')
-    >>> print open(setupfile).read()
-    import re
-    from zope.testing import renormalizing
-    import z3c.testsetup
-    mychecker = renormalizing.RENormalizing([
-        (re.compile('[0-9]*[.][0-9]* seconds'),
-         '<SOME NUMBER OF> seconds'),
-        (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
-        ])
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        checker=mychecker,
-        extensions=['.chk', ],
-        regexp_list=['.*checker.*', ],
-        )
+    >>> print_file(setupfile)
+    |  import re
+    |  from zope.testing import renormalizing
+    |  import z3c.testsetup
+    |  mychecker = renormalizing.RENormalizing([
+    |      (re.compile('[0-9]*[.][0-9]* seconds'),
+    |       '<SOME NUMBER OF> seconds'),
+    |      (re.compile('at 0x[0-9a-f]+'), 'at <SOME ADDRESS>'),
+    |      ])
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      checker=mychecker,
+    |      extensions=['.chk', ],
+    |      regexp_list=['.*checker.*', ],
+    |      )
+    |  
 
 This setup will find exactly one testfile, the file
 ``checkertest.chk`` in the ``cave`` package, that checks for output of
@@ -262,27 +269,26 @@ functional doctest too.
 
 The doctestfile looks like this:
 
-    >>> content = open(os.path.join(cavepath, 'checkertest.chk'), 'r').read()
-    >>> print '\n'.join(['| ' + x for x in content.split('\n')])
-    | ============
-    | Checker test
-    | ============
-    |
-    | :Test-Layer: checker
-    |
-    | First we check, whether the <SOME NUMBER OF> term is matched by the
-    | modified checker::
-    |
-    |   >>> print "%s seconds" % 0.123
-    |   <SOME NUMBER OF> seconds
-    |
-    | Then we check the <SOME ADDRESS> term::
-    |
-    |   >>> print "A memory address at 0x1a0322ff"
-    |   A memory address at <SOME ADDRESS>
-    |
-    | That's it.
-    |
+    >>> print_file(os.path.join(cavepath, 'checkertest.chk'))
+    |  ============
+    |  Checker test
+    |  ============
+    |  
+    |  :Test-Layer: checker
+    |  
+    |  First we check, whether the <SOME NUMBER OF> term is matched by the
+    |  modified checker::
+    |  
+    |     >>> print "%s seconds" % 0.123
+    |     <SOME NUMBER OF> seconds
+    |  
+    |  Then we check the <SOME ADDRESS> term::
+    |  
+    |     >>> print "A memory address at 0x1a0322ff"
+    |     A memory address at <SOME ADDRESS>
+    |  
+    |  That's it.
+    |  
 
 
 Running the testrunner with this setup will result in::
@@ -392,18 +398,19 @@ An example of the ``globs`` usage can be found in
 ``samplesetup_short7`` of the ``cave`` package::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short7.py')
-    >>> print open(setupfile).read()
-    import os
-    from zope.testing import renormalizing
-    import z3c.testsetup
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        extensions=['.chk', ],
-        fregexp_list=[':Test-Layer:.*globs.*', ],
-        globs={
-            'basename': os.path.basename
-        }
-        )
+    >>> print_file(setupfile)
+    |  import os
+    |  from zope.testing import renormalizing
+    |  import z3c.testsetup
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      extensions=['.chk', ],
+    |      fregexp_list=[':Test-Layer:.*globs.*', ],
+    |      globs={
+    |          'basename': os.path.basename
+    |      }
+    |      )
+    |  
 
 Here the ``os.path.basename`` function is registered under the name
 'basename' and should be usable in the doctest file
@@ -428,17 +435,18 @@ The same should happen, if we use the ``fglobs`` argument instead of
 ``globs``::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short8.py')
-    >>> print open(setupfile).read()
-    import os
+    >>> print_file(setupfile)
+    |  import os
     ...
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        extensions=['.chk', ],
-        fregexp_list=[':Test-Layer:.*globs.*', ],
-        fglobs={
-            'basename': os.path.basename
-        }
-        )
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      extensions=['.chk', ],
+    |      fregexp_list=[':Test-Layer:.*globs.*', ],
+    |      fglobs={
+    |          'basename': os.path.basename
+    |      }
+    |      )
+    |  
 
     >>> defaults = [
     ...     '--path', cavepath, '-f',
@@ -456,17 +464,18 @@ making sure, that also unit doctests globals can be set, using the
 ``uglobs`` keyword parameter::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup_short9.py')
-    >>> print open(setupfile).read()
-    import os
+    >>> print_file(setupfile)
+    |  import os
     ...
-    test_suite = z3c.testsetup.register_all_tests(
-        'z3c.testsetup.tests.cave',
-        extensions=['.chk', ],
-        uregexp_list=[':Test-Layer:.*globs.*', ],
-        uglobs={
-            'basename': os.path.basename
-        }
-        )
+    |  test_suite = z3c.testsetup.register_all_tests(
+    |      'z3c.testsetup.tests.cave',
+    |      extensions=['.chk', ],
+    |      uregexp_list=[':Test-Layer:.*globs.*', ],
+    |      uglobs={
+    |          'basename': os.path.basename
+    |      }
+    |      )
+    |  
 
     >>> defaults = [
     ...     '--path', cavepath, '-u',
@@ -490,18 +499,20 @@ Let's have a look at the test setup module `samplesetup1` in the
 `cave` package::
 
     >>> setupfile = os.path.join(cavepath, 'samplesetup1.py')
-    >>> print open(setupfile).read()
-    import unittest
-    import z3c.testsetup
-    from z3c.testsetup.tests import cave # The package that contains
-                                         # the doctest files
-    def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest( # Add all unittests from `cave`
-            z3c.testsetup.UnitDocTestSetup(cave).getTestSuite())
-        suite.addTest( # Add all functional tests from `cave`
-            z3c.testsetup.FunctionalDocTestSetup(cave).getTestSuite())
-        return suite
+    >>> print_file(setupfile)
+    |  import unittest
+    |  import z3c.testsetup
+    |  from z3c.testsetup.tests import cave  # The package that contains
+    |                                        # the doctest files
+    ...
+    |  def test_suite():
+    |      suite = unittest.TestSuite()
+    |      suite.addTest(  # Add all unittests from `cave`
+    |          z3c.testsetup.UnitDocTestSetup(cave).getTestSuite())
+    |      suite.addTest(  # Add all functional tests from `cave`
+    |          z3c.testsetup.FunctionalDocTestSetup(cave).getTestSuite())
+    |      return suite
+    |  
 
 
 As we see, there is a unittest setup and a functional test setup
@@ -558,10 +569,11 @@ three lines of code::
     >>> pkgpath = os.path.dirname(z3c.testsetup.__file__)
     >>> cavepath = os.path.join(pkgpath, 'tests', 'layered_cave')
     >>> setupfile = os.path.join(cavepath, 'layeredsetup01.py')
-    >>> print open(setupfile).read()
-    from z3c.testsetup import register_all_tests
-    test_suite = register_all_tests('z3c.testsetup.tests.layered_cave',
-                                    allow_teardown=True)
+    >>> print_file(setupfile)
+    |  from z3c.testsetup import register_all_tests
+    |  test_suite = register_all_tests('z3c.testsetup.tests.layered_cave',
+    |                                  allow_teardown=True)
+    |  
 
 This means, that we want to register all tests (doctests and 'normal'
 python tests) from the ``layered_cave`` package, whose name we passed
@@ -572,14 +584,14 @@ also on Windows. This is enough information for a testrunner.
 In one of the test files we declared, that a layer should be used::
 
     >>> testfile = os.path.join(cavepath, 'adoctest.txt')
-    >>> print open(testfile, 'r').read()
-    This is a doctest
-    =================
-    <BLANKLINE>
-    This doctest will be applied to a layer.
-    <BLANKLINE>
-    :Test-Layer: unit
-    :Test-Layerdef: z3c.testsetup.tests.layered_cave.layer.UnitLayer1
+    >>> print_file(testfile)
+    |  This is a doctest
+    |  =================
+    |  
+    |  This doctest will be applied to a layer.
+    |  
+    |  :Test-Layer: unit
+    |  :Test-Layerdef: z3c.testsetup.tests.layered_cave.layer.UnitLayer1
     ...
 
 The line saying `:Test-Layerdef:` tells, that we want the layer
