@@ -170,6 +170,7 @@ class TestFunctionalTestGettersAndCollectors(unittest.TestCase):
 def tests_from_testcase(case):
     return unittest.defaultTestLoader.loadTestsFromTestCase(case)
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTests(tests_from_testcase(TestTestGettersAndCollectors))
