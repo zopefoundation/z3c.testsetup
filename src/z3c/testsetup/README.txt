@@ -88,7 +88,7 @@ Running the tests
 Now that we have a doctest available, we can write a testsetup routine that
 collects all tests, registers them and passes them to the testrunner:
 
-    >>> print open(os.path.join(cavepath, 'simplesetup01.py')).read()
+    >>> print(open(os.path.join(cavepath, 'simplesetup01.py')).read())
     import z3c.testsetup
     test_suite = z3c.testsetup.register_all_tests(
         'z3c.testsetup.tests.othercave',
@@ -544,7 +544,7 @@ notation and points to a layer you defined yourself.
 How does the layer definition look like? It is defined as regualr
 Python code:
 
-  >>> print open(os.path.join(cavepath, 'testing.py')).read()
+  >>> print(open(os.path.join(cavepath, 'testing.py')).read())
   import os
   ...
   class UnitLayer1(object):
@@ -757,7 +757,7 @@ An example can be found in ``doctest05.txt``:
 
 The setup/teardown functions denoted in the example look like this:
 
-  >>> print open(os.path.join(cavepath, 'testing.py'), 'rb').read()
+  >>> print(open(os.path.join(cavepath, 'testing.py'), 'r').read())
   import os
   ...
   def setUp(test):
