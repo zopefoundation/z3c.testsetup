@@ -205,7 +205,7 @@ class TestFunctionalOnlySamples(unittest.TestCase):
         with Capture() as cap:
             testrunner.run(defaults)
         assert "Total: 4 tests, 0 failures, 0 errors and 0 skipped" in (
-                cap.out)
+            cap.out)
 
 
 def tests_from_testcase(test_case):
