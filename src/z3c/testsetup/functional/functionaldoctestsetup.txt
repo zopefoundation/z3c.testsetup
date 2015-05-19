@@ -276,7 +276,7 @@ Note that the code uses self.regexs, which returns a cached compiled version
 of the regexs.
 
     >>> setup.regexs
-    [<_sre.SRE_Pattern object at ...>]
+    [<...SRE_Pattern object at ...>]
 
 If you need more complex checks here, you can derive your customized
 test setup class and overwrite ``isTestFile()``.
