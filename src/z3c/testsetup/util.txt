@@ -164,7 +164,8 @@ We define a marker string and put it into a file::
    ... Some other text
    ... """
 
-   >>> open('tempfile', 'w').writelines(markerstring)
+   >>> with open('tempfile', 'w') as fd:
+   ...     fd.writelines(markerstring)
    >>> import os
    >>> os.path.isfile('tempfile')
    True
