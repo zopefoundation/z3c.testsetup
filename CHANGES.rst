@@ -22,6 +22,8 @@ Changelog for z3c.testsetup
 - Fix keyword parsing of methods: accept methods that accept no
   keyword parameters.
 
+- Close files properly when looking for marker strings.
+
 
 0.8.3 (2010-09-15)
 ==================

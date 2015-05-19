@@ -99,7 +99,9 @@ def get_marker_from_file(marker, filepath):
      :<Tag>: <Value>
 
     """
-    return get_marker_from_string(marker, open(filepath, 'r').read())
+    with open(filepath) as fd:
+        return get_marker_from_string(marker, fd.read())
+    return None
 
 
 def warn(text):
