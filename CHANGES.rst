@@ -8,6 +8,17 @@ Changelog for z3c.testsetup
   have not only zope.app.testing installed, but it is also in a
   usable state.
 
+- Make the package compatible with Python3. Please note that at the
+  time of writing, there is no working `zope.app.testing` available
+  for Python 3.x. While `z3c.testsetup` can cope with that, some
+  functionality (from `zope.app.testing.functional`) will not be
+  available during tests. That depends on tests in your project.
+
+- As part of the "go-python3" project, internal tests have been
+  reorganized. From now on we will test things in Python code, not in
+  doctests any more. Existing doctests will be transformed into
+  `Sphinx` docs.
+
 
 0.8.3 (2010-09-15)
 ==================
