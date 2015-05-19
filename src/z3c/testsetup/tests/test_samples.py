@@ -221,7 +221,7 @@ class TestFunctionalOnlySamples(unittest.TestCase):
         assert "Running testTearDown of UnitLayer2" in cap.out
         assert "Running testTearDown of UnitLayer1" in cap.out
         assert "Total: 10 tests, 0 failures, 0 errors and 0 skipped" in (
-                cap.out)
+            cap.out)
 
 
 def tests_from_testcase(test_case):
