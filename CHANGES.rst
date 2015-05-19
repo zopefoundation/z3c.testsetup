@@ -19,6 +19,9 @@ Changelog for z3c.testsetup
   doctests any more. Existing doctests will be transformed into
   `Sphinx` docs.
 
+- Fix keyword parsing of methods: accept methods that accept no
+  keyword parameters.
+
 
 0.8.3 (2010-09-15)
 ==================

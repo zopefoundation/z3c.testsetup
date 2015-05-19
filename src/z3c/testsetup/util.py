@@ -56,8 +56,8 @@ def get_keyword_params(cls, method_name):
         # Add all keywords, omitting parameters, for which no default
         # exists.
         args, varargs, varkw, defaults = getargspec(init)
-        defaultlen = len(defaults)
-        result.update(args[-defaultlen:])
+        if defaults:
+            result.update(args[-len(defaults):])
         if varkw is None:
             break
     return list(result)
