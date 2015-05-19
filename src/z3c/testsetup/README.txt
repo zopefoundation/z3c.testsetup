@@ -584,14 +584,14 @@ Python code:
           """This method is run before each single test in the current
           layer. It is optional.
           """
-          print "    Running testSetUp of UnitLayer1"
+          print("    Running testSetUp of UnitLayer1")
   <BLANKLINE>
       @classmethod
       def testTearDown(self):
           """This method is run before each single test in the current
           layer. It is optional.
           """
-          print "    Running testTearDown of UnitLayer1"
+          print("    Running testTearDown of UnitLayer1")
   <BLANKLINE>
   class UnitLayer2(UnitLayer1):
       """This Layer inherits ``UnitLayer1``.
@@ -608,11 +608,11 @@ Python code:
   <BLANKLINE>
       @classmethod
       def testSetUp(self):
-          print "    Running testSetUp of UnitLayer2"
+          print("    Running testSetUp of UnitLayer2")
   <BLANKLINE>
       @classmethod
       def testTearDown(self):
-          print "    Running testTearDown of UnitLayer2"
+          print("    Running testTearDown of UnitLayer2")
 
 In a layer you can do all the special stuff that is needed to run a
 certain group of tests properly. Our setup here is special in that we
@@ -761,17 +761,15 @@ The setup/teardown functions denoted in the example look like this:
   import os
   ...
   def setUp(test):
-      print "    Custom setUp for ", test
+      print("    Custom setUp for %s" % test)
       # We register a function that will be available during tests.
        test.globs['myfunc'] = lambda x: 2*x
   <BLANKLINE>
   def tearDown(test):
-      print "    Custom tearDown for ", test
+      print("    Custom tearDown for %s" % test)
       del test.globs['myfunc'] # unregister function
   ...
 
 As we can see, there is a function ``myfunc`` pulled into the
 namespace of the doctest. We could, however, do arbitrary other things
 here, set up a relational test database or whatever.
-
-
