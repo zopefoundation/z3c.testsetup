@@ -8,6 +8,7 @@ from z3c.testsetup.util import got_working_zope_app_testing
 
 
 CAVE_PATH = os.path.join(os.path.dirname(__file__), 'cave')
+OTHER_CAVE_PATH = os.path.join(os.path.dirname(__file__), 'othercave')
 LAYERED_CAVE_PATH = os.path.join(os.path.dirname(__file__), 'layered_cave')
 GOT_WORKING_ZOPE_APP_TESTING = got_working_zope_app_testing()
 
@@ -206,6 +207,21 @@ class TestFunctionalOnlySamples(unittest.TestCase):
             testrunner.run(defaults)
         assert "Total: 4 tests, 0 failures, 0 errors and 0 skipped" in (
             cap.out)
+
+    def test_simplesetup01(self):
+        # we can run sample simplesetup01 from othercave.
+        defaults = [
+            '--path', OTHER_CAVE_PATH,
+            '--tests-pattern', '^simplesetup01$',
+        ]
+        with Capture() as cap:
+            testrunner.run(defaults)
+        assert "Running testSetUp of UnitLayer1" in cap.out
+        assert "Running testSetUp of UnitLayer2" in cap.out
+        assert "Running testTearDown of UnitLayer2" in cap.out
+        assert "Running testTearDown of UnitLayer1" in cap.out
+        assert "Total: 10 tests, 0 failures, 0 errors and 0 skipped" in (
+                cap.out)
 
 
 def tests_from_testcase(test_case):
