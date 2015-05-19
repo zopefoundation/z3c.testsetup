@@ -15,7 +15,6 @@ TESTFILES = [
     'util.txt',
     'unittestsetup.txt',
     os.path.join('tests', 'util.txt'),
-    'README.txt',
     ]
 
 
@@ -32,6 +31,7 @@ FUNCTIONAL_TESTFILES = [
     'tests/README_OLD.txt',
     'testgetter.txt',
     'testrunner.txt',
+    'README.txt',
     ]
 
 
