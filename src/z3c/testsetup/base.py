@@ -15,6 +15,7 @@
 """
 
 from os import listdir
+import codecs
 import os.path
 import re
 from z3c.testsetup.util import get_package
@@ -72,7 +73,8 @@ class BasicTestSetup(object):
         expressions?
         """
         found_list = []
-        content = open(filename).read()
+        with codecs.open(filename, "rb", "utf-8", "ignore") as fd:
+            content = fd.read()
         return self.textContains(content)
 
     def textContains(self, text):
