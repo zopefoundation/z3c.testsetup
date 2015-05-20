@@ -15,6 +15,7 @@
 """
 from __future__ import print_function
 
+import codecs
 import sys
 import re
 
@@ -98,8 +99,10 @@ def get_marker_from_file(marker, filepath):
 
      :<Tag>: <Value>
 
+    Files are assumed to be UTF-8 encoded. Incompatible characters are
+    ignored.
     """
-    with open(filepath) as fd:
+    with codecs.open(filepath, "rb", "utf-8", "ignore") as fd:
         return get_marker_from_string(marker, fd.read())
     return None
 
