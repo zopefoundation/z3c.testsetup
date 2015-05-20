@@ -173,8 +173,8 @@ We define a marker string and put it into a file::
 Now we lookup the marker string from this file::
 
    >>> from z3c.testsetup.util import get_marker_from_file
-   >>> get_marker_from_file('tEsT-LaYeR', 'tempfile')
-   'foo'
+   >>> get_marker_from_file('tEsT-LaYeR', 'tempfile') == "foo"
+   True
 
 If the string does not exist, we get `None`::
 
