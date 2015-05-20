@@ -24,6 +24,9 @@ Changelog for z3c.testsetup
 
 - Close files properly when looking for marker strings.
 
+- Cope with unforeseeable file encodings. We do now expect utf-8 but
+  will not break otherwise.
+
 
 0.8.3 (2010-09-15)
 ==================
