@@ -5,6 +5,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 tests_require = [
+    # please also add all test requirements to tox.ini.
     'zope.app.testing',
     'zope.app.zcmlfiles',
     'zope.component',
