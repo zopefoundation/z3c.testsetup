@@ -14,6 +14,8 @@ Changelog for z3c.testsetup
   functionality (from `zope.app.testing.functional`) will not be
   available during tests. That depends on tests in your project.
 
+- Support for Python 3.3, Python 3.4, and PyPy2.
+
 - As part of the "go-python3" project, internal tests have been
   reorganized. From now on we will test things in Python code, not in
   doctests any more. Existing doctests will be transformed into
