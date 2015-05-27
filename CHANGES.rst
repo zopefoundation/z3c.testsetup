@@ -1,7 +1,7 @@
 Changelog for z3c.testsetup
 ***************************
 
-0.8.4 (unreleased)
+0.8.4 (2015-05-27)
 ==================
 
 - Added util.got_working_zope_app_testing() to determine whether we
