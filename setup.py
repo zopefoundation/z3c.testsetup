@@ -49,7 +49,7 @@ setup(
                  'Programming Language :: Python :: Implementation :: CPython',
                  'Programming Language :: Python :: Implementation :: PyPy',
                  'Operating System :: OS Independent',
-                 'Framework :: Zope3',
+                 'Framework :: Zope :: 3',
                  ],
 
     packages=find_packages('src'),
