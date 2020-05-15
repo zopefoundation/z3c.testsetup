@@ -1,3 +1,6 @@
+.. caution:: 
+
+    This repository has been archived. If you want to work on it please open a ticket in https://github.com/zopefoundation/meta/issues requesting its unarchival.
 
 z3c.testsetup: easy test setup for zope 3 and python projects
 *************************************************************
